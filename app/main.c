@@ -4,8 +4,10 @@ int main() {
   // Flush after every printf
   setbuf(stdout, NULL);
 
+  while(true){
   // Uncomment this block to pass the first stage
   printf("$ ");
+  fflush(stdout);
 
   // Wait for user input and exit when user inputs
   char input[100];
@@ -16,6 +18,7 @@ int main() {
   // by adding null terminator to last index that point last index to '\0'
   input[strlen(input)-1]='\0';
   printf("%s: command not found\n",input);
-
+  
+  }
   return 0;
 }
