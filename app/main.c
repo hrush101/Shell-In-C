@@ -4,7 +4,7 @@ int main() {
   // Flush after every printf
   setbuf(stdout, NULL);
 
-  while(true){
+  while(-1){
   // Uncomment this block to pass the first stage
   printf("$ ");
   fflush(stdout);
