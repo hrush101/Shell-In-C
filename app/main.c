@@ -22,7 +22,7 @@ int main() {
 
  	 if (!strcmp(input,"exit 0")) {
         	exit(0);
-         }
+        }
    	 printf("%s: command not found\n",input);
 	
   }
