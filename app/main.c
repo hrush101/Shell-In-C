@@ -22,37 +22,32 @@ int main() {
 
  	 if (!strcmp(input,"exit 0")) {
         	exit(0);
-         }
-         
-
-	 if (!strncmp(input,"echo",strlen("echo"))){
+         }else if (!strncmp(input,"echo",strlen("echo"))){
                char *str = &input[(strlen("echo")+1)];
 	       printf("%s\n",str);
-	 }
+	 }else if (!strncmp(input,"type",strlen("type"))){
+               		char *ptr[] = {
+
+         		"echo",
+         		"type",
+         		"exit",
+
+         		};
+
+        	       char *cmd = &input[(strlen("type")+1)];
+              	       int found = 0;       
+	      	       for(int i=0;i<3;i++){
          
-	 if (!strncmp(input,"type",strlen("type"))){
-               char *ptr[] = {
-
-         	"echo",
-         	"type",
-         	"exit",
-
-         	};
-
-               char *cmd = &input[(strlen("type")+1)];
-               int found = 0;       
-	       for(int i=0;i<3;i++){
-         
-                   if(!strcmp(ptr[i],cmd)){
-                      printf("%s is a shell builtin\n",cmd);
-		      found = 1;
-		      break;
-		   }
-	       }
+        	           if(!strcmp(ptr[i],cmd)){
+                	      printf("%s is a shell builtin\n",cmd);
+		   	      found = 1;
+		              break;
+		  	 }
+	       	}
 	       
-	       if(found != 1){
+	       	if(found != 1){
             	  printf("%s: not found\n", cmd);                
-	       }
+	      	 }
 	       
 	 }else{
                printf("%s: command not found\n",input);
