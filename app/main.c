@@ -29,7 +29,7 @@ int main() {
 	       printf("%s\n",str);
 	 }
 
-         printf("%s: command not found\n",input);
+         //printf("%s: command not found\n",input);
 
 
 
