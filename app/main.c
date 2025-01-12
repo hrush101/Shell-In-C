@@ -32,7 +32,32 @@ int main() {
                printf("%s: command not found\n",input);
 
 	 }
+         
+	 if (!strncmp(input,"type",strlen("type"))){
+               char *ptr[] = {
 
+         	"echo",
+         	"type",
+         	"exit",
+
+         	};
+
+               char *cmd = &input[(strlen("type")+1)];
+               int found = 0;       
+	       for(int i=0;i<3;i++){
+         
+                   if(!strcmp(ptr[i],cmd)){
+                      printf("%s is a shell builtin\n",cmd);
+		      found = 1;
+		      break;
+		   }
+	       }
+	       
+	       if(found != 1){
+            	  printf("%s: not found\n", cmd);                
+	       }
+	       
+	 }
 	
   }
   return 0;
