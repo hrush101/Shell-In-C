@@ -22,8 +22,15 @@ int main() {
 
  	 if (!strcmp(input,"exit 0")) {
         	exit(0);
-        }
-   	 printf("%s: command not found\n",input);
+         }
+         
+         #printf("%s: command not found\n",input);
+	 if (!strncmp(input,"echo",strlen("echo")){
+               char *str = &input[(strlen("echo")+1)];
+	       printf("%s\n",*str);
+	 }
+
+
 	
   }
   return 0;
