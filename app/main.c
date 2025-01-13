@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <io.h> // for windows system calls like _access() and X_OK
+#include <unistd.h> // for Linux system calls like access()
+#define X_OK 1;
 
 
 // function to return fully qualified path
@@ -30,10 +31,10 @@ char *get_path(char *cmd){
 	{
 	  // concatinate dir and cmd to fully qualified path from root 
 	  // ex - C:\\Windows\\System32\\echo.exe
-	  snprintf(full_path , sizeof(full_path) , "%s\\%s.exe" , dir_path , cmd);
+	  snprintf(full_path , sizeof(full_path) , "%s/%s" , dir_path , cmd);
 
 	  // Check if C:\\Windows\\System32\\echo.exe exists as executable
-	  if( _access(full_path,X_OK )== 0 ){
+	  if( access(full_path,X_OK)== 0 ){
 		    r_path=strdup(full_path); // will create a copy of path array and return pointer to caller 
 			free(path_copy);// if call returns from here free allocated path_copy
 		    return r_path;
