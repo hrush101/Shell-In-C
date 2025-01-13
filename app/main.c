@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h> // for Linux system calls like access()
-#define X_OK 1;
 
 
 // function to return fully qualified path
