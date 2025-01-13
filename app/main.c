@@ -21,7 +21,7 @@ char *get_path(char *cmd){
 	char *path_copy = strdup(path); // create a copy of ENV var PATH as we should not modify orignal path variable
     
 	// this splits the path_copy string into individual directories using ';' as a delimiter
-	char *dir_path = strtok(path_copy, ";"); 
+	char *dir_path = strtok(path_copy, ":"); 
 
 	char full_path[2000]; // array to store fully qualified path from root ex - /usr/bin/ls
     
