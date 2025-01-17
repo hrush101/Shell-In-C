@@ -167,11 +167,9 @@ int main() {
 					{
 					    perror("fork failed"); // Print an error message fork failed to create child
 					}
-
-					free(cmd_path);
-
-
+					
 			    }
+				free(cmd_path);
 	       
 	 }else{
                printf("%s: command not found\n",input);
