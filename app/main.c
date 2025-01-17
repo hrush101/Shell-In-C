@@ -171,9 +171,11 @@ int main() {
 			    }
 				free(cmd_path);
 	       
-	 }else{
-               printf("%s: command not found\n",input);
-         }
+	    }else
+		{
+            printf("%s: command not found\n",input);
+        }
+	}
 	
   }
   return 0;
