@@ -170,6 +170,10 @@ int main() {
 					
 			    }
 				free(cmd_path);
+
+				else {
+            		printf("%s: not found\n", args[0]); 
+        		}
 	        }
 	    }  
 		else {
