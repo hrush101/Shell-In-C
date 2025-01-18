@@ -98,7 +98,7 @@ int main() {
 	       	printf("%s\n",str);
 
 			char *start = strchr(input,'\''); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
-			char *end = strrchr(input, '\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
+			char *end = strrchr(input,'\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
 
 			// so here start points to index where 1st occurance of ' in input
 			// and end points to last occurance of '
@@ -109,12 +109,9 @@ int main() {
 			{
                 				
 				for ( int i=0 ; i <= len ; i++ ){
-					if(*(start + i) == '\''){
-						continue;
-					}else{
-						single_quote_text[i]= *(start + i); 
-					    // here we are copying from start to end to extract string and skip start as we dont want to copy 1st '
-					}
+					
+					single_quote_text[i]= *(start + 1 + i); 
+					// here we are copying from start to end to extract string and skip start as we dont want to copy 1st '
 					
 				}
 
