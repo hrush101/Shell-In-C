@@ -127,7 +127,7 @@ int main() {
 
 					args[argc++]=token; // store each token cmd + arguments in an array
 					token=strtok(NULL," "); // get next token till reaches null
-                    
+                   
 				}
 
 				args[argc] = NULL; // Null-terminate the array to mark the end of array
@@ -172,7 +172,6 @@ int main() {
             		printf("%s: not found\n", args[0]); 
         		}
 				free(cmd_path);
-
 				
 	        }
 	    }  
