@@ -98,7 +98,7 @@ int main() {
 
         	        char *cmd = &input[(strlen("type")+1)];
               	    int found = 0;       
-	      	        for(int i=0;i<sizeof(ptr);i++){
+	      	        for( int i=0 ; i < sizeof(ptr) / sizeof(ptr[0]) ; i++ ){
          
         	           	if(!strcmp(ptr[i],cmd)){
                 	      printf("%s is a shell builtin\n",cmd);
