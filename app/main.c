@@ -94,13 +94,13 @@ int main() {
             char *str = &input[(strlen("echo")+1)];
 	       	printf("%s\n",str);
 	    } else if (!strncmp(input,"type",strlen("type"))){
-               		char *ptr[] = {
+               	char *ptr[] = {
 
-         		"echo",
-         		"type",
-         		"exit",
-				"pwd"
-
+                	"pwd",
+         			"echo",
+         			"type",
+         			"exit",
+				
          		};
 
         	        char *cmd = &input[(strlen("type")+1)];
