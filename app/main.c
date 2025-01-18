@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h> // for Linux system calls like access(),fork()
-#include <sys/types.h>
-#include <sys/wait.h>
-
+#include <unistd.h> // for Linux system calls like access(), fork(), getcwd()
+#include <sys/types.h> // includes the definition of various data types used in system calls, such as pid_t
+#include <sys/wait.h> // for wait() system call
+#include <limits.h> // For PATH_MAX is a system-defined constant that specifies the maximum length, in bytes, of a fully qualified path name, including the null terminator (\0)
 
 // function to return fully qualified path
 char* get_path(char *cmd){
@@ -57,6 +57,18 @@ char* get_path(char *cmd){
 	
 };
 
+void pwd(){
+
+	char path[1000];
+
+	if (getcwd(path,sizeof(path)) != NULL) {
+		
+		printf("%s \n",path);
+	
+	}
+
+}
+
 int main() {
   // Flush after every printf
   setbuf(stdout, NULL);
@@ -78,10 +90,10 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        }else if (!strncmp(input,"echo",strlen("echo"))){
+        } else if (!strncmp(input,"echo",strlen("echo"))){
             char *str = &input[(strlen("echo")+1)];
 	       	printf("%s\n",str);
-	    }else if (!strncmp(input,"type",strlen("type"))){
+	    } else if (!strncmp(input,"type",strlen("type"))){
                		char *ptr[] = {
 
          		"echo",
@@ -90,8 +102,8 @@ int main() {
 
          		};
 
-        	       char *cmd = &input[(strlen("type")+1)];
-              	       int found = 0;       
+        	        char *cmd = &input[(strlen("type")+1)];
+              	    int found = 0;       
 	      	        for(int i=0;i<3;i++){
          
         	           	if(!strcmp(ptr[i],cmd)){
@@ -114,8 +126,11 @@ int main() {
 				}
 			}
 
-	    }
-		else {   // here we are seprating cmd and executing it with the arguments passed with it ex - ls -l
+	    } else if (!strcmp(input,"pwd",strlen("pwd"))) { // print current working directory
+
+			    pwd();
+
+		} else {   // here we are seprating cmd and executing it with the arguments passed with it ex - ls -l
    
 				// Parse command and arguments i.e seprate cmd and argument passed with cmd
 				char *args[10]; // array to hold cmd and it argument
