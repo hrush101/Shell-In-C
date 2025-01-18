@@ -109,8 +109,13 @@ int main() {
 			{
                 				
 				for ( int i=0 ; i <= len ; i++ ){
-					single_quote_text[i]= *(start + i + 1); 
-					// here we are copying from start to end to extract string and skip start as we dont want to copy 1st '
+					if(*(start + i) == '\''){
+						continue;
+					}else{
+						single_quote_text[i]= *(start + i); 
+					    // here we are copying from start to end to extract string and skip start as we dont want to copy 1st '
+					}
+					
 				}
 
 				single_quote_text[len]='\0'; // add null terminated charecter
