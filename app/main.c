@@ -92,9 +92,35 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if (!strncmp(input,"echo",strlen("echo"))){
+        } else if (!strncmp(input,"echo",strlen("echo"))) {
+
             char *str = &input[(strlen("echo")+1)];
 	       	printf("%s\n",str);
+
+			char *start = strchr(input,"\'"); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
+			char *end = strrchr(input, '\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
+
+			// so here start points to index where 1st occurance of ' in input
+			// and end points to last occurance of '
+            size_t len = end - start - 1; // to calculate length of text inside ' '
+            char single_quote_text[ len+1 ] ; // create a array to store extracted text
+
+			if ( start !=NULL && end !=NULL ) 
+			{
+                				
+				for ( int i=0 ; i < len ; i++ ){
+					single_quote_text[i]= *((start + 1) + i); 
+					// here we are copying from start to end to extract string and skip start as we dont want to copy 1st '
+				}
+
+				single_quote_text[len]='\0'; // add null terminated charecter
+
+			}
+            
+			printf("%s \n",single_quote_text);
+
+
+
 	    } else if (!strncmp(input,"type",strlen("type"))){
                	char *ptr[] = {"pwd","echo","type","exit"};
 
