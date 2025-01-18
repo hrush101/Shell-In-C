@@ -95,10 +95,10 @@ int main() {
         } else if (!strncmp(input,"echo",strlen("echo"))) {
 
             char *str = &input[(strlen("echo")+1)];
-	       	printf("%s\n",str);
+	       	
 
-			char *start = strchr(input,'\''); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
-			char *end = strrchr(input,'\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
+			char *start = strchr(str,'\''); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
+			char *end = strrchr(str,'\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
 
 			// so here start points to index where 1st occurance of ' in input
 			// and end points to last occurance of '
@@ -116,10 +116,14 @@ int main() {
 				}
 
 				single_quote_text[len]='\0'; // add null terminated charecter
+				
+				printf("%s \n",single_quote_text);
 
+			}else{
+				printf("%s\n",str);
 			}
             
-			printf("%s \n",single_quote_text);
+			
 
 
 
