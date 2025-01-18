@@ -126,7 +126,7 @@ int main() {
 				}
 			}
 
-	    } else if (!strcmp(input,"pwd",strlen("pwd"))) { // print current working directory
+	    }  else if (!strncmp(input,"pwd",strlen("pwd"))){ // print current working directory
 
 			    pwd();
 
