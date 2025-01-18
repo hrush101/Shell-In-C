@@ -94,12 +94,7 @@ int main() {
             char *str = &input[(strlen("echo")+1)];
 	       	printf("%s\n",str);
 	    } else if (!strncmp(input,"type",strlen("type"))){
-               	char *ptr[] = {
-                		"pwd",
-         				"echo",
-         				"type",
-         				"exit"
-				};
+               	char *ptr[] = {"pwd","echo","type","exit","which"};
 
         	        char *cmd = &input[(strlen("type")+1)];
               	    int found = 0;       
