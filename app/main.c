@@ -126,9 +126,25 @@ int main() {
 
 			    pwd();
 
-		} else if (!strncmp(input,"cd", strlen("cd")) ) {
+		} else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
             char *path = &input[(strlen("cd")+1)];
-			int status = chdir(path);
+            int status;
+
+			if (!strcmp(path,"~")){
+				char *home_dir = getenv("HOME"); // to get home directory
+				if (home_dir != NULL){
+                   
+				   status = chdir(home_dir);
+
+				}else {
+					perror("enable to get HOME \n");
+				}
+				
+			}
+			else {
+				status = chdir(path);
+			}
+
 	       	if(status == -1)
 			{
 				printf("cd: %s: No such file or directory \n",path);
