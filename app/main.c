@@ -97,7 +97,7 @@ int main() {
             char *str = &input[(strlen("echo")+1)];
 	       	printf("%s\n",str);
 
-			char *start = strchr(input,"\'"); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
+			char *start = strchr(input,'\''); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
 			char *end = strrchr(input, '\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
 
 			// so here start points to index where 1st occurance of ' in input
