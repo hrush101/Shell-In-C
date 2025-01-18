@@ -69,6 +69,8 @@ void pwd(){
 
 }
 
+
+
 int main() {
   // Flush after every printf
   setbuf(stdout, NULL);
@@ -123,6 +125,15 @@ int main() {
 	    }  else if (!strncmp(input,"pwd",strlen("pwd"))){ // print current working directory
 
 			    pwd();
+
+		} else if (!strncmp(input,"cd", strlen("cd")) ) {
+            char *path = &input[(strlen("cd")+1)];
+			int status = chdir(path);
+	       	if(status == -1)
+			{
+				printf("cd: %s: No such file or directory \n",path);
+			}
+
 
 		} else {   // here we are seprating cmd and executing it with the arguments passed with it ex - ls -l
    
