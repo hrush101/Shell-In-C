@@ -98,7 +98,6 @@ int main() {
                 		"pwd",
          				"echo",
          				"type",
-         				"exit",
 				};
 
         	        char *cmd = &input[(strlen("type")+1)];
