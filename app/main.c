@@ -99,6 +99,7 @@ int main() {
          		"echo",
          		"type",
          		"exit",
+				"pwd"
 
          		};
 
