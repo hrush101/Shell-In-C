@@ -102,7 +102,7 @@ int main() {
 	       	        }
             
 			// If not a shell builtin, search in PATH env variable
-			if(found != 1){
+			if(!found){
 				char *cmd_path=get_path(cmd);
 
 				if (cmd_path != NULL){
@@ -114,20 +114,21 @@ int main() {
 				}
 			}
 
-			else {
-
+	    }
+		else {   // here we are seprating cmd and executing it with the arguments passed with it ex - ls -l
+   
 				// Parse command and arguments i.e seprate cmd and argument passed with cmd
 				char *args[10]; // array to hold cmd and it argument
 				int argc=0;        // argument count
 				char *token = strtok(input," "); // split the input string into space seprated token
 
-                
-				while ( token!=NULL && argc < 10 ) // keep parsing until no more tokens left
+				
+				while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
 				{
 
-					args[argc++]=token; // store each token cmd + arguments in an array
-					token=strtok(NULL," "); // get next token till reaches null
-                   
+					args[argc++] = token; // store each token cmd + arguments in an array
+					token = strtok(NULL, " "); // get next token till reaches null
+					
 				}
 
 				args[argc] = NULL; // Null-terminate the array to mark the end of array
@@ -138,19 +139,19 @@ int main() {
 				if (cmd_path != NULL) { 
 
 					// Fork and execute the command
-                    pid_t pid = fork(); // Create a child process
+					pid_t pid = fork(); // Create a child process
 
 					// Here we create a new process using fork() because executing a command with execv replaces the current process image with the new program. 
 					// If we didn't fork, the shell itself would be replaced by the command, and the shell would no longer be available to accept further commands
 				
-                    if(pid == 0) // as fork return 0 if child process is created
+					if(pid == 0) // as fork return 0 if child process is created
 					{
-					   
-					   // here child process executes the cmd using execv system call which is use to execute binary / executable of program
-                       execv(cmd_path,args); // execv replaces current program / process with new process 
-                       free(cmd_path);       // free cmd_path as its dynamic memory
-					   perror("execv failed"); // print error if execv fails
-					   exit(1);                //  exit 1 indicates the program is terminating due to an error in execv
+						
+						// here child process executes the cmd using execv system call which is use to execute binary / executable of program
+						execv(cmd_path,args); // execv replaces current program / process with new process 
+						free(cmd_path);       // free cmd_path as its dynamic memory
+						perror("execv failed"); // print error if execv fails
+						exit(1);                //  exit 1 indicates the program is terminating due to an error in execv
 
 					}
 					else if (pid > 0) // in parent as child has not finished its execution
@@ -165,19 +166,17 @@ int main() {
 					}
 					else                       // if fork fails
 					{
-					    perror("fork failed"); // Print an error message fork failed to create child
+						perror("fork failed"); // Print an error message fork failed to create child
 					}
-					
-			    } else {
-            		printf("%s: not found\n", args[0]); 
+
+					free(cmd_path);
+
+				}else {
+            		printf("%s: command not found\n",input);
         		}
-				free(cmd_path);
 				
-	        }
-	    }  
-		else {
-            printf("%s: command not found\n",input);
-        }
+			}  
+		
 	
   }
 
