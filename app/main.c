@@ -109,7 +109,7 @@ int main() {
 			{
                 				
 				for ( int i=0 ; i < len ; i++ ){
-					single_quote_text[i]= *((start + 1) + i); 
+					single_quote_text[i]= *(start + 1 + i); 
 					// here we are copying from start to end to extract string and skip start as we dont want to copy 1st '
 				}
 
