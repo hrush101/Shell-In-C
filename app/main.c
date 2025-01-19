@@ -102,12 +102,13 @@ int main() {
 
 			// so here start points to index where 1st occurance of ' in input
 			// and end points to last occurance of '
-            size_t len = end - start - 1; // to calculate length of text inside ' '
-            char single_quote_text[ len+1 ] ; // create a array to store extracted text
+            
+            
 
 			if ( start !=NULL && end !=NULL && end > start) 
 			{
-                				
+				size_t len = end - start - 1; // to calculate length of text inside ' '
+                char single_quote_text[ len+1 ] ; // create a array to store extracted text			
 				for ( int i=0 ; i < len ; i++ ){
 					
 					single_quote_text[i]= *(start + 1 + i); 
