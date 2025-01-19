@@ -80,7 +80,7 @@ char* remove_extra_spaces(char *str){
     int space_seen = 0; // Flag to handle 1st consecutive space
 
     for (size_t i = 0; i < len; i++) {
-        char current = source[i];
+        char current = *(source + i);
 
         if (current == ' ') {
             if (!space_seen) {
