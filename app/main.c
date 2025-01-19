@@ -94,7 +94,7 @@ char* remove_extra_spaces(char *str){
 
         }
     }
-
+	
     text[j] = '\0'; // Null-terminate the string
     return text;    
 
