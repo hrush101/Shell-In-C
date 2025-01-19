@@ -90,6 +90,7 @@ char* remove_extra_spaces(char *str){
         } else {
 
             text[j++] = current;
+			space_seen=0;
 
         }
     }
