@@ -58,34 +58,44 @@ char* get_path(char *cmd){
 }
 
 
-char* remove_extra_spaces(char *start ,  char *end , char *str){
+char* remove_extra_spaces(char *str){
 
-	size_t len = end - start - 1; // to calculate length of text inside ' '
-	char *single_quote_text = (char *) malloc( (len +1) * sizeof(char) ); // create a array to store extracted text	
-	int initial_space = 0; // flag to check if only one space is there 
-    int j=0;  // index for single quote array
-		for ( int i=0 ; i < len ; i++ ){
+    char *start = strchr(str, '\''); // Find the first single quote
+    char *end = strrchr(str, '\'');  // Find the last single quote
+    char *source = NULL;             // Source to extract text
+    size_t len = 0;
 
-			char current = *(start + 1 + i);
-			
-			if ( current == ' '){
-				if (initial_space == 0) {
-					single_quote_text[j++] = current;
-					initial_space=1;
-				}
-			}
-			else {
-				// copy non-space characters
-            	single_quote_text[j++] = current;
-			}
-				
-			// here we are copying from start to end to extract string and skip start as we dont want to copy 1st ' or " and last ' or "
-					
-		}
+    // Determine the source of the text
+    if (start != NULL && end != NULL && end > start) {
+        source = start + 1;          // Text inside single quotes
+        len = end - start - 1;
+    } else {
+        source = str;                // Copy string to source
+        len = strlen(str);
+    }
 
-		single_quote_text[j]='\0'; // add null terminated charecter
+    char *text = (char *) malloc((len + 1) * sizeof(char)); // Allocate memory
+    
+    int j = 0;          // Index for the text array
+    int space_seen = 0; // Flag to handle 1st consecutive space
 
-		return single_quote_text;
+    for (size_t i = 0; i < len; i++) {
+        char current = source[i];
+
+        if (current == ' ') {
+            if (!space_seen) {
+                text[j++] = current;
+                space_seen = 1;
+            }
+        } else {
+
+            text[j++] = current;
+
+        }
+    }
+
+    text[j] = '\0'; // Null-terminate the string
+    return text;    
 
 }
 
@@ -125,34 +135,16 @@ int main() {
         } else if (!strncmp(input,"echo",strlen("echo"))) {
 
             char *str = &input[(strlen("echo")+1)];
-	       	
-			char *start = strchr(str,'\''); // strchr finds 1st occurance of single quote where ansi-c value for single quote is \' and returns a pointer pointing to it
-			char *end = strrchr(str,'\''); // strrchr finds last occurance of single quote and returns a pointer pointing to it
+	       				
+			char *final_text = remove_extra_spaces(str); // remove extra spaces and print the string
 
-			// so here start points to index where 1st occurance of ' in input
-			// and end points to last occurance of '
+			if(final_text != NULL ) {
 
-
-			if ( start !=NULL && end !=NULL && end > start) 
-			{
-				char *single_quote_text = remove_extra_spaces(start , end , str); // remove extra spaces and print the string
-
-				if(single_quote_text != NULL ){
-
-                	printf("%s \n",single_quote_text);
-					
-				}
-				
-
-			} else {
-
-				printf("%s\n",str);
+				printf("%s \n",final_text);
 
 			}
-            
-			
 
-
+			free(final_text);
 
 	    } else if (!strncmp(input,"type",strlen("type"))){
                	char *ptr[] = {"pwd","echo","type","exit"};
