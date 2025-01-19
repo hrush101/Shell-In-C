@@ -136,8 +136,13 @@ int main() {
 			if ( start !=NULL && end !=NULL && end > start) 
 			{
 				char *single_quote_text = remove_extra_spaces(start , end , str); // remove extra spaces and print the string
-				if(single_quote_text != NULL )
-				printf("%s \n",single_quote_text);
+				
+				if(single_quote_text != NULL ){
+
+                	printf("%s \n",single_quote_text);
+
+				}
+				
 
 			} else {
 
