@@ -152,7 +152,7 @@ void print_files(char *files){
 			perror("failed to open file"); // if file not found
 			printf("%s\n",file_path);
 		} else {
-
+            printf("%s\n",file_path);
 			char c;
 
 			while ((c=fgetc(f)) != EOF) { // get character pointed by file pointer f and store it in c until f reaches end of file
