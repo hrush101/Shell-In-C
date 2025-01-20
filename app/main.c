@@ -140,32 +140,34 @@ char* process_echo(char *str) {
     return result;
 }
 
+void cat_file(char *files){    // print file content
+
+	FILE *f = fopen(files,"r"); // open file of given path
+
+	if (f == NULL){
+		perror("failed to open file"); // if file not found
+		
+	} else {
+            
+		char c;
+
+		while ((c=fgetc(f)) != EOF) { // get character pointed by file pointer f and store it in c until f reaches end of file
+			putchar(c);
+		}
+
+		fclose(f);
+
+	}
+
+}
+
 void print_files(char *files){
 
     char *file_path = strtok(files,"'"); // split path using ' as cat '/tmp/baz file1' '/tmp/baz file2'
    
     while (file_path != NULL) {
-        
-		// Trim any leading/trailing spaces in file paths
-		while (*file_path == ' ') file_path++;
-
-		FILE *f = fopen(file_path,"r"); // open file of given path
-
-		if (f == NULL){
-			perror("failed to open file"); // if file not found
-			printf("%s\n",file_path);
-		} else {
-            printf("%s\n",file_path);
-			char c;
-
-			while ((c=fgetc(f)) != EOF) { // get character pointed by file pointer f and store it in c until f reaches end of file
-				putchar(c);
-			}
-
-			fclose(f);
-
-		}
-
+       
+		cat_file(file_path);		
 
     }
     
