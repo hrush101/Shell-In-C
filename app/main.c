@@ -145,6 +145,9 @@ void print_files(char *files){
     char *file_path = strtok(files,"'"); // split path using ' as cat '/tmp/baz file1' '/tmp/baz file2'
    
     while (file_path != NULL) {
+        
+		// Trim any leading/trailing spaces in file paths
+		while (*file_path == ' ') file_path++;
 
 		FILE *f = fopen(file_path,"r"); // open file of given path
 
