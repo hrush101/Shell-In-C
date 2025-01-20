@@ -146,7 +146,7 @@ void print_files(char *files){
    
     while (file_path != NULL) {
 
-		FILE *f = fopen(file_path,read); // open file of given path
+		FILE *f = fopen(file_path,"r"); // open file of given path
 
 		if (f == NULL){
 			perror("failed to open file"); // if file not found
