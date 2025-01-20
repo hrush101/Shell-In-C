@@ -100,7 +100,6 @@ char* remove_extra_spaces(char *str){
 
 }
 
-// Function to process echo command
 char* process_echo(char *str) {
     char *result = (char *) malloc(1000 * sizeof(char)); // Allocate large buffer
     if (!result) {
@@ -120,9 +119,7 @@ char* process_echo(char *str) {
             if (in_quotes) {
                 // Close the quoted section
                 buffer[buffer_index] = '\0';
-                char *cleaned = remove_extra_spaces(buffer);
-                strcat(result, cleaned);
-                free(cleaned);
+                strcat(result, buffer); // Append quoted content as-is
                 buffer_index = 0;
             }
             in_quotes = !in_quotes; // Toggle quote state
