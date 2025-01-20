@@ -140,6 +140,32 @@ char* process_echo(char *str) {
     return result;
 }
 
+void print_files(char *files){
+
+    char *file_path = strtok(files, " "); // split path using space as cat '/tmp/file1' 'tmp'
+   
+    while (file_path != NULL) {
+
+		FILE *f = fopen(file_path,read); // open file of given path
+
+		if (f == NULL){
+			perror("failed to open file"); // if file not found
+			return 1;
+		}
+
+		char c;
+
+		while ((c=fgetc(f)) != EOF) { // get character pointed by file pointer f and store it in c until f reaches end of file
+			putchar(c);
+		}
+
+		fclose(f);
+	 
+    }
+    
+	file_path=strtok(NULL," ");
+
+}
 
 void pwd(){
 
@@ -215,9 +241,14 @@ int main() {
 				}
 			}
 
-	    }  else if (!strncmp(input,"pwd",strlen("pwd"))){ // print current working directory
+	    } else if (!strcmp(input,"pwd")) { // print current working directory
 
 			    pwd();
+
+		} else if (!strncmp(input,"cat", strlen("cat"))) {
+
+			char *files = &input[(strlen("cat")+1)];
+			print_files(files);
 
 		} else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
             char *path = &input[(strlen("cd")+1)];
