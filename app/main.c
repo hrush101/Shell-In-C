@@ -100,6 +100,52 @@ char* remove_extra_spaces(char *str){
 
 }
 
+// Function to process echo command
+char* process_echo(char *str) {
+    char *result = (char *) malloc(1000 * sizeof(char)); // Allocate large buffer
+    if (!result) {
+        perror("Memory allocation failed");
+        return NULL;
+    }
+
+    result[0] = '\0'; // Initialize result string
+    int in_quotes = 0;
+    char buffer[1000];
+    int buffer_index = 0;
+
+    for (int i = 0; input[i] != '\0'; i++) {
+        char current = input[i];
+
+        if (current == '\'') {
+            if (in_quotes) {
+                // Close the quoted section
+                buffer[buffer_index] = '\0';
+                char *cleaned = remove_extra_spaces(buffer);
+                strcat(result, cleaned);
+                free(cleaned);
+                buffer_index = 0;
+            }
+            in_quotes = !in_quotes; // Toggle quote state
+        } else if (in_quotes) {
+            // Collect characters inside quotes
+            buffer[buffer_index++] = current;
+        } else {
+            if (!isspace(current) || (strlen(result) > 0 && result[strlen(result) - 1] != ' ')) {
+                // Append unquoted characters with proper spacing
+                strncat(result, &current, 1);
+            }
+        }
+    }
+
+    // Add trailing space cleanup
+    if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
+        result[strlen(result) - 1] = '\0';
+    }
+
+    return result;
+}
+
+
 void pwd(){
 
 	char path[1000];
@@ -137,7 +183,7 @@ int main() {
 
             char *str = &input[(strlen("echo")+1)];
 	       				
-			char *final_text = remove_extra_spaces(str); // remove extra spaces and print the string
+			char *final_text = process_echo(str); // remove extra spaces and print the string
 
 			if(final_text != NULL ) {
 
