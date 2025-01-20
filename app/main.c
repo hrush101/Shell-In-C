@@ -183,7 +183,7 @@ int main() {
 
             char *str = &input[(strlen("echo")+1)];
 	       				
-			char *final_text = process_echo(str); // remove extra spaces and print the string
+			char *final_text = process_echo(str);// remove extra spaces and print the string
 
 			if(final_text != NULL ) {
 
