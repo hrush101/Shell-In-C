@@ -163,7 +163,6 @@ void print_files(char *files){
 
 		}
 
-		
 
     }
     
