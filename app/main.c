@@ -170,7 +170,7 @@ void print_files(char *files){
 		cat_file(file_path);		
 
     }
-    
+
 	file_path=strtok(NULL,"'");
 
 }
