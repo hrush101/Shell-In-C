@@ -160,7 +160,7 @@ void print_files(char *files){
 		}
 
 		fclose(f);
-	 
+
     }
     
 	file_path=strtok(NULL," ");
