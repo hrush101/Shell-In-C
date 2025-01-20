@@ -150,7 +150,6 @@ void print_files(char *files){
 
 		if (f == NULL){
 			perror("failed to open file"); // if file not found
-			return 1;
 		}
 
 		char c;
