@@ -113,8 +113,8 @@ char* process_echo(char *str) {
     char buffer[1000];
     int buffer_index = 0;
 
-    for (int i = 0; input[i] != '\0'; i++) {
-        char current = input[i];
+    for (int i = 0; str[i] != '\0'; i++) {
+        char current = str[i];
 
         if (current == '\'') {
             if (in_quotes) {
