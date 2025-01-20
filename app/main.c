@@ -58,55 +58,51 @@ char* get_path(char *cmd){
 }
 
 
-char* remove_extra_spaces(char *str){
+// char* remove_extra_spaces(char *str){
 
-    char *start = strchr(str, '\''); // Find the first single quote
-    char *end = strrchr(str, '\'');  // Find the last single quote
-    char *source = NULL;             // Source to extract text
-    size_t len = 0;
+//     char *start = strchr(str, '\''); // Find the first single quote
+//     char *end = strrchr(str, '\'');  // Find the last single quote
+//     char *source = NULL;             // Source to extract text
+//     size_t len = 0;
 
-    // Determine the source of the text
-    if (start != NULL && end != NULL && end > start) {
-        source = start + 1;          // Text inside single quotes
-        len = end - start - 1;
-    } else {
-        source = str;                // Copy string to source
-        len = strlen(str);
-    }
+//     // Determine the source of the text
+//     if (start != NULL && end != NULL && end > start) {
+//         source = start + 1;          // Text inside single quotes
+//         len = end - start - 1;
+//     } else {
+//         source = str;                // Copy string to source
+//         len = strlen(str);
+//     }
 
-    char *text = (char *) malloc((len + 1) * sizeof(char)); // Allocate memory
+//     char *text = (char *) malloc((len + 1) * sizeof(char)); // Allocate memory
     
-    int j = 0;          // Index for the text array
-    int space_seen = 0; // Flag to handle 1st consecutive space
+//     int j = 0;          // Index for the text array
+//     int space_seen = 0; // Flag to handle 1st consecutive space
 
-    for (size_t i = 0; i < len; i++) {
-        char current = *(source + i);
+//     for (size_t i = 0; i < len; i++) {
+//         char current = *(source + i);
 
-        if (current == ' ') {
-            if (!space_seen) {
-                text[j++] = current;
-                space_seen = 1;
-            }
-        } else {
+//         if (current == ' ') {
+//             if (!space_seen) {
+//                 text[j++] = current;
+//                 space_seen = 1;
+//             }
+//         } else {
 
-            text[j++] = current;
-			space_seen=0;
+//             text[j++] = current;
+// 			space_seen=0;
 
-        }
-    }
+//         }
+//     }
 	
-    text[j] = '\0'; // Null-terminate the string
-    return text;    
+//     text[j] = '\0'; // Null-terminate the string
+//     return text;    
 
-}
+// }
 
 char* process_echo(char *str) {
     char *result = (char *) malloc(1000 * sizeof(char)); // Allocate large buffer
-    if (!result) {
-        perror("Memory allocation failed");
-        return NULL;
-    }
-
+    
     result[0] = '\0'; // Initialize result string
     int in_quotes = 0;
     char buffer[1000];
