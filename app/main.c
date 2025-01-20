@@ -142,7 +142,7 @@ char* process_echo(char *str) {
 
 void print_files(char *files){
 
-    char *file_path = strtok(files, " "); // split path using space as cat '/tmp/file1' 'tmp'
+    char *file_path = strtok(files, "'"); // split path using ' as cat '/tmp/baz file1' '/tmp/baz file2'
    
     while (file_path != NULL) {
 
@@ -163,7 +163,7 @@ void print_files(char *files){
 
     }
     
-	file_path=strtok(NULL," ");
+	file_path=strtok(NULL,"'");
 
 }
 
