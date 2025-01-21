@@ -144,7 +144,7 @@ char* process_echo(char *str) {
             i++;
             continue;
         }
-
+    
         // If it's just a regular character, add it to the result
         strncat(result, &str[i], 1);
         i++;
