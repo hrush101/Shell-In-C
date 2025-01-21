@@ -109,6 +109,7 @@ char* process_echo(char *str) {
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
+    int space_seen = 0;
     char buffer[1000];
     int buffer_index = 0;
 
@@ -117,61 +118,36 @@ char* process_echo(char *str) {
 
         if (current == '\'') {
             if (!in_double_quotes) {
-                in_single_quotes = !in_single_quotes; // Toggle single quote state
-                if (!in_single_quotes) {
-                    buffer[buffer_index] = '\0';
-                    strcat(result, buffer); // Append quoted content as-is
-                    strcat(result, " "); // Add space after the quoted content
-                    buffer_index = 0;
-                }
-            } else {
-                buffer[buffer_index++] = current; // Treat as literal inside double quotes
+                in_single_quotes = !in_single_quotes;
+                continue;
             }
         } else if (current == '"') {
             if (!in_single_quotes) {
-                in_double_quotes = !in_double_quotes; // Toggle double quote state
-                if (!in_double_quotes) {
-                    buffer[buffer_index] = '\0';
-                    strcat(result, buffer); // Append quoted content as-is
-                    strcat(result, " "); // Add space after the quoted content
-                    buffer_index = 0;
-                }
-            } else {
-                buffer[buffer_index++] = current; // Treat as literal inside single quotes
+                in_double_quotes = !in_double_quotes;
+                continue;
             }
         } else if (current == '\\' && in_double_quotes) {
-            // Handle escaped characters inside double quotes
-            i++; // Skip the next character if it's escaped
+            i++;
             if (str[i] != '\0') {
                 buffer[buffer_index++] = str[i];
             }
-        } else if (current == '$' && in_double_quotes) {
-            // Expand environment variables in double quotes
-            char var[100];
-            int var_index = 0;
-
-            i++; // Move to the next character
-            while (isalnum(str[i]) || str[i] == '_') {
-                var[var_index++] = str[i++];
+            continue;
+        } else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
+            if (!space_seen) {
+                if (buffer_index > 0) {
+                    buffer[buffer_index] = '\0';
+                    strcat(result, buffer);
+                    strcat(result, " ");
+                    buffer_index = 0;
+                }
+                space_seen = 1;
             }
-            var[var_index] = '\0';
-            i--; // Adjust back for the next loop iteration
-
-            char *value = getenv(var);
-            if (value) {
-                strcat(result, value);
-            }
+            continue;
         } else {
-            // Regular characters
-            if (in_single_quotes || in_double_quotes || !isspace(current)) {
-                buffer[buffer_index++] = current;
-            } else if (buffer_index > 0) {
-                buffer[buffer_index] = '\0';
-                strcat(result, buffer);
-                strcat(result, " ");
-                buffer_index = 0;
-            }
+            space_seen = 0;
         }
+
+        buffer[buffer_index++] = current;
     }
 
     if (buffer_index > 0) {
