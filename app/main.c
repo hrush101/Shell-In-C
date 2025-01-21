@@ -130,7 +130,7 @@ char* process_echo(char *str) {
             continue;
         } 
         // Handle escape sequences inside double quotes only
-        else if (current == '\\' && in_double_quotes) {
+        else if (current == '\\' && !(in_double_quotes) && !(in_single_quotes) ) {
             i++; // Move to the next character after the backslash
             if (str[i] == '\0') break; // If backslash is the last character, break
 
