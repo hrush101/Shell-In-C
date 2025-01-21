@@ -104,6 +104,7 @@ char* get_path(char *cmd){
 
 
 char* process_echo(char *str) {
+	
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
 
@@ -118,36 +119,30 @@ char* process_echo(char *str) {
         if (current == '\'') {
             if (!in_double_quotes) {
                 in_single_quotes = !in_single_quotes;
-                continue;
             }
+            continue;
         } else if (current == '"') {
             if (!in_single_quotes) {
                 in_double_quotes = !in_double_quotes;
-                continue;
             }
+            continue;
         } else if (current == '\\' && in_double_quotes) {
-            i++; // Skip the backslash itself
+            i++; // Move to the next character after the backslash
             if (str[i] == '\0') break; // If backslash is the last character, break
-            // Handle escape sequences
+
+            // Handle valid escape sequences inside double quotes
             if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
-                buffer[buffer_index++] = str[i]; // Correctly append the escape sequence
+                buffer[buffer_index++] = str[i]; // Append the escaped character
             } else {
-                // If the escape sequence is not valid, just append the backslash
+                // If it's an invalid escape sequence, just append the backslash and the next character
                 buffer[buffer_index++] = '\\';
                 buffer[buffer_index++] = str[i];
-            }
-            continue;  // Skip the next character
-        } else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
-            if (buffer_index > 0) {
-                buffer[buffer_index] = '\0';
-                strcat(result, buffer);
-                strcat(result, " ");
-                buffer_index = 0;
             }
             continue;
         }
 
-        buffer[buffer_index++] = current; // Append the current character to the buffer
+        // If we're inside quotes, just add characters to the buffer
+        buffer[buffer_index++] = current;
     }
 
     if (buffer_index > 0) {
