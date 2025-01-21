@@ -121,22 +121,24 @@ char* process_echo(char *str) {
                 continue;
             }
         } else if (current == '"') {
+			
             if (!in_single_quotes) {
                 in_double_quotes = !in_double_quotes;
                 continue;
             }
         } else if (current == '\\' && in_double_quotes) {
-            // Handle escape sequences in double quotes
-            i++;
-            if (str[i] == '\0') break; // If backslash is the last character, break
-            if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n' || str[i] == '\"') {
-                buffer[buffer_index++] = str[i];
-            } else {
-                buffer[buffer_index++] = '\\'; // Keep the backslash as literal
-                buffer[buffer_index++] = str[i];
-            }
-            continue;
-        } else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
+			
+   			i++;
+
+    		if (str[i] == '\0') break; // If backslash is the last character, break
+
+    		// Only append the escape sequence if it's followed by a valid escape character
+			if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
+        		buffer[buffer_index++] = str[i];
+   			}
+    		continue;  // Skip the next character since it's part of the escape sequence
+
+		} else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
                 strcat(result, buffer);
