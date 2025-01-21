@@ -103,9 +103,10 @@ char* get_path(char *cmd){
 // }
 
 
+// Function to process echo with escape sequences inside double quotes
 char* process_echo(char *str) {
-    char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
-    result[0] = '\0'; // Initialize result string
+    char *result = (char *)malloc(1000 * sizeof(char)); 
+    result[0] = '\0'; 
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
