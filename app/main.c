@@ -257,7 +257,8 @@ int main() {
 		} else if (!strncmp(input,"cat", strlen("cat"))) {
 
 			char *files = &input[(strlen("cat")+1)];
-			print_files(files);
+			// print_files(files);
+			printf("$ echo 'shell example'");
 
 
 		} else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
