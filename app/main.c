@@ -170,7 +170,7 @@ void handle_cat(char *str) {
     if (start && end && start != end) {
         // Skip the first quote and process the file path
         start++;
-        char file_path[256];  // Assuming file path won't exceed 256 chars
+        char file_path[300];  // array to store file path
         int i = 0;
         while (start < end) {
             file_path[i++] = *start;
@@ -179,7 +179,7 @@ void handle_cat(char *str) {
         file_path[i] = '\0';
 
         // Now handle the file content
-        print_file_content(file_path);
+        cat_file(file_path);
     }
 }
 
