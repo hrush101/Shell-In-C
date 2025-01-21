@@ -108,50 +108,43 @@ char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate a large enough buffer
     result[0] = '\0'; // Initialize result string
 
-    int in_single_quotes = 0;
-    int in_double_quotes = 0;
-    int i = 0;
+    int in_single_quotes = 0;  // Flag to track single quotes
+    int in_double_quotes = 0;  // Flag to track double quotes
+    int i = 0;  // Input string index
+    int j = 0;  // Output result index
 
     while (str[i] != '\0') {
         char current = str[i];
 
-        // Handle single quotes: toggle only if not inside double quotes
         if (current == '\'' && !in_double_quotes) {
+            // Toggle single quotes mode
             in_single_quotes = !in_single_quotes;
-            strncat(result, &str[i], 1); // Keep the single quote in the result
-            i++;
-            continue;
-        } 
-        // Handle double quotes: toggle only if not inside single quotes
-        else if (current == '"' && !in_single_quotes) {
+            result[j++] = current; // Retain the single quote
+        } else if (current == '"' && !in_single_quotes) {
+            // Toggle double quotes mode
             in_double_quotes = !in_double_quotes;
-            strncat(result, &str[i], 1); // Keep the double quote in the result
-            i++;
-            continue;
-        } 
-        // Handle escape sequences inside double quotes only
-        else if (current == '\\' && in_double_quotes && in_single_quotes) {
-            i++; // Move to the next character after the backslash
-            if (str[i] == '\0') break; // If backslash is the last character, break
-
-            // Handle valid escape sequences inside double quotes
-            if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
-                strncat(result, &str[i], 1); // Append the escaped character
+            result[j++] = current; // Retain the double quote
+        } else if (current == '\\' && in_double_quotes && !in_single_quotes) {
+            // Handle escape sequences within double quotes
+            i++; // Move to next character after backslash
+            if (str[i] == '\0') break; // Avoid overflow if backslash is the last character
+            if (str[i] == 'n') {
+                result[j++] = '\n';
             } else {
-                // If it's an invalid escape sequence, append both the backslash and next character
-                strncat(result, &str[i - 1], 2); // Append both backslash and next character
+                result[j++] = str[i]; // Append the escaped character
             }
-            i++;
-            continue;
+        } else {
+            // Append regular characters
+            result[j++] = current;
         }
-    
-        // If it's just a regular character, add it to the result
-        strncat(result, &str[i], 1);
+
         i++;
     }
 
+    result[j] = '\0'; // Null-terminate the string
     return result;
 }
+
 
 
 
