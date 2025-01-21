@@ -135,7 +135,7 @@ char* process_echo(char *str) {
             if (str[i] == '\0') break; // If backslash is the last character, break
 
             // Handle valid escape sequences inside double quotes
-            if (str[i] == '\\' && str[i+1] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
+            if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
                 strncat(result, &str[i], 1); // Append the escaped character
             } else {
                 // If it's an invalid escape sequence, append both the backslash and next character
