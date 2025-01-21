@@ -162,26 +162,31 @@ void cat_file(char *files){    // print file content
 
 }
 
+// Function to handle the `cat` command with multiple quoted file paths
 void handle_cat(char *str) {
-
-    char *start = strchr(str, '\'');
-    char *end = strrchr(str, '\'');
-
-    if (start && end && start != end) {
-        // Skip the first quote and process the file path
-        start++;
-        char file_path[300];  // array to store file path
-        int i = 0;
-        while (start < end) {
-            file_path[i++] = *start;
-            start++;
+    char *start = strchr(str, '\'');  // Find the first single quote
+    while (start) {
+        char *end = strchr(start + 1, '\'');  // Find the next single quote
+        if (!end) {
+            fprintf(stderr, "Error: Unmatched single quote in input.\n");
+            return;
         }
-        file_path[i] = '\0';
 
-		char *file=&file_path;
+        // Extract the file path between the quotes
+        char file_path[300];  // Array to store file path
+        int length = end - start - 1;  // Length of the file path
+        if (length >= sizeof(file_path)) {
+            fprintf(stderr, "Error: File path too long.\n");
+            return;
+        }
+        strncpy(file_path, start + 1, length);
+        file_path[length] = '\0';  // Null-terminate the file path
 
-        // Now handle the file content
-        cat_file(file);
+        // Print the content of the file
+        cat_file(file_path);
+
+        // Look for the next quoted file path
+        start = strchr(end + 1, '\'');
     }
 }
 
