@@ -178,8 +178,10 @@ void handle_cat(char *str) {
         }
         file_path[i] = '\0';
 
+		char *file=&file_path;
+
         // Now handle the file content
-        cat_file(file_path);
+        cat_file(file);
     }
 }
 
