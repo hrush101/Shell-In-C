@@ -105,25 +105,29 @@ char* get_path(char *cmd){
 
 // Function to process echo with escape sequences inside double quotes
 char* process_echo(char *str) {
-    char *result = (char *)malloc(1000 * sizeof(char)); 
-    result[0] = '\0'; 
+	
+    char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
+    result[0] = '\0'; // Initialize result string
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
+    int i = 0;
 
-    for (int i = 0; str[i] != '\0'; i++) {
+    while (str[i] != '\0') {
         char current = str[i];
 
         // Handle single quotes: toggle only if not inside double quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
             strncat(result, &str[i], 1); // Add single quote to result
+            i++;
             continue;
         } 
         // Handle double quotes: toggle only if not inside single quotes
         else if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
             strncat(result, &str[i], 1); // Add double quote to result
+            i++;
             continue;
         } 
         // Handle escape sequences inside double quotes only
@@ -138,11 +142,13 @@ char* process_echo(char *str) {
                 // If it's an invalid escape sequence, append both the backslash and next character
                 strncat(result, &str[i - 1], 2); // Append both backslash and next character
             }
+            i++;
             continue;
         }
 
         // Add the current character to result if it's outside any quotes or escape sequences
         strncat(result, &str[i], 1);
+        i++;
     }
 
     return result;
