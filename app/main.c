@@ -113,19 +113,19 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        // Toggle single quote status if we're not inside double quotes
+        // Handle single quotes: only toggle if not inside double quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
-            strncat(result, &str[i], 1); // Preserve the single quote
+            strncat(result, &str[i], 1); // Add single quote to result
             continue;
         } 
-        // Toggle double quote status if we're not inside single quotes
+        // Handle double quotes: only toggle if not inside single quotes
         else if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
-            strncat(result, &str[i], 1); // Preserve the double quote
+            strncat(result, &str[i], 1); // Add double quote to result
             continue;
         } 
-        // Handle escape sequences only inside double quotes
+        // Handle escape sequences inside double quotes only
         else if (current == '\\' && in_double_quotes) {
             i++; // Move to the next character after the backslash
             if (str[i] == '\0') break; // If backslash is the last character, break
@@ -134,13 +134,13 @@ char* process_echo(char *str) {
             if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
                 strncat(result, &str[i], 1); // Append the escaped character
             } else {
-                // If it's an invalid escape sequence, just append the backslash and the next character
-                strncat(result, &str[i - 1], 2); // Append both backslash and the next character
+                // If it's an invalid escape sequence, append both the backslash and the next character
+                strncat(result, &str[i - 1], 2); // Append both backslash and next character
             }
             continue;
         }
 
-        // If we're inside quotes, just add characters to the result
+        // Add the current character to result if it's outside any quotes or escape sequences
         strncat(result, &str[i], 1);
     }
 
