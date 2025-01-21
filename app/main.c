@@ -116,27 +116,34 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        if (current == '\'') {
-            if (!in_double_quotes) {
-                in_single_quotes = !in_single_quotes;
-                continue;
+        // Check for single quotes
+        if (current == '\'' && !in_double_quotes) {
+            in_single_quotes = !in_single_quotes;
+            continue;
+        }
+        // Check for double quotes
+        else if (current == '"' && !in_single_quotes) {
+            in_double_quotes = !in_double_quotes;
+            continue;
+        }
+
+        // Handle backslashes in double quotes
+        if (current == '\\' && in_double_quotes) {
+            i++; // Skip the backslash
+            if (str[i] == '\0') break; // End if it's the last character
+
+            // Process valid escape sequences
+            if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
+                buffer[buffer_index++] = str[i]; // Append escaped characters
+            } else {
+                buffer[buffer_index++] = '\\'; // Keep the backslash
+                buffer[buffer_index++] = str[i]; // Append the next character
             }
-        } else if (current == '"') {
-            if (!in_single_quotes) {
-                in_double_quotes = !in_double_quotes;
-                continue;
-            }
-        } else if (current == '\\' && in_double_quotes) {
-			i++;
-			if (str[i] == '\0') break; // If backslash is the last character, break
-			if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
-				buffer[buffer_index++] = str[i]; // Append the escaped character
-			} else {
-				buffer[buffer_index++] = '\\'; // Keep the backslash literal
-				buffer[buffer_index++] = str[i];
-			}
-			continue;
-		} else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
+            continue;
+        }
+
+        // Handle spaces outside of quotes (to separate words)
+        if (isspace(current) && !in_single_quotes && !in_double_quotes) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
                 strcat(result, buffer);
@@ -146,9 +153,11 @@ char* process_echo(char *str) {
             continue;
         }
 
+        // Append normal characters to buffer
         buffer[buffer_index++] = current;
     }
 
+    // Add the final part if the buffer contains any characters
     if (buffer_index > 0) {
         buffer[buffer_index] = '\0';
         strcat(result, buffer);
