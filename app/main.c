@@ -164,7 +164,6 @@ char* process_echo(char *str) {
 }
 
 
-
 void cat_file(char *files){    // print file content
 
 	FILE *f = fopen(files,"r"); // open file of given path
