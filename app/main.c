@@ -104,9 +104,10 @@ char* get_path(char *cmd){
 
 char* process_echo(char *str) {
     char *result = (char *) malloc(1000 * sizeof(char)); // Allocate large buffer
-    
     result[0] = '\0'; // Initialize result string
-    int in_quotes = 0;
+
+    int in_single_quotes = 0;
+    int in_double_quotes = 0;
     char buffer[1000];
     int buffer_index = 0;
 
@@ -114,31 +115,72 @@ char* process_echo(char *str) {
         char current = str[i];
 
         if (current == '\'') {
-            if (in_quotes) {
-                // Close the quoted section
-                buffer[buffer_index] = '\0';
-                strcat(result, buffer); // Append quoted content as-is
-                buffer_index = 0;
+            if (!in_double_quotes) {
+                in_single_quotes = !in_single_quotes; // Toggle single quote state
+                if (!in_single_quotes) {
+                    buffer[buffer_index] = '\0';
+                    strcat(result, buffer); // Append quoted content as-is
+                    buffer_index = 0;
+                }
+            } else {
+                buffer[buffer_index++] = current; // Treat as literal inside double quotes
             }
-            in_quotes = !in_quotes; // Toggle quote state
-        } else if (in_quotes) {
-            // Collect characters inside quotes
-            buffer[buffer_index++] = current;
+        } else if (current == '"') {
+            if (!in_single_quotes) {
+                in_double_quotes = !in_double_quotes; // Toggle double quote state
+                if (!in_double_quotes) {
+                    buffer[buffer_index] = '\0';
+                    strcat(result, buffer); // Append quoted content as-is
+                    buffer_index = 0;
+                }
+            } else {
+                buffer[buffer_index++] = current; // Treat as literal inside single quotes
+            }
+        } else if (current == '\\' && in_double_quotes) {
+            // Handle escaped characters inside double quotes
+            i++; // Skip the next character if it's escaped
+            if (str[i] != '\0') {
+                buffer[buffer_index++] = str[i];
+            }
+        } else if (current == '$' && in_double_quotes) {
+            // Expand environment variables in double quotes
+            char var[100];
+            int var_index = 0;
+
+            i++; // Move to the next character
+            while (isalnum(str[i]) || str[i] == '_') {
+                var[var_index++] = str[i++];
+            }
+            var[var_index] = '\0';
+            i--; // Adjust back for the next loop iteration
+
+            char *value = getenv(var);
+            if (value) {
+                strcat(result, value);
+            }
         } else {
-            if (!isspace(current) || (strlen(result) > 0 && result[strlen(result) - 1] != ' ')) {
-                // Append unquoted characters with proper spacing
-                strncat(result, &current, 1);
+            // Regular characters
+            if (in_single_quotes || in_double_quotes || !isspace(current)) {
+                buffer[buffer_index++] = current;
+            } else if (strlen(result) > 0 && result[strlen(result) - 1] != ' ') {
+                strcat(result, " ");
             }
         }
     }
 
-    // Add trailing space cleanup
+    if (buffer_index > 0) {
+        buffer[buffer_index] = '\0';
+        strcat(result, buffer);
+    }
+
+    // Remove trailing space
     if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
         result[strlen(result) - 1] = '\0';
     }
 
     return result;
 }
+
 
 void cat_file(char *files){    // print file content
 
@@ -164,29 +206,57 @@ void cat_file(char *files){    // print file content
 
 // Function to handle the `cat` command with multiple quoted file paths
 void handle_cat(char *str) {
-    char *start = strchr(str, '\'');  // Find the first single quote
-    while (start) {
-        char *end = strchr(start + 1, '\'');  // Find the next single quote
-        if (!end) {
-            fprintf(stderr, "Error: Unmatched single quote in input.\n");
-            return;
+
+    char *start = str;
+
+    while (*start) {
+        // Detect the type of quotes
+        char quote_type = '\0';
+		
+        if (*start == '\'') {
+            quote_type = '\'';
+        } else if (*start == '"') {
+            quote_type = '"';
         }
 
-        // Extract the file path between the quotes
-        char file_path[300];  // Array to store file path
-        int length = end - start - 1;  // Length of the file path
-        if (length >= sizeof(file_path)) {
-            fprintf(stderr, "Error: File path too long.\n");
-            return;
+        if (quote_type) {
+            char *end = strchr(start + 1, quote_type);
+            if (!end) {
+                fprintf(stderr, "Error: Unmatched %c in input.\n", quote_type);
+                return;
+            }
+
+            // Extract the file path between the quotes
+            char file_path[300];
+            int length = end - start - 1; // Length of the file path
+            if (length >= sizeof(file_path)) {
+                fprintf(stderr, "Error: File path too long.\n");
+                return;
+            }
+
+            strncpy(file_path, start + 1, length);
+            file_path[length] = '\0';
+
+            if (quote_type == '"') {
+                // Process escape sequences in double-quoted file paths
+                char processed_path[300];
+                int j = 0;
+                for (int i = 0; file_path[i] != '\0'; i++) {
+                    if (file_path[i] == '\\' && (file_path[i + 1] == '\\' || file_path[i + 1] == '"' || file_path[i + 1] == '$')) {
+                        i++;
+                    }
+                    processed_path[j++] = file_path[i];
+                }
+                processed_path[j] = '\0';
+                cat_file(processed_path);
+            } else {
+                cat_file(file_path); // Handle single-quoted file paths
+            }
+
+            start = end + 1;
+        } else {
+            start++;
         }
-        strncpy(file_path, start + 1, length);
-        file_path[length] = '\0';  // Null-terminate the file path
-
-        // Print the content of the file
-        cat_file(file_path);
-
-        // Look for the next quoted file path
-        start = strchr(end + 1, '\'');
     }
 }
 
