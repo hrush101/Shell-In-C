@@ -121,24 +121,23 @@ char* process_echo(char *str) {
                 continue;
             }
         } else if (current == '"') {
-			
             if (!in_single_quotes) {
                 in_double_quotes = !in_double_quotes;
                 continue;
             }
         } else if (current == '\\' && in_double_quotes) {
-			
-   			i++;
-
-    		if (str[i] == '\0') break; // If backslash is the last character, break
-
-    		// Only append the escape sequence if it's followed by a valid escape character
-			if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
-        		buffer[buffer_index++] = str[i];
-   			}
-    		continue;  // Skip the next character since it's part of the escape sequence
-
-		} else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
+            i++; // Skip the backslash itself
+            if (str[i] == '\0') break; // If backslash is the last character, break
+            // Handle escape sequences
+            if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
+                buffer[buffer_index++] = str[i]; // Correctly append the escape sequence
+            } else {
+                // If the escape sequence is not valid, just append the backslash
+                buffer[buffer_index++] = '\\';
+                buffer[buffer_index++] = str[i];
+            }
+            continue;  // Skip the next character
+        } else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
                 strcat(result, buffer);
@@ -148,7 +147,7 @@ char* process_echo(char *str) {
             continue;
         }
 
-        buffer[buffer_index++] = current;
+        buffer[buffer_index++] = current; // Append the current character to the buffer
     }
 
     if (buffer_index > 0) {
@@ -163,6 +162,7 @@ char* process_echo(char *str) {
 
     return result;
 }
+
 
 
 
