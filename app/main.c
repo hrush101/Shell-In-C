@@ -105,8 +105,7 @@ char* get_path(char *cmd){
 
 // Function to process echo with escape sequences inside double quotes
 char* process_echo(char *str) {
-	
-    char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
+    char *result = (char *)malloc(1000 * sizeof(char)); // Allocate a large enough buffer
     result[0] = '\0'; // Initialize result string
 
     int in_single_quotes = 0;
@@ -119,14 +118,14 @@ char* process_echo(char *str) {
         // Handle single quotes: toggle only if not inside double quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
-            strncat(result, &str[i], 1); // Add single quote to result
+            strncat(result, &str[i], 1); // Keep the single quote in the result
             i++;
             continue;
         } 
         // Handle double quotes: toggle only if not inside single quotes
         else if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
-            strncat(result, &str[i], 1); // Add double quote to result
+            strncat(result, &str[i], 1); // Keep the double quote in the result
             i++;
             continue;
         } 
@@ -146,7 +145,7 @@ char* process_echo(char *str) {
             continue;
         }
 
-        // Add the current character to result if it's outside any quotes or escape sequences
+        // If it's just a regular character, add it to the result
         strncat(result, &str[i], 1);
         i++;
     }
