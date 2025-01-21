@@ -5,7 +5,7 @@
 #include <sys/types.h> // includes the definition of various data types used in system calls, such as pid_t
 #include <sys/wait.h> // for wait() system call
 #include <limits.h> // For PATH_MAX is a system-defined constant that specifies the maximum length, in bytes, of a fully qualified path name, including the null terminator (\0)
-#include <ctype.h> // For 
+#include <ctype.h> // For manipulation of charecter
 
 
 // function to return fully qualified path
@@ -126,7 +126,7 @@ char* process_echo(char *str) {
                 in_double_quotes = !in_double_quotes;
                 continue;
             }
-        } else if (current == '\\' && (!in_double_quotes) && (!in_single_quotes) ) {
+        } else if ( current == '\\' && (!in_double_quotes) && (!in_single_quotes) ) {
             i++;
             if (str[i] != '\0') {
                 buffer[buffer_index++] = str[i];
