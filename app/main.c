@@ -162,18 +162,25 @@ void cat_file(char *files){    // print file content
 
 }
 
-void print_files(char *files){
+void handle_cat(char *str) {
 
-    char *file_path = strtok(files,"'"); // split path using ' as cat '/tmp/baz file1' '/tmp/baz file2'
-   
-    while (file_path != NULL) {
+    char *start = strchr(str, '\'');
+    char *end = strrchr(str, '\'');
 
-		cat_file(file_path);		
+    if (start && end && start != end) {
+        // Skip the first quote and process the file path
+        start++;
+        char file_path[256];  // Assuming file path won't exceed 256 chars
+        int i = 0;
+        while (start < end) {
+            file_path[i++] = *start;
+            start++;
+        }
+        file_path[i] = '\0';
 
+        // Now handle the file content
+        print_file_content(file_path);
     }
-
-	file_path=strtok(NULL,"'");
-
 }
 
 void pwd(){
@@ -257,9 +264,8 @@ int main() {
 		} else if (!strncmp(input,"cat", strlen("cat"))) {
 
 			char *files = &input[(strlen("cat")+1)];
-			// print_files(files);
-			printf("$ echo 'shell example'");
-			
+			handle_cat(files);
+
 
 		} else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
             char *path = &input[(strlen("cd")+1)];
