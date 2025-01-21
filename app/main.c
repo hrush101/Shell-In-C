@@ -109,7 +109,6 @@ char* process_echo(char *str) {
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
-    int space_seen = 0;
     char buffer[1000];
     int buffer_index = 0;
 
@@ -126,25 +125,25 @@ char* process_echo(char *str) {
                 in_double_quotes = !in_double_quotes;
                 continue;
             }
-        } else if ( current == '\\' && (!in_double_quotes) && (!in_single_quotes) ) {
+        } else if (current == '\\' && in_double_quotes) {
+            // Handle escape sequences in double quotes
             i++;
-            if (str[i] != '\0') {
+            if (str[i] == '\0') break; // If backslash is the last character, break
+            if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
+                buffer[buffer_index++] = str[i];
+            } else {
+                buffer[buffer_index++] = '\\'; // Keep the backslash as literal
                 buffer[buffer_index++] = str[i];
             }
             continue;
         } else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
-            if (!space_seen) {
-                if (buffer_index > 0) {
-                    buffer[buffer_index] = '\0';
-                    strcat(result, buffer);
-                    strcat(result, " ");
-                    buffer_index = 0;
-                }
-                space_seen = 1;
+            if (buffer_index > 0) {
+                buffer[buffer_index] = '\0';
+                strcat(result, buffer);
+                strcat(result, " ");
+                buffer_index = 0;
             }
             continue;
-        } else {
-            space_seen = 0;
         }
 
         buffer[buffer_index++] = current;
@@ -162,6 +161,7 @@ char* process_echo(char *str) {
 
     return result;
 }
+
 
 
 void cat_file(char *files){    // print file content
