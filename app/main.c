@@ -127,17 +127,12 @@ char* process_echo(char *str) {
                 continue;
             }
         } else if (current == '\\' && in_double_quotes) {
-            i++;
-            if (str[i] == '\0') { break; } // If backslash is the last character, break
-            if (str[i] == '"' || str[i] == '\\' || str[i] == '$' || str[i] == '\n' || str[i] == '\0') {
-                buffer[buffer_index++] = str[i]; // Append the escaped character
-            } 
-			else {
-                buffer[buffer_index++] = '\\'; // Keep the backslash literal
-                buffer[buffer_index++] = str[i];
-            }
-            continue;
-        } else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
+			i++;
+			if (str[i] == '\0') { break; }
+			buffer[buffer_index++] = '\\'; // Appends the backslash literally
+			buffer[buffer_index++] = str[i];
+			continue;
+		} else if (isspace(current) && !in_single_quotes && !in_double_quotes) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
                 strcat(result, buffer);
