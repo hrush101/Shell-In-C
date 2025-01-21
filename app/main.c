@@ -108,10 +108,16 @@ char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate a large enough buffer
     result[0] = '\0'; // Initialize result string
 
-    int in_single_quotes = 0;  // Flag to track single quotes
-    int in_double_quotes = 0;  // Flag to track double quotes
+    int in_single_quotes = 0;  // Flag for single quotes
+    int in_double_quotes = 0;  // Flag for double quotes
     int i = 0;  // Input string index
     int j = 0;  // Output result index
+
+    // Skip the outer double quotes if present
+    if (str[0] == '"' && str[strlen(str) - 1] == '"') {
+        i = 1; // Start after the first quote
+        str[strlen(str) - 1] = '\0'; // Remove the trailing quote
+    }
 
     while (str[i] != '\0') {
         char current = str[i];
@@ -123,10 +129,10 @@ char* process_echo(char *str) {
         } else if (current == '"' && !in_single_quotes) {
             // Toggle double quotes mode
             in_double_quotes = !in_double_quotes;
-            result[j++] = current; // Retain the double quote
+            // Do not add the double quote to the result
         } else if (current == '\\' && in_double_quotes && !in_single_quotes) {
             // Handle escape sequences within double quotes
-            i++; // Move to next character after backslash
+            i++; // Move to the next character after backslash
             if (str[i] == '\0') break; // Avoid overflow if backslash is the last character
             if (str[i] == 'n') {
                 result[j++] = '\n';
@@ -144,7 +150,6 @@ char* process_echo(char *str) {
     result[j] = '\0'; // Null-terminate the string
     return result;
 }
-
 
 
 
