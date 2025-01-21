@@ -130,7 +130,7 @@ char* process_echo(char *str) {
             i++;
             if (str[i] == '\0') { break; } // If backslash is the last character, break
             if (str[i+1] == '"' || str[i+1] == '\\' || str[i+1] == '$' || str[i+1] == '\n') {
-                buffer[buffer_index++] = str[i]; // Append the escaped character
+                buffer[buffer_index++] = str[i+1]; // Append the escaped character
             } 
 			else {
                 buffer[buffer_index++] = '\\'; // Keep the backslash literal
