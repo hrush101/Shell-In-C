@@ -102,8 +102,9 @@ char* get_path(char *cmd){
 
 // }
 
+
 char* process_echo(char *str) {
-    char *result = (char *) malloc(1000 * sizeof(char)); // Allocate large buffer
+    char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
 
     int in_single_quotes = 0;
@@ -120,6 +121,7 @@ char* process_echo(char *str) {
                 if (!in_single_quotes) {
                     buffer[buffer_index] = '\0';
                     strcat(result, buffer); // Append quoted content as-is
+                    strcat(result, " "); // Add space after the quoted content
                     buffer_index = 0;
                 }
             } else {
@@ -131,6 +133,7 @@ char* process_echo(char *str) {
                 if (!in_double_quotes) {
                     buffer[buffer_index] = '\0';
                     strcat(result, buffer); // Append quoted content as-is
+                    strcat(result, " "); // Add space after the quoted content
                     buffer_index = 0;
                 }
             } else {
@@ -162,8 +165,11 @@ char* process_echo(char *str) {
             // Regular characters
             if (in_single_quotes || in_double_quotes || !isspace(current)) {
                 buffer[buffer_index++] = current;
-            } else if (strlen(result) > 0 && result[strlen(result) - 1] != ' ') {
+            } else if (buffer_index > 0) {
+                buffer[buffer_index] = '\0';
+                strcat(result, buffer);
                 strcat(result, " ");
+                buffer_index = 0;
             }
         }
     }
