@@ -126,7 +126,7 @@ char* process_echo(char *str) {
                 in_double_quotes = !in_double_quotes;
                 continue;
             }
-        } else if (current == '\\' && in_double_quotes) {
+        } else if (current == '\\' && in_double_quotes && in_single_quotes ) {
             i++;
             if (str[i] != '\0') {
                 buffer[buffer_index++] = str[i];
