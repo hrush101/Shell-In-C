@@ -104,55 +104,44 @@ char* get_path(char *cmd){
 
 
 char* process_echo(char *str) {
-	
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
-    char buffer[1000];
-    int buffer_index = 0;
 
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        if (current == '\'') {
-            if (!in_double_quotes) {
-                in_single_quotes = !in_single_quotes;
-            }
+        // Toggle single quote status if we're not inside double quotes
+        if (current == '\'' && !in_double_quotes) {
+            in_single_quotes = !in_single_quotes;
+            strncat(result, &str[i], 1); // Preserve the single quote
             continue;
-        } else if (current == '"') {
-            if (!in_single_quotes) {
-                in_double_quotes = !in_double_quotes;
-            }
+        } 
+        // Toggle double quote status if we're not inside single quotes
+        else if (current == '"' && !in_single_quotes) {
+            in_double_quotes = !in_double_quotes;
+            strncat(result, &str[i], 1); // Preserve the double quote
             continue;
-        } else if (current == '\\' && in_double_quotes) {
+        } 
+        // Handle escape sequences only inside double quotes
+        else if (current == '\\' && in_double_quotes) {
             i++; // Move to the next character after the backslash
             if (str[i] == '\0') break; // If backslash is the last character, break
 
             // Handle valid escape sequences inside double quotes
             if (str[i] == '\\' || str[i] == '$' || str[i] == '"' || str[i] == '\n') {
-                buffer[buffer_index++] = str[i]; // Append the escaped character
+                strncat(result, &str[i], 1); // Append the escaped character
             } else {
                 // If it's an invalid escape sequence, just append the backslash and the next character
-                buffer[buffer_index++] = '\\';
-                buffer[buffer_index++] = str[i];
+                strncat(result, &str[i - 1], 2); // Append both backslash and the next character
             }
             continue;
         }
 
-        // If we're inside quotes, just add characters to the buffer
-        buffer[buffer_index++] = current;
-    }
-
-    if (buffer_index > 0) {
-        buffer[buffer_index] = '\0';
-        strcat(result, buffer);
-    }
-
-    // Remove trailing space
-    if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
-        result[strlen(result) - 1] = '\0';
+        // If we're inside quotes, just add characters to the result
+        strncat(result, &str[i], 1);
     }
 
     return result;
