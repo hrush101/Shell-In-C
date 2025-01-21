@@ -129,7 +129,7 @@ char* process_echo(char *str) {
         } else if (current == '\\' && in_double_quotes) {
             i++;
             if (str[i] == '\0') { break; } // If backslash is the last character, break
-            if (str[i] == '"' || str[i] == '\\' || str[i] == '$' || str[i] == '\n') {
+            if (str[i+1] == '"' || str[i+1] == '\\' || str[i+1] == '$' || str[i+1] == '\n') {
                 buffer[buffer_index++] = str[i]; // Append the escaped character
             } 
 			else {
