@@ -130,32 +130,30 @@ char* process_echo(char *str) {
         // Handle backslashes in double quotes
         if (current == '\\') {
 			if (in_single_quotes) {
-				// Backslashes inside single quotes are literal
+				// Backslashes inside single quotes are treated literally
 				buffer[buffer_index++] = current;
 			} else if (in_double_quotes) {
 				// Handle escape sequences in double quotes
 				i++; // Skip the backslash
 				if (str[i] != '\0') {
 					if (str[i] == '"') {
-						// Properly handle escaped quotes
-						buffer[buffer_index++] = '"';
+						buffer[buffer_index++] = '"'; // Handle escaped quotes
 					} else if (str[i] == '\\' || str[i] == '$') {
-						buffer[buffer_index++] = str[i]; // Append valid escape sequence
+						buffer[buffer_index++] = str[i]; // Append valid escape sequences
 					} else {
-						buffer[buffer_index++] = '\\'; // Keep backslash
-						buffer[buffer_index++] = str[i]; // Append next character
+						buffer[buffer_index++] = '\\'; // Keep the backslash
+						buffer[buffer_index++] = str[i]; // Append the next character
 					}
 				} else {
-					// If the backslash is at the end, treat it as literal
-					buffer[buffer_index++] = '\\';
+					// If a backslash is the last character, ignore it
+					continue;
 				}
 			} else {
-				// Outside quotes, treat backslash normally
+				// Outside of quotes, treat backslash normally
 				buffer[buffer_index++] = current;
 			}
 			continue;
 		}
-
 
 
         // Handle spaces outside of quotes (to separate words)
