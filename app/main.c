@@ -129,7 +129,7 @@ char* process_echo(char *str) {
 
         // Handle backslashes in double quotes
         // Handle backslashes
-	if (current == '\\') {
+	if (current == '\\' || current == '\"') {
     	if (in_single_quotes) {
         // Backslashes inside single quotes are literal
         	buffer[buffer_index++] = current;
