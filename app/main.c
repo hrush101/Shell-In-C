@@ -128,24 +128,31 @@ char* process_echo(char *str) {
         }
 
         // Handle backslashes in double quotes
-        if ((current == '\\') || (current == '\"' && in_double_quotes)) {
-
-            i++; // Skip the backslash
-            
-            // If the next character exists, process it
-            if (str[i] != '\0') {
-                if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
-                    buffer[buffer_index++] = str[i]; // Append escaped characters
-                } else {
-                    buffer[buffer_index++] = '\\'; // Keep the backslash
-                    buffer[buffer_index++] = str[i]; // Append the next character
-                }
+        // Handle backslashes
+	if (current == '\\') {
+    	if (in_single_quotes) {
+        // Backslashes inside single quotes are literal
+        	buffer[buffer_index++] = current;
+    	} else if (in_double_quotes) {
+        // Handle escape sequences in double quotes
+        	i++; // Skip the backslash
+        	if (str[i] != '\0') {
+            if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
+                buffer[buffer_index++] = str[i]; // Escaped character
             } else {
-                // If no character exists, keep the backslash
-                buffer[buffer_index++] = '\\';
+                buffer[buffer_index++] = '\\'; // Keep backslash
+                buffer[buffer_index++] = str[i]; // Append next character
             }
-            continue;
+        } else {
+            buffer[buffer_index++] = '\\'; // Last character
         }
+    } else {
+        // Outside quotes, treat backslash normally
+        buffer[buffer_index++] = current;
+    }
+    continue;
+}
+
 
         // Handle spaces outside of quotes (to separate words)
         if (isspace(current) && !in_single_quotes && !in_double_quotes) {
