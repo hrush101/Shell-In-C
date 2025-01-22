@@ -116,51 +116,42 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        // Check for single quotes
+        // Toggle single quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
             continue;
         }
-        // Check for double quotes
-        else if (current == '"' && !in_single_quotes) {
+        // Toggle double quotes
+        if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
             continue;
         }
 
-        // Handle backslashes in double quotes
+        // Handle backslashes
         if (current == '\\') {
+            if (in_single_quotes) {
+                // Literal backslashes in single quotes
+                buffer[buffer_index++] = current;
+            } else if (in_double_quotes) {
+                // Handle escape sequences in double quotes
+                if (str[i + 1] != '\0') {
+                    i++; // Skip the backslash
+                    if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
+                        buffer[buffer_index++] = str[i]; // Valid escape sequences
+                    } else {
+                        buffer[buffer_index++] = '\\'; // Keep backslash
+                        buffer[buffer_index++] = str[i]; // Append the next character
+                    }
+                }
+                // If backslash is the last character in double quotes, ignore it
+            } else {
+                // Outside of quotes, keep the backslash
+                buffer[buffer_index++] = current;
+            }
+            continue;
+        }
 
-			if (in_single_quotes) {
-
-				// Backslashes inside single quotes are treated literally
-				buffer[buffer_index++] = current;
-
-			} else if (in_double_quotes) {
-				// Handle escape sequences in double quotes
-				++i; // Skip the backslash
-				if (str[i] != '\0') {
-					if (str[i] == '"') {
-						buffer[buffer_index++] = '"'; // Handle escaped quotes
-					} else if (str[i] == '\\' || str[i] == '$') {
-						buffer[buffer_index++] = str[i]; // Append valid escape sequences
-					} else {
-						buffer[buffer_index++] = '\\'; // Keep the backslash
-						buffer[buffer_index++] = str[i]; // Append the next character
-					}
-				} else {
-
-					buffer[--buffer_index] = '"';
-
-				}
-			} else {
-				// Outside of quotes, treat backslash normally
-				buffer[buffer_index++] = current;
-			}
-			continue;
-		}
-
-
-        // Handle spaces outside of quotes (to separate words)
+        // Handle spaces outside of quotes
         if (isspace(current) && !in_single_quotes && !in_double_quotes) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
@@ -171,11 +162,11 @@ char* process_echo(char *str) {
             continue;
         }
 
-        // Append normal characters to buffer
+        // Append regular characters to the buffer
         buffer[buffer_index++] = current;
     }
 
-    // Add the final part if the buffer contains any characters
+    // Append remaining buffer to result
     if (buffer_index > 0) {
         buffer[buffer_index] = '\0';
         strcat(result, buffer);
@@ -185,7 +176,7 @@ char* process_echo(char *str) {
     if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
         result[strlen(result) - 1] = '\0';
     }
- 
+
     return result;
 }
 
