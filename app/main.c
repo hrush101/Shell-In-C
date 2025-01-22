@@ -137,7 +137,7 @@ char* process_echo(char *str) {
         // Handle escape sequences in double quotes
         	i++; // Skip the backslash
         	if (str[i] != '\0') {
-            if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
+            if (str[i] == '\\' || str[i] == '$') {
                 buffer[buffer_index++] = str[i]; // Escaped character
             } else {
                 buffer[buffer_index++] = '\\'; // Keep backslash
