@@ -133,7 +133,7 @@ char* process_echo(char *str) {
             
             // If the next character exists, process it
             if (str[i] != '\0') {
-                if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
+                if (str[i] == '"' || str[i] == '\\' || str[i] == '$' || str[i+1] == '"') {
                     buffer[buffer_index++] = str[i]; // Append escaped characters
                 } else {
                     buffer[buffer_index++] = '\\'; // Keep the backslash
