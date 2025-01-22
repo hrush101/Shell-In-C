@@ -148,7 +148,7 @@ char* process_echo(char *str) {
 						buffer[buffer_index++] = str[i]; // Append the next character
 					}
 				} else {
-					// If a backslash is the last character, ignore it
+					buffer[buffer_index++] = str[i];
 					continue;
 				}
 			} else {
