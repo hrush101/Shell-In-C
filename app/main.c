@@ -130,10 +130,10 @@ char* process_echo(char *str) {
         // Handle backslashes in double quotes
         if (current == '\\' && in_double_quotes) {
             i++; // Skip the backslash
-            if (str[i] == '\0') break; // End if it's the last character
+            // if (str[i] == '\0') break; // End if it's the last character
 
             // Process valid escape sequences
-            if (str[i] == '"' || str[i] == '\\' || str[i] == '$' || str[i+1] == '\0') {
+            if (str[i] == '"' || str[i] == '\\' || str[i] == '$' || str[i] == '\0') {
                 buffer[buffer_index++] = str[i]; // Append escaped characters
             } else {
                 buffer[buffer_index++] = '\\'; // Keep the backslash
