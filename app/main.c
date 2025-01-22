@@ -137,15 +137,15 @@ char* process_echo(char *str) {
 
 			} else if (in_double_quotes) {
 				// Handle escape sequences in double quotes
-				 // Skip the backslash
-				if (str[i+1] != '\0') {
-					if (str[i+1] == '"') {
+				++i; // Skip the backslash
+				if (str[i] != '\0') {
+					if (str[i] == '"') {
 						buffer[buffer_index++] = '"'; // Handle escaped quotes
-					} else if (str[i+1] == '\\' || str[i+1] == '$') {
+					} else if (str[i] == '\\' || str[i] == '$') {
 						buffer[buffer_index++] = str[i]; // Append valid escape sequences
 					} else {
 						buffer[buffer_index++] = '\\'; // Keep the backslash
-						buffer[buffer_index++] = str[i+1]; // Append the next character
+						buffer[buffer_index++] = str[i]; // Append the next character
 					}
 				} else {
 					// If a backslash is the last character, ignore it
