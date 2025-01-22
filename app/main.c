@@ -148,8 +148,9 @@ char* process_echo(char *str) {
 						buffer[buffer_index++] = str[i]; // Append the next character
 					}
 				} else {
-					buffer[buffer_index++] = str[i];
-					continue;
+
+					buffer[--buffer_index] = '"';
+
 				}
 			} else {
 				// Outside of quotes, treat backslash normally
