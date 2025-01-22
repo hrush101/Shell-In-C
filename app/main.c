@@ -180,7 +180,7 @@ char* process_echo(char *str) {
     if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
         result[strlen(result) - 1] = '\0';
     }
-
+ 
     return result;
 }
 
