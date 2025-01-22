@@ -128,21 +128,24 @@ char* process_echo(char *str) {
         }
 
         // Handle backslashes in double quotes
-        if (current == '\\' || current == '\"') {
+        if (current == '\\') {
+
 			if (in_single_quotes) {
+
 				// Backslashes inside single quotes are treated literally
 				buffer[buffer_index++] = current;
+
 			} else if (in_double_quotes) {
 				// Handle escape sequences in double quotes
-				i++; // Skip the backslash
-				if (str[i] != '\0') {
-					if (str[i] == '"') {
+				 // Skip the backslash
+				if (str[i+1] != '\0') {
+					if (str[i+1] == '"') {
 						buffer[buffer_index++] = '"'; // Handle escaped quotes
-					} else if (str[i] == '\\' || str[i] == '$') {
+					} else if (str[i+1] == '\\' || str[i+1] == '$') {
 						buffer[buffer_index++] = str[i]; // Append valid escape sequences
 					} else {
 						buffer[buffer_index++] = '\\'; // Keep the backslash
-						buffer[buffer_index++] = str[i]; // Append the next character
+						buffer[buffer_index++] = str[i+1]; // Append the next character
 					}
 				} else {
 					// If a backslash is the last character, ignore it
