@@ -128,7 +128,8 @@ char* process_echo(char *str) {
         }
 
         // Handle backslashes in double quotes
-        if (current == '\\' || current == '\"' && in_double_quotes) {
+        if ((current == '\\') || (current == '\"' && in_double_quotes)) {
+
             i++; // Skip the backslash
             
             // If the next character exists, process it
