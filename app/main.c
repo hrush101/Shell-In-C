@@ -139,13 +139,13 @@ char* process_echo(char *str) {
                 buffer[buffer_index++] = current;
             } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
-                if (str[i + 1] != '\0' && str[i + 1] != '"') {
+                if (str[i + 1] != '\0' && str[i] != '\"') {
                     i++; // Skip the backslash
                     buffer[buffer_index++] = str[i]; // Append the next character
                 } else {
                     buffer[buffer_index++] = '\\'; // If it's the last character
                 }
-				
+
             } else {
                 // Outside of quotes, keep the backslash
                 buffer[buffer_index++] = current;
