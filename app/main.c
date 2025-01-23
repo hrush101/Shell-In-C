@@ -145,6 +145,7 @@ char* process_echo(char *str) {
                 } else {
                     buffer[buffer_index++] = '\\'; // If it's the last character
                 }
+				
             } else {
                 // Outside of quotes, keep the backslash
                 buffer[buffer_index++] = current;
