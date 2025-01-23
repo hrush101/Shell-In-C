@@ -171,12 +171,23 @@ char* process_echo(char *str) {
         strcat(result, buffer);
     }
 
-    // Remove trailing space
+    // Trim extra spaces
     if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
         result[strlen(result) - 1] = '\0';
     }
 
-    return result;
+    // Check if the entire string is wrapped in single quotes
+    if (result[0] == '\'' && result[strlen(result) - 1] == '\'') {
+        // Single-quoted strings don't need additional double quotes
+        return result;
+    }
+
+    // Wrap in double quotes for non-single-quoted strings
+    char *final_result = (char *)malloc((strlen(result) + 3) * sizeof(char));
+    sprintf(final_result, "\"%s\"", result);
+
+    free(result);
+    return final_result;
 }
 
 
