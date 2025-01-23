@@ -127,7 +127,7 @@ char* process_echo(char *str) {
         // Handle double quotes
         if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
-            buffer[buffer_index++] = current; // Keep double quotes in the output
+            // buffer[buffer_index++] = current; // Keep double quotes in the output
             continue;
         }
 
@@ -165,7 +165,7 @@ char* process_echo(char *str) {
         }
 
         // Append regular characters to the buffer
-        // buffer[buffer_index++] = current;
+        buffer[buffer_index++] = current;
     }
 
     // Append remaining buffer to result
