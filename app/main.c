@@ -107,6 +107,7 @@ char* get_path(char *cmd){
 char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
+	
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
@@ -132,6 +133,7 @@ char* process_echo(char *str) {
 
         // Handle backslashes
         if (current == '\\') {
+			
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
                 buffer[buffer_index++] = current;
@@ -182,9 +184,20 @@ char* process_echo(char *str) {
         return result; // No additional wrapping needed
     }
 
-    // Wrap in double quotes
     char *final_result = (char *)malloc((strlen(result) + 3) * sizeof(char));
-    sprintf(final_result, "\"%s\"", result);
+
+	if (!in_single_quotes) {
+		// Wrap in double quotes
+        
+        sprintf(final_result, "\"%s\"", result);
+	}
+
+	if (!in_double_quotes) {
+
+        final_result = result;
+		
+	}
+    
 
     free(result);
     return final_result;
