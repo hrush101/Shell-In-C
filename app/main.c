@@ -116,13 +116,12 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        // Toggle single quotes only when not within double quotes
+        // Toggle single quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
             continue;
         }
-
-        // Toggle double quotes only when not within single quotes
+        // Toggle double quotes
         if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
             continue;
@@ -130,10 +129,12 @@ char* process_echo(char *str) {
 
         // Handle backslashes
         if (current == '\\') {
-            if (in_single_quotes || in_double_quotes) {
-                buffer[buffer_index++] = current; // Literal backslash within quotes
-            } else {
-                if (str[i + 1] != '\0') {
+            if (in_single_quotes) {
+                // Literal backslashes in single quotes
+                buffer[buffer_index++] = current;
+            } else if (in_double_quotes) {
+                // Handle escape sequences in double quotes
+                if (str[i + 1] != '\0' && str[i+1] != '\"') {
                     i++; // Skip the backslash
                     if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
                         buffer[buffer_index++] = str[i]; // Valid escape sequences
@@ -142,14 +143,11 @@ char* process_echo(char *str) {
                         buffer[buffer_index++] = str[i]; // Append the next character
                     }
                 }
+                // If backslash is the last character in double quotes, ignore it
+            } else {
+                // Outside of quotes, keep the backslash
+                buffer[buffer_index++] = current;
             }
-            continue;
-        }
-
-        // **Handle single quote after backslash within double quotes**
-        if (in_double_quotes && str[i + 1] == '\'') {
-            buffer[buffer_index++] = str[i + 1]; // Copy the single quote literally
-            i++; // Skip the backslash as well
             continue;
         }
 
