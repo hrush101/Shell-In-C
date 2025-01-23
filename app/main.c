@@ -183,6 +183,11 @@ char* process_echo(char *str) {
 		sprintf(wrapped, "\"%s\"", result);
 		free(result);
 		result = wrapped;
+
+	}else{
+
+		return result;
+
 	}
 
 
