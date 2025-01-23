@@ -142,7 +142,7 @@ char* process_echo(char *str) {
 
                 if (str[i] != '\0') {
 
-					if (str[i + 1] == '"' || str[i + 1] == '\\' ) {
+					if (str[i + 1] == '\"' || str[i + 1] == '\\' ) {
 					    
 						buffer[buffer_index++] = str[i+1];
 
