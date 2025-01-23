@@ -136,14 +136,20 @@ char* process_echo(char *str) {
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
                 buffer[buffer_index++] = current;
+
             } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
+
                 if (str[i] != '\0') {
 
 					if (str[i + 1] == '"') {
 					    
 						buffer[buffer_index++] = str[i+1];
 
+					} else if ( str[i + 1] == '\\' ) {
+						
+						buffer[buffer_index++] =  str[ i + 1];
+						
 					} else {
 
 						i++; // Skip the backslash
