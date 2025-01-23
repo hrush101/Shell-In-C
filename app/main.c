@@ -107,7 +107,7 @@ char* get_path(char *cmd){
 char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
-	char *end;
+
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
@@ -127,7 +127,6 @@ char* process_echo(char *str) {
         // Handle double quotes
         if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
-			end = strrchr();
             continue;
         }
 
