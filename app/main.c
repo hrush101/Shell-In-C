@@ -125,7 +125,7 @@ char* process_echo(char *str) {
         }
 
         // Handle double quotes
-        if (current == '"' && !in_single_quotes) {
+        if (current == '\"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
             continue;
         }
@@ -153,10 +153,11 @@ char* process_echo(char *str) {
 
 					}
 					    
-                } else {
+                } 
+				// else {
 
-                    buffer[buffer_index++] = '\\'; // If it's the last character
-                }
+                //     buffer[buffer_index++] = '\\'; // If it's the last character
+                // }
 
             } else {
                 // Outside of quotes, keep the backslash
