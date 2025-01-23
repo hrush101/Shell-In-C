@@ -185,19 +185,8 @@ char* process_echo(char *str) {
     }
 
     char *final_result = (char *)malloc((strlen(result) + 3) * sizeof(char));
-
-	if (!in_single_quotes) {
-		// Wrap in double quotes
-        
-        sprintf(final_result, "\"%s\"", result);
-	}
-
-	if (!in_double_quotes) {
-
-        final_result = result;
-		
-	}
-    
+    final_result = result;
+ 
 
     free(result);
     return final_result;
