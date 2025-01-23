@@ -133,8 +133,6 @@ char* process_echo(char *str) {
 
         // Handle backslashes
         if (current == '\\') {
-
-			++current;
 			
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
@@ -167,7 +165,7 @@ char* process_echo(char *str) {
         }
 
         // Append regular characters to the buffer
-        buffer[buffer_index++] = current;
+        // buffer[buffer_index++] = current;
     }
 
     // Append remaining buffer to result
