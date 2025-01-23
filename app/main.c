@@ -104,11 +104,6 @@ char* get_path(char *cmd){
 
 
 // Function to process echo with escape sequences inside double quotes
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
 char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
@@ -148,6 +143,13 @@ char* process_echo(char *str) {
                     }
                 }
             }
+            continue;
+        }
+
+        // **Handle single quote after backslash within double quotes**
+        if (in_double_quotes && str[i + 1] == '\'') {
+            buffer[buffer_index++] = str[i + 1]; // Copy the single quote literally
+            i++; // Skip the backslash as well
             continue;
         }
 
