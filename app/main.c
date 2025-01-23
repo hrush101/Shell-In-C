@@ -176,20 +176,19 @@ char* process_echo(char *str) {
         result[strlen(result) - 1] = '\0';
     }
 
-    // Check if the entire string is wrapped in single quotes
-    if (result[0] == '\'' && result[strlen(result) - 1] == '\'') {
-        // Single-quoted strings don't need additional double quotes
-        return result;
+    // Check if the string is already wrapped in single or double quotes
+    if ((result[0] == '"' && result[strlen(result) - 1] == '"') ||
+        (result[0] == '\'' && result[strlen(result) - 1] == '\'')) {
+        return result; // No additional wrapping needed
     }
 
-    // Wrap in double quotes for non-single-quoted strings
+    // Wrap in double quotes
     char *final_result = (char *)malloc((strlen(result) + 3) * sizeof(char));
     sprintf(final_result, "\"%s\"", result);
 
     free(result);
     return final_result;
 }
-
 
 
 void cat_file(char *files){    // print file content
