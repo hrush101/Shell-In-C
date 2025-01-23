@@ -116,23 +116,24 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        // Toggle single quotes
+        // Handle single quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
-            buffer[buffer_index++] = current; // Keep single quotes in output
+            buffer[buffer_index++] = current; // Keep single quotes in the output
             continue;
         }
-        // Toggle double quotes
+
+        // Handle double quotes
         if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
-            buffer[buffer_index++] = current; // Keep double quotes in output
+            buffer[buffer_index++] = current; // Keep double quotes in the output
             continue;
         }
 
         // Handle backslashes
         if (current == '\\') {
             if (in_single_quotes) {
-                // Literal backslashes in single quotes
+                // Backslashes inside single quotes are literal
                 buffer[buffer_index++] = current;
             } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
