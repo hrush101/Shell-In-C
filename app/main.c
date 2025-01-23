@@ -107,7 +107,7 @@ char* get_path(char *cmd){
 char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
-	
+	char *end;
 
     int in_single_quotes = 0;
     int in_double_quotes = 0;
@@ -127,18 +127,19 @@ char* process_echo(char *str) {
         // Handle double quotes
         if (current == '"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
+			end = strrchr();
             continue;
         }
 
         // Handle backslashes
-        if (current == '\\' || current == '\"') {
+        if (current == '\\') {
 			
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
                 buffer[buffer_index++] = current;
             } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
-                if (str[i + 1] != '\0') {
+                if (str[i] != '\0') {
                     i++; // Skip the backslash
                     buffer[buffer_index++] = str[i]; // Append the next character
                 } else {
