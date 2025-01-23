@@ -138,11 +138,9 @@ char* process_echo(char *str) {
                 buffer[buffer_index++] = current;
             } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
-                if (str[i] != '\0') {
-                    
-                    buffer[buffer_index++] = str[i]; // Append the next character
+                if (str[i + 1] == '\0') {
 					i++; // Skip the backslash
-					
+                    buffer[buffer_index++] = str[i]; // Append the next character
                 } else {
                     buffer[buffer_index++] = '\\'; // If it's the last character
                 }
