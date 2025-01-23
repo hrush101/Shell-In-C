@@ -170,11 +170,11 @@ char* process_echo(char *str) {
         buffer[buffer_index++] = current;
     }
 
-    // // Append remaining buffer to result
-    // if (buffer_index > 0) {
-    //     buffer[buffer_index] = '\0';
-    //     strcat(result, buffer);
-    // }
+    // Append remaining buffer to result
+    if (buffer_index > 0) {
+        buffer[buffer_index] = '\0';
+        strcat(result, buffer);
+    }
 
     // Trim extra spaces
     if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
