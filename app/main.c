@@ -178,6 +178,13 @@ char* process_echo(char *str) {
         result[strlen(result) - 1] = '\0';
     }
 
+	if (result[0] != '"' || result[strlen(result) - 1] != '"') {
+		char *wrapped = (char *)malloc((strlen(result) + 3) * sizeof(char));
+		sprintf(wrapped, "\"%s\"", result);
+		free(result);
+		result = wrapped;
+	}
+
 
     return result;
 }
