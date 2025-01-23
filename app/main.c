@@ -158,7 +158,6 @@ char* process_echo(char *str) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
                 strcat(result, buffer);
-                strcat(result, " ");
                 buffer_index = 0;
             }
             continue;
