@@ -133,6 +133,8 @@ char* process_echo(char *str) {
 
         // Handle backslashes
         if (current == '\\') {
+
+			++current;
 			
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
@@ -158,6 +160,7 @@ char* process_echo(char *str) {
             if (buffer_index > 0) {
                 buffer[buffer_index] = '\0';
                 strcat(result, buffer);
+                strcat(result, " ");
                 buffer_index = 0;
             }
             continue;
