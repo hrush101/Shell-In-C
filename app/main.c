@@ -144,19 +144,17 @@ char* process_echo(char *str) {
 					    
 						buffer[buffer_index++] = str[i+1];
 
-					} else if (str[i + 1] == '\'') {
-
-						buffer[buffer_index++] = str[i+1];
-
 					} else {
+
 						i++; // Skip the backslash
                     	buffer[buffer_index++] = str[i]; // Append the next character
 
 					}
-                    
-                } else {
-                    buffer[buffer_index++] = '\\'; // If it's the last character
-                }
+				}    
+                // } else {
+
+                //     buffer[buffer_index++] = '\\'; // If it's the last character
+                // }
 
             } else {
                 // Outside of quotes, keep the backslash
