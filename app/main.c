@@ -138,12 +138,9 @@ char* process_echo(char *str) {
                 // Handle escape sequences in double quotes
                 if (str[i + 1] != '\0') {
                     i++; // Skip the backslash
-                    if (str[i] == '"' || str[i] == '\\' || str[i] == '$') {
-                        buffer[buffer_index++] = str[i]; // Append valid escape sequence
-                    } else {
-                        buffer[buffer_index++] = '\\'; // Keep backslash
-                        buffer[buffer_index++] = str[i]; // Append the next character
-                    }
+                    buffer[buffer_index++] = str[i]; // Append the next character
+                } else {
+                    buffer[buffer_index++] = '\\'; // If it's the last character
                 }
             } else {
                 // Outside of quotes, keep the backslash
@@ -180,6 +177,7 @@ char* process_echo(char *str) {
 
     return result;
 }
+
 
 
 void cat_file(char *files){    // print file content
