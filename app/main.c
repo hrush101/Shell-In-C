@@ -102,6 +102,11 @@ char* get_path(char *cmd){
 
 // }
 
+char* double_quotes_string(char *str){
+
+	
+
+}
 
 // Function to process echo with escape sequences inside double quotes
 char* process_echo(char *str) {
