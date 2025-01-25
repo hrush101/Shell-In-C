@@ -136,7 +136,7 @@ char* process_echo(char *str) {
         }
 
         // Handle backslashes
-        if (current == '\\') {
+        if (current == '\\' || current == '$' || current == '"' || current == '\n') {
 			
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
@@ -147,7 +147,7 @@ char* process_echo(char *str) {
 
                 if (str[i] != '\0') {
 
-					if ( str[i + 1] == '\\' ) {
+					if ( str[i + 1] == '\"' || str[i + 1] == '\\' ) {
 					    
 						buffer[buffer_index++] = str[i+1];
 
