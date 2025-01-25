@@ -140,12 +140,12 @@ char* process_echo(char *str) {
 			
             if ( in_single_quotes) {
                 // Backslashes inside single quotes are literal
-               if ( str[i + 1] == '\\' && str[i] != '\0' ) {
+                // if ( str[i + 1] == '\\' && str[i] != '\0' ) {
 					    
-						// i++; // Skip the backslash
-                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
+				// 		// i++; // Skip the backslash
+                //     	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
 
-				}
+				// }
 
             } else if ( in_double_quotes ) {
                 // Handle escape sequences in double quotes
