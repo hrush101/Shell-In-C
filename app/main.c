@@ -136,7 +136,7 @@ char* process_echo(char *str) {
         }
 
         // Handle backslashes
-        if (current == '\\' || current == '$' || current == '"' || current == '\n') {
+        if (current == '\\' ) {
 			
             if (in_single_quotes) {
                 // Backslashes inside single quotes are literal
