@@ -147,14 +147,10 @@ char* process_echo(char *str) {
 
                 if (str[i] != '\0') {
 
-					if ( str[i + 1] == '\"' || str[i + 1] == '\\' ) {
+					if ( str[i + 1] == '\"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n' ) {
 					    
-						buffer[buffer_index++] = str[i+1];
-
-					} else {
-
 						// i++; // Skip the backslash
-                    	buffer[buffer_index++] = str[i]; // Append the next character
+                    	buffer[buffer_index++] = str[i + 1 ]; // Append the next character
 
 					}
 					    
