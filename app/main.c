@@ -139,13 +139,8 @@ char* process_echo(char *str) {
         if (current == '\\' ) {
 			
             if ( in_single_quotes) {
-                // Backslashes inside single quotes are literal
-                // if ( str[i + 1] == '\\' && str[i] != '\0' ) {
-					    
-				// 		// i++; // Skip the backslash
-                //     	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
-
-				// }
+				
+                buffer[buffer_index++] = current;
 
             } else if ( in_double_quotes ) {
                 // Handle escape sequences in double quotes
