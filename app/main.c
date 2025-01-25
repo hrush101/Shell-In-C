@@ -153,7 +153,7 @@ char* process_echo(char *str) {
 
 					} else {
 
-						++i; // Skip the backslash
+						i++; // Skip the backslash
                     	buffer[buffer_index++] = str[i]; // Append the next character
 
 					}
