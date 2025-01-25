@@ -138,11 +138,16 @@ char* process_echo(char *str) {
         // Handle backslashes
         if (current == '\\' ) {
 			
-            if ( current == '\'' && in_single_quotes) {
+            if ( in_single_quotes) {
                 // Backslashes inside single quotes are literal
-                buffer[buffer_index++] = current;
+               if ( str[i + 1] == '\\' && str[i] != '\0' ) {
+					    
+						// i++; // Skip the backslash
+                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
 
-            } else if (current == '\"' && in_double_quotes) {
+				}
+
+            } else if ( in_double_quotes ) {
                 // Handle escape sequences in double quotes
 
                 if (str[i] != '\0') {
