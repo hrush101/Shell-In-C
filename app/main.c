@@ -165,6 +165,7 @@ char* process_echo(char *str) {
             } else {
                 // Outside of quotes, keep the backslash
                 buffer[buffer_index++] = current;
+				
             }
             
         }
