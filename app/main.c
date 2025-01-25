@@ -138,11 +138,14 @@ char* process_echo(char *str) {
         // Handle backslashes
         if (current == '\\') {
             if (in_single_quotes) {
+				
                 buffer[buffer_index++] = current; // Keep backslash in single quotes
+
             } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
-                if (str[i + 1] == '\"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n') {
-                    buffer[buffer_index++] = current; // Append the backslash
+                if (str[i + 1] == 'n' || str[i + 1] == 't' || str[i + 1] == 'r' || str[i + 1] == '\\' || str[i + 1] == '\"' || str[i + 1] == '$') {
+
+                    buffer[buffer_index++] = '\\'; // Retain the backslash
                     buffer[buffer_index++] = str[++i]; // Append the escaped character
                 } else {
                     buffer[buffer_index++] = current; // Keep the backslash if no valid escape sequence
