@@ -113,7 +113,6 @@ char* process_echo(char *str) {
     char *result = (char *)malloc(1000 * sizeof(char)); // Allocate large buffer
     result[0] = '\0'; // Initialize result string
 
-
     int in_single_quotes = 0;
     int in_double_quotes = 0;
     char buffer[1000];
@@ -125,41 +124,31 @@ char* process_echo(char *str) {
         // Handle single quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
-            // buffer[buffer_index++] = current; // Keep single quotes in the output
+            buffer[buffer_index++] = current; // Keep single quotes in the output
             continue;
         }
 
         // Handle double quotes
         if (current == '\"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
+            buffer[buffer_index++] = current; // Keep double quotes in the output
             continue;
         }
 
         // Handle backslashes
-        if (current == '\\' ) {
-			
-            if ( in_single_quotes) {
-				
-                buffer[buffer_index++] = current;
-
-            } else if ( in_double_quotes ) {
+        if (current == '\\') {
+            if (in_single_quotes) {
+                buffer[buffer_index++] = current; // Keep backslash in single quotes
+            } else if (in_double_quotes) {
                 // Handle escape sequences in double quotes
-
-                if (str[i] != '\0') {
-
-					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n' ) {
-					    
-						// i++; // Skip the backslash
-                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
-
-					}
-					    
-                } 
-				
-
+                if (str[i + 1] == '\"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n') {
+                    buffer[buffer_index++] = current; // Append the backslash
+                    buffer[buffer_index++] = str[++i]; // Append the escaped character
+                } else {
+                    buffer[buffer_index++] = current; // Keep the backslash if no valid escape sequence
+                }
             } else {
-                // Outside of quotes, keep the backslash
-                buffer[buffer_index++] = current;
+                buffer[buffer_index++] = current; // Keep backslash outside quotes
             }
             continue;
         }
@@ -189,7 +178,6 @@ char* process_echo(char *str) {
     if (strlen(result) > 0 && result[strlen(result) - 1] == ' ') {
         result[strlen(result) - 1] = '\0';
     }
-
 
     return result;
 }
