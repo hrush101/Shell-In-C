@@ -132,7 +132,6 @@ char* process_echo(char *str) {
         // Handle double quotes
         if (current == '\"' && !in_single_quotes) {
             in_double_quotes = !in_double_quotes;
-			buffer[buffer_index++] = current; // Keep double quotes in the output
             continue;
         }
 
@@ -141,7 +140,16 @@ char* process_echo(char *str) {
 			
             if ( in_single_quotes ) {
 
-                buffer[buffer_index++] = current;
+                if (str[i] != '\0') {
+
+					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' ) {
+					    
+						// Skip the backslash
+                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
+
+					}
+					    
+                }
 
             } else if ( in_double_quotes ) {
                 // Handle escape sequences in double quotes
