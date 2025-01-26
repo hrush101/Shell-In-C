@@ -125,7 +125,7 @@ char* process_echo(char *str) {
         // Handle single quotes
         if (current == '\'' && !in_double_quotes) {
             in_single_quotes = !in_single_quotes;
-            // buffer[buffer_index++] = current; // Keep single quotes in the output
+            buffer[buffer_index++] = current; // Keep single quotes in the output
             continue;
         }
 
