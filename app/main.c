@@ -122,18 +122,18 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
-        // Handle single quotes
-        if (current == '\'' && !in_double_quotes) {
-            in_single_quotes = !in_single_quotes;
-            buffer[buffer_index++] = current; // Keep single quotes in the output
-            continue;
-        }
+        // // Handle single quotes
+        // if (current == '\'' && !in_double_quotes) {
+        //     in_single_quotes = !in_single_quotes;
+        //     buffer[buffer_index++] = current; // Keep single quotes in the output
+        //     continue;
+        // }
 
-        // Handle double quotes
-        if (current == '\"' && !in_single_quotes) {
-            in_double_quotes = !in_double_quotes;
-            continue;
-        }
+        // // Handle double quotes
+        // if (current == '\"' && !in_single_quotes) {
+        //     in_double_quotes = !in_double_quotes;
+        //     continue;
+        // }
 
         // Handle backslashes
         if (current == '\\' ) {
@@ -152,7 +152,7 @@ char* process_echo(char *str) {
             //     }
 
             // } else if ( in_double_quotes ) {
-			if ( in_double_quotes ) {
+			// if ( in_double_quotes ) {
 
                 // Handle escape sequences in double quotes
 
@@ -168,12 +168,12 @@ char* process_echo(char *str) {
                 } 
 				
 
-            } else {
-                // Outside of quotes, keep the backslash
-                buffer[buffer_index++] = current;
-            }
+            // } else {
+            //     // Outside of quotes, keep the backslash
+            //     buffer[buffer_index++] = current;
+            // }
             
-			continue;
+			continue; // Skip further processing of '/' character
         }
 
         // Handle spaces outside of quotes
