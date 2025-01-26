@@ -140,14 +140,24 @@ char* process_echo(char *str) {
 			
             if ( in_single_quotes ) {
 
-                buffer[buffer_index++] = current;
+                if (str[i] != '\0') {
 
-            } else if ( in_double_quotes || in_single_quotes ) {
+					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n' ) {
+					    
+						// Skip the backslash
+                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
+
+					}
+					    
+                }
+
+            } else if ( in_double_quotes ) {
+
                 // Handle escape sequences in double quotes
 
                 if (str[i] != '\0') {
 
-					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' ) {
+					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n' ) {
 					    
 						// Skip the backslash
                     	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
@@ -162,7 +172,7 @@ char* process_echo(char *str) {
                 buffer[buffer_index++] = current;
             }
             
-			continue;
+			// continue;
         }
 
         // Handle spaces outside of quotes
