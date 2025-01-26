@@ -136,35 +136,31 @@ char* process_echo(char *str) {
         }
 
         // Handle backslashes
-        if (current == '\\' ) {
+		if (current == '\\') {
 			
-            if ( in_single_quotes ) {
+			if (in_single_quotes) {
 
-                buffer[buffer_index++] = current;
+				buffer[buffer_index++] = current; // Keep backslash in single quotes
 
-            } else if ( in_double_quotes ) {
-                // Handle escape sequences in double quotes
+			} else if (in_double_quotes) {
 
-                if (str[i] != '\0') {
+				// Handle escape sequences in double quotes
 
-					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' ) {
-					    
-						// Skip the backslash
-                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
-						i++;
+				if (str[i + 1] != '\0') { // Ensure there's a next character
+
+					if (str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$') {
+
+						buffer[buffer_index++] = str[i + 1]; // Append the next character
+						i++; // Skip the next character
 
 					}
-					    
-                } 
-				
-
-            } else {
-                // Outside of quotes, keep the backslash
-                buffer[buffer_index++] = current;
-            }
-            
-			continue;
-        }
+				}
+			} else {
+				// Outside of quotes, keep the backslash
+				buffer[buffer_index++] = current;
+			}
+			continue; // Skip further processing of this character
+		}
 
         // Handle spaces outside of quotes
         if (isspace(current) && !in_single_quotes && !in_double_quotes) {
