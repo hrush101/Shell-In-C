@@ -121,7 +121,11 @@ char* process_echo(char *str) {
 
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
-		current=current + 1;
+		
+		if(current == '"' && i=0 ){
+			continue;
+
+		}
 
 
         // // Handle single quotes
