@@ -138,7 +138,7 @@ char* process_echo(char *str) {
         // Handle backslashes
         if (current == '\\' ) {
 			
-            if ( in_single_quotes) {
+            if ( in_single_quotes ) {
 
                 buffer[buffer_index++] = current;
 
@@ -151,6 +151,7 @@ char* process_echo(char *str) {
 					    
 						// Skip the backslash
                     	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
+						i++;
 
 					}
 					    
