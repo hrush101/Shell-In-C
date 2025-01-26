@@ -140,18 +140,9 @@ char* process_echo(char *str) {
 			
             if ( in_single_quotes ) {
 
-                if (str[i] != '\0') {
+                buffer[buffer_index++] = current;
 
-					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' ) {
-					    
-						// Skip the backslash
-                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
-
-					}
-					    
-                }
-
-            } else if ( in_double_quotes ) {
+            } else if ( in_double_quotes || in_single_quotes ) {
                 // Handle escape sequences in double quotes
 
                 if (str[i] != '\0') {
