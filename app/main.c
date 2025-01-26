@@ -134,7 +134,9 @@ char *process_echo(char *str) {
 
         // Handle backslashes
         if (current == '\\') {
+
             if (in_double_quotes) {
+
                 // Escape sequences inside double quotes
                 if (str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '"' || str[i + 1] == '\n') {
                     buffer[buffer_index++] = str[++i]; // Skip the backslash and take the next character
@@ -142,7 +144,9 @@ char *process_echo(char *str) {
                     buffer[buffer_index++] = current; // Keep the backslash if it's not a valid escape sequence
                 }
             } else {
+
                 buffer[buffer_index++] = current; // Outside quotes, keep the backslash
+				
             }
             continue;
         }
