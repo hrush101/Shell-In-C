@@ -174,10 +174,11 @@ char* process_echo(char *str) {
                 } 
 				
 
-            // } else {
-            //     // Outside of quotes, keep the backslash
-            //     buffer[buffer_index++] = current;
             // }
+			 else {
+                // Outside of quotes, keep the backslash
+                buffer[buffer_index++] = current;
+            }
             
 			continue; // Skip further processing of '/' character
         }
