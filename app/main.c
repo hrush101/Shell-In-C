@@ -138,20 +138,21 @@ char* process_echo(char *str) {
         // Handle backslashes
         if (current == '\\' ) {
 			
-            if ( in_single_quotes ) {
+            // if ( in_single_quotes ) {
 
-                if (str[i] != '\0') {
+            //     if (str[i] != '\0') {
 
-					if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n' ) {
+			// 		if ( str[i + 1] == '"' || str[i + 1] == '\\' || str[i + 1] == '$' || str[i + 1] == '\n' ) {
 					    
-						// Skip the backslash
-                    	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
+			// 			// Skip the backslash
+            //         	buffer[buffer_index++] = str[ i + 1 ]; // Append the next character
 
-					}
+			// 		}
 					    
-                }
+            //     }
 
-            } else if ( in_double_quotes ) {
+            // } else if ( in_double_quotes ) {
+			if ( in_double_quotes ) {
 
                 // Handle escape sequences in double quotes
 
