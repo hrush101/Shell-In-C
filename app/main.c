@@ -6,7 +6,8 @@
 #include <sys/wait.h> // for wait() system call
 #include <limits.h> // For PATH_MAX is a system-defined constant that specifies the maximum length, in bytes, of a fully qualified path name, including the null terminator (\0)
 #include <ctype.h> // For manipulation of charecter
-
+#define SINGLE_QUOTE '\''
+#define DOUBLE_QUOTE '"'
 
 // function to return fully qualified path
 char* get_path(char *cmd){
