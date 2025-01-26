@@ -172,7 +172,7 @@ char* process_echo(char *str) {
                 buffer[buffer_index++] = current;
             }
             
-			// continue;
+			continue;
         }
 
         // Handle spaces outside of quotes
