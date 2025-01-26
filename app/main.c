@@ -122,7 +122,7 @@ char* process_echo(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 		
-		if(current == '"' && i == 0 ){
+		if(current == '"' && i == 0 && str[strlen(str) - 1] == '"' ){
 			continue;
 
 		}
