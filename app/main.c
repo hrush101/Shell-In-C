@@ -6,8 +6,7 @@
 #include <sys/wait.h> // for wait() system call
 #include <limits.h> // For PATH_MAX is a system-defined constant that specifies the maximum length, in bytes, of a fully qualified path name, including the null terminator (\0)
 #include <ctype.h> // For manipulation of charecter
-#define SINGLE_QUOTE '\''
-#define DOUBLE_QUOTE '"'
+
 
 // function to return fully qualified path
 char* get_path(char *cmd){
@@ -103,31 +102,28 @@ char* get_path(char *cmd){
 
 // }
 
-char* double_quotes_string(char *str){
-
-	
-
-}
 
 // Function to process echo with escape sequences inside double quotes
 char *process_echo(char *str) {
-    size_t buffer_size = strlen(str) + 1;
+
+    int buffer_size = strlen(str) + 1;
     char *result = (char *)calloc(buffer_size, sizeof(char)); // Result buffer
     char *buffer = (char *)calloc(buffer_size, sizeof(char)); // Temporary token buffer
-    size_t buffer_index = 0;
-    size_t result_index = 0;
+    int buffer_index = 0;
+    int result_index = 0;
 
     char quote = 0; // Track current quote state
     int inside_quotation = 0; // Whether we're inside quotes
 
-    for (size_t i = 0; str[i] != '\0'; i++) {
+    for (int i = 0; str[i] != '\0'; i++) {
         char current = str[i];
 
         if (inside_quotation) {
+
             // Handle escape sequences inside double quotes
-            if (current == '\\' && quote == DOUBLE_QUOTE) {
+            if (current == '\\' && quote == '"') {
                 char next = str[i + 1];
-                if (next == '\\' || next == DOUBLE_QUOTE || next == '$' || next == '\n') {
+                if (next == '\\' || next == '"' || next == '$' || next == '\n') {
                     buffer[buffer_index++] = next;
                     i++; // Skip the escaped character
                     continue;
@@ -140,9 +136,11 @@ char *process_echo(char *str) {
                 quote = 0;
                 continue;
             }
+
         } else {
+			
             // Handle start of quotes
-            if (current == SINGLE_QUOTE || current == DOUBLE_QUOTE) {
+            if (current == '\'' || current == '"') {
                 inside_quotation = 1;
                 quote = current;
                 continue;
@@ -164,6 +162,7 @@ char *process_echo(char *str) {
                 }
                 continue;
             }
+
         }
 
         // Add character to the buffer
@@ -177,7 +176,7 @@ char *process_echo(char *str) {
     }
 
     // Remove trailing space
-    size_t result_len = strlen(result);
+    int result_len = strlen(result);
     if (result_len > 0 && result[result_len - 1] == ' ') {
         result[result_len - 1] = '\0';
     }
@@ -264,6 +263,7 @@ void handle_cat(char *str) {
         }
     }
 }
+
 
 void pwd(){
 
