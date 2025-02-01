@@ -335,8 +335,6 @@ void execute_quoted_exe(char *str) {
 		printf("exe path not found\n");
 
 	}
-    printf("%s\n",exe_name);
-	printf("%s\n",exe_path);
 
 	free(exe_name);
     
