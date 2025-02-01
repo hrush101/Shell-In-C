@@ -292,8 +292,6 @@ void execute_quoted_exe(char *str) {
 
 	start = end + 1;  // so that start can now point to outside quoted string ex here 'exe with "quotes"' file starts pointing to space before file
 	
-	printf("%s\n",exe_name);
-	
 	while (*start == ' ')
 	{
 		start++; 
@@ -337,7 +335,8 @@ void execute_quoted_exe(char *str) {
 		printf("exe path not found\n");
 
 	}
- 
+    printf("%s\n",exe_name);
+	printf("%s\n",exe_path);
 
 	free(exe_name);
     
