@@ -280,7 +280,7 @@ void execute_quoted_exe(char *str) {
     ++start;  // Move past the opening quote
     while ( *start != *end && i < (exe_len - 1) ) {
 
-        if (*start == '\\' && *(start + 1) || *(start + 1) == '\'' ) {
+        if (*start == '\\' && *(start + 1)) {
             ++start; // Skip escaped characters
         }
         exe_name[i] = *start;
