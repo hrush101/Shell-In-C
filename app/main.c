@@ -293,7 +293,7 @@ void execute_quoted_exe(char *str) {
 	start = end + 1;  // so that start can now point to outside quoted string ex here 'exe with "quotes"' file starts pointing to space before file
 	
 	printf("%s\n",exe_name);
-
+	
 	while (*start == ' ')
 	{
 		start++; 
