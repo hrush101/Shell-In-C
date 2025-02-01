@@ -334,7 +334,7 @@ void execute_quoted_exe(char *str) {
 	} else {
 
 		printf("exe path not found\n");
-		
+
 	}
  
 
@@ -429,7 +429,7 @@ int main() {
 
 		} else if ( input[0] == '\'' || input[0] == '\"') {
 
-            execute_quoted_exe()
+            execute_quoted_exe(input);
 
 		}else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
             char *path = &input[(strlen("cd")+1)];
