@@ -12,7 +12,7 @@
 char* get_path(char *cmd){
 
 	// returning pointer pointing to full_path array
-	 char *r_path = NULL;  
+	char *r_path = NULL;  
 	   
 	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
 	char *path = getenv("PATH"); 
@@ -265,6 +265,84 @@ void handle_cat(char *str) {
 }
 
 
+void execute_quoted_exe(char *str) {
+    
+    char quote_type = str[0];
+
+	char *start = strchr(str,quote_type);
+	char *end = strrchr(str,quote_type);
+
+	int exe_len = (end - (str + 1)) + 1 ; // calculate length to store exe name and add one extra for adding terminator '\0'
+	int i=0;
+
+	char *exe_name = (char *)malloc(exe_len * sizeof(char));
+    
+    ++start;  // Move past the opening quote
+    while ( *start != *end && i < (exe_len - 1) ) {
+
+        if (*start == '\\' && *(start + 1)) {
+            ++start; // Skip escaped characters
+        }
+        exe_name[i] = *start;
+        start++;
+		i++;
+    }
+    
+    exe_name[i] = '\0';
+
+	start = end + 1;  // so that start can now point to outside quoted string ex here 'exe with "quotes"' file starts pointing to space before file
+	
+
+	while (*start == ' ')
+	{
+		start++; 
+	}
+
+	char *file = start;  // now start points to 1st charecter of the file after quoted exe name
+
+    char *exe_path=get_path(exe_name);
+
+	char *args[] = { exe_path, file, NULL };
+
+	if ( exe_path != NULL ){
+
+		pid_t pid = fork();
+		if(pid == 0) // as fork return 0 if child process is created
+		{
+			
+			// here child process executes the cmd using execv system call which is use to execute binary / executable of program
+			execv(exe_path,args); // execv replaces current program / process with new process 
+			perror("execv failed"); // print error if execv fails
+			exit(1);                //  exit 1 indicates the program is terminating due to an error in execv
+
+		}
+		else if (pid > 0) // in parent as child has not finished its execution
+		{ 
+			int status;
+			waitpid(pid ,&status, 0); // parent waits for a child process to finish its execution
+
+			// pid - process id of child that is 0
+			// status - pointer pointing to exit status of the child process will be stored 1 or 0
+			// 0 - the default behavior the parent process will wait until the child finishes executing
+
+		}
+		else                       // if fork fails
+		{
+			perror("fork failed"); // Print an error message fork failed to create child
+		}
+
+	} else {
+
+		printf("exe path not found\n");
+		
+	}
+ 
+
+	free(exe_name);
+    
+}
+
+
 void pwd(){
 
 	char path[1000];
@@ -349,7 +427,11 @@ int main() {
 			handle_cat(files);
 
 
-		} else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
+		} else if ( input[0] == '\'' || input[0] == '\"') {
+
+            execute_quoted_exe()
+
+		}else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
             char *path = &input[(strlen("cd")+1)];
             int status;
 
