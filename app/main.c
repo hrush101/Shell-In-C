@@ -9,7 +9,7 @@
 
 
 // function to return fully qualified path
-char* get_path(char *cmd){
+char * get_path(char *cmd){
 
 	// returning pointer pointing to full_path array
 	char *r_path = NULL;  
@@ -104,7 +104,7 @@ char* get_path(char *cmd){
 
 
 // Function to process echo with escape sequences inside double quotes
-char *process_echo(char *str) {
+char * process_echo(char *str) {
 
     int buffer_size = strlen(str) + 1;
     char *result = (char *)calloc(buffer_size, sizeof(char)); // Result buffer
@@ -279,10 +279,6 @@ void execute_quoted_exe(char *str) {
     
     ++start;  // Move past the opening quote
     while ( *start != *end && i < (exe_len - 1) ) {
-
-        // if (*start == '\\' && *(start + 1)) {
-        //     ++start; // Skip escaped characters
-        // }
         exe_name[i] = *start;
         start++;
 		i++;
@@ -340,6 +336,150 @@ void execute_quoted_exe(char *str) {
     
 }
 
+int check_charecter(char *str,char charecter){ // this function checks if a particular charecter exists in O(n) linear time
+        
+	for (int  i = 0; *(str + i) !='\0' ; i++)
+	{
+		if ( *(str + i) == charecter )
+		{
+			return 1;
+		}
+	}
+	
+    return 0;
+
+}
+
+char * remove_extra_spaces(char *str) {
+    
+	char *start=str;
+	
+
+	// trim head spaces
+    while (*str == ' '){  
+ 
+        str++;
+		
+	}
+	
+    char *end=str + strlen(str) - 1 ;
+
+
+	
+    // trim tail spaces
+    while (end > str && *end == ' '){
+
+		end--;
+
+	}
+
+	*(end + 1) ='\0'
+
+	return str;
+
+}
+
+// detects File Descriptor
+// File Descriptor	Name	Purpose
+// 0	stdin	Standard input (keyboard input by default)
+// 1	stdout	Standard output (normal program output)
+// 2	stderr	Standard error (error messages)
+int file_Descriptor(char *str){
+  
+  int i=0;
+  char *start = strchr(str,'>'); 
+  
+	while (*str) {
+		if (*str == '>') {
+			// Check if there is a digit before '>' (e.g., "2>")
+			if (isdigit(*(str - 1))) {
+				return *(str - 1) - '0';  // Convert char to int
+			}
+
+			// If '>' is found but no number before it, default to stdout (1)
+			return 1;
+		}
+		str++;
+
+    }
+    return -1;  // No '>' found, no redirection
+
+}
+
+void process_redirection(char *str){
+
+	int i=0;
+
+	char *start = strchr(str,'>');
+	char *terminate= strchr(str,'\0');
+
+	int first_len = start - str ;
+	char *first_cmd = malloc(first_len * sizeof(char));
+
+	int fd_num = file_Descriptor(str);
+
+	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
+	while ( *( str + i ) != *start ) {
+        
+        first_cmd[i]= *str;
+	    str++;
+		i++;       
+
+	}
+	first_cmd[i]='\0';
+
+    while (*start == ' ')
+	{
+		start++;
+	}
+	
+	char *file_path = start;  // will extract file path after > operator
+
+	first_cmd=remove_extra_spaces(first_cmd);
+    file_path=remove_extra_spaces(file_path);
+
+
+	// Parse command and arguments i.e seprate cmd and argument passed with cmd
+	char *args[10]; // array to hold cmd and its arguments
+    int argc=0;        // argument count
+	char *token = strtok(first_cmd," "); // split the input string into space seprated token
+
+	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
+	{
+
+		args[argc++] = token; // store each token cmd + arguments in an array
+		token = strtok(NULL, " "); // get next token till reaches null
+		
+	}
+    
+
+	pid_t pid = fork();
+
+
+	if (pid == 0) {  
+
+        int fd = open(redirect, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+        if (fd < 0) {
+            perror("Error opening file");
+            exit(EXIT_FAILURE);
+        }
+
+		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
+		close(fd);
+		execvp(args[0], args);
+		perror("exec failed");
+        exit(1);
+
+	} else if (pid > 0) { // Parent process
+        close(fd);
+        wait(NULL); // Wait for child to finish
+    } else {
+        perror("fork failed");
+    }
+
+}
+
 
 void pwd(){
 
@@ -388,7 +528,7 @@ int main() {
 
 			free(final_text);
 
-	    } else if (!strncmp(input,"type",strlen("type"))){
+	    } else if (!strncmp(input,"type",strlen("type"))) {
                	char *ptr[] = {"pwd","echo","type","exit"};
 
         	        char *cmd = &input[(strlen("type")+1)];
@@ -425,6 +565,10 @@ int main() {
 			handle_cat(files);
 
 
+		} else if ( check_charecter(input,'>') == 1 ) {
+
+			process_redirection(input);
+
 		} else if ( input[0] == '\'' || input[0] == '\"') {
 
             execute_quoted_exe(input);
@@ -457,7 +601,7 @@ int main() {
 		} else {   // here we are seprating cmd and executing it with the arguments passed with it ex - ls -l
    
 				// Parse command and arguments i.e seprate cmd and argument passed with cmd
-				char *args[10]; // array to hold cmd and it argument
+				char *args[10]; // array to hold cmd and its arguments
 				int argc=0;        // argument count
 				char *token = strtok(input," "); // split the input string into space seprated token
 
@@ -517,7 +661,7 @@ int main() {
 			}  
 		
 	
-  }
+    }
 
   return 0;
 }
