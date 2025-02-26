@@ -362,7 +362,7 @@ char * remove_extra_spaces(char *str) {
 		
 	}
 	
-    char *end=str + strlen(str) - 1 ;
+    char *end=str + (strlen(str) - 1);
 
 
 	
@@ -373,7 +373,7 @@ char * remove_extra_spaces(char *str) {
 
 	}
 
-	*(end + 1) ='\0'
+	*(end + 1) ='\0';
 
 	return str;
 
@@ -452,13 +452,14 @@ void process_redirection(char *str){
 		
 	}
     
-
+ 
 	pid_t pid = fork();
+	int fd;
 
 
 	if (pid == 0) {  
 
-        int fd = open(redirect, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
         if (fd < 0) {
             perror("Error opening file");
