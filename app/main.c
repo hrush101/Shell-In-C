@@ -566,9 +566,9 @@ int main() {
 			handle_cat(files);
 
 
-		} else if ( check_charecter(input,'>') == 1 ) {
+		} else if (strchr(input, '>') || strchr(input, '<')) {
 
-			process_redirection(input);
+			    process_redirection(input);
 
 		} else if ( input[0] == '\'' || input[0] == '\"') {
 
