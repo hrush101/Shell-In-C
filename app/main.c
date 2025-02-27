@@ -393,7 +393,7 @@ int file_Descriptor(char *str){
 		if (*str == '>') {
 			// Check if there is a digit before '>' (e.g., "2>")
 			if (isdigit(*(str - 1))) {
-				return *(str - 1) - '0';  // Convert char to int
+				return (*(str - 1) - '0');  // Convert char to int
 			}
 
 			// If '>' is found but no number before it, default to stdout (1)
