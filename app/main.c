@@ -379,6 +379,7 @@ char * remove_extra_spaces(char *str) {
 
 }
 
+
 // detects File Descriptor
 // File Descriptor	Name	Purpose
 // 0	stdin	Standard input (keyboard input by default)
