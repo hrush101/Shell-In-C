@@ -409,6 +409,7 @@ int file_Descriptor(char *str){
 
 void process_redirection(char *str) {
 	
+	
     char *start = strchr(str, '>');  
     if (!start) return; 
 
