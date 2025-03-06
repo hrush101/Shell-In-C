@@ -409,9 +409,10 @@ int file_Descriptor(char *str){
 
 
 void process_redirection(char *str) {
-	
+
     char *cmd_part = strtok(str, ">");
     char *file_part = strtok(NULL, ">");
+	int fd_num = file_Descriptor(str);
 
     if (file_part == NULL) {
         fprintf(stderr, "Syntax error: Missing file after `>`\n");
@@ -420,6 +421,7 @@ void process_redirection(char *str) {
 
     cmd_part = remove_extra_spaces(cmd_part);
     file_part = remove_extra_spaces(file_part);
+
 
     // Split command and arguments
     char *args[10];
@@ -440,7 +442,7 @@ void process_redirection(char *str) {
             exit(1);
         }
 
-        dup2(fd, STDOUT_FILENO); // Redirect stdout to file
+        dup2(fd, fd_num); // Redirect stdout to file
         close(fd);
 
         execvp(args[0], args);
@@ -451,6 +453,7 @@ void process_redirection(char *str) {
     } else {
         perror("fork failed");
     }
+
 }
 
 
