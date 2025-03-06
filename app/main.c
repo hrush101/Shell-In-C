@@ -505,7 +505,7 @@ int main() {
 
  	// print promt and flush stdout to print it on screen
  	printf("$ ");
- 	fflush(stdout);
+ 	//fflush(stdout);
 
  	// cmd input
  	char input[100];
