@@ -421,7 +421,7 @@ void process_redirection(char *str){
 	int fd_num = file_Descriptor(str);
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *( str + i ) != *start ) {
+	while ( *( str + i ) != '>' || *( str + i ) != '<' ) {
         
         first_cmd[i]= *str;
 	    str++;
@@ -505,7 +505,7 @@ int main() {
 
  	// print promt and flush stdout to print it on screen
  	printf("$ ");
- 	//fflush(stdout);
+ 	fflush(stdout);
 
  	// cmd input
  	char input[100];
