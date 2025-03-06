@@ -407,53 +407,80 @@ int file_Descriptor(char *str){
 
 }
 
-void process_redirection(char *str) {
+
+void process_redirection(char *str){
+
+	int i=0;
+
+	char *start = strchr(str,'>');
+	char *terminate= strchr(str,'\0');
+
+	int first_len = start - str ;
+	char *first_cmd = malloc(first_len * sizeof(char));
+
+	int fd_num = file_Descriptor(str);
+
+	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
+	while ( *( str + i ) != *start ) {
+        
+        first_cmd[i]= *str;
+	    str++;
+		i++;       
+
+	}
+	first_cmd[i]='\0';
+
+    while (*start == ' ')
+	{
+		start++;
+	}
 	
-	
-    char *start = strchr(str, '>');  
-    if (!start) return; 
+	char *file_path = start;  // will extract file path after > operator
 
-    int fd_num = file_Descriptor(str);  
-    char *command = strtok(str, ">");  
-    char *file_path = strtok(NULL, "");  
+	first_cmd=remove_extra_spaces(first_cmd);
+    file_path=remove_extra_spaces(file_path);
 
-    if (!command || !file_path) {
-        fprintf(stderr, "Error: Invalid redirection syntax\n");
-        return;
-    }
 
-    command = remove_extra_spaces(command);
-    file_path = remove_extra_spaces(file_path);
+	// Parse command and arguments i.e seprate cmd and argument passed with cmd
+	char *args[10]; // array to hold cmd and its arguments
+    int argc=0;        // argument count
+	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-    char *args[10]; 
-    int argc = 0;  
-    char *token = strtok(command, " "); 
+	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
+	{
 
-    while (token && argc < 10) {
-        args[argc++] = token;
-        token = strtok(NULL, " ");
-    }
-    args[argc] = NULL;  
+		args[argc++] = token; // store each token cmd + arguments in an array
+		token = strtok(NULL, " "); // get next token till reaches null
+		
+	}
+    
+ 
+	pid_t pid = fork();
+	int fd;
 
-    pid_t pid = fork();
-    if (pid == 0) {  
-        int fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+	if (pid == 0) {  
+
+        fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
         if (fd < 0) {
             perror("Error opening file");
             exit(EXIT_FAILURE);
         }
 
-        dup2(fd, fd_num);  
-        close(fd);  
-
-        execvp(args[0], args);
-        perror("exec failed");
+		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
+		close(fd);
+		execvp(args[0], args);
+		perror("exec failed");
         exit(1);
-    } else if (pid > 0) {  
-        wait(NULL);
+
+	} else if (pid > 0) { // Parent process
+        close(fd);
+        wait(NULL); // Wait for child to finish
     } else {
         perror("fork failed");
     }
+
 }
 
 
