@@ -450,7 +450,7 @@ void process_redirection(char *str){
 	{
 
 		args[argc++] = token; // store each token cmd + arguments in an array
-		token = strtok(NULL, " "); // get next token till reaches null
+		token = strtok(NULL," "); // get next token till reaches null
 		
 	}
     
