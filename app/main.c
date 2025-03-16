@@ -373,7 +373,7 @@ char * remove_extra_spaces(char *str) {
 
 	}
 
-	*(end + 1) ='\0';
+	//*(end + 1) ='\0';
 
 	return str;
 
@@ -428,6 +428,7 @@ void process_redirection(char *str){
 		i++;       
 
 	}
+
 	first_cmd[i]='\0';
 
     while (*start == ' ')
