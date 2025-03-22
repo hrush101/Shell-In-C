@@ -408,77 +408,48 @@ int file_Descriptor(char *str){
 }
 
 
-void process_redirection(char *str){
+void process_redirection(char *str) {
 
-	
-	int i=0;
-
-	char *start = strchr(str,'>');
-	char *terminate= strchr(str,'\0');
-
-	int first_len = start - str ;
-	char *first_cmd = malloc(first_len * sizeof(char));
-
+    char *cmd_part = strtok(str, ">");
+    char *file_part = strtok(NULL, ">");
 	int fd_num = file_Descriptor(str);
 
-	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *( str + i ) != '>' || *( str + i ) != '<' ) {
-        
-        first_cmd[i]= *( str + i );
-	    str++;
-		i++;       
+    if (file_part == NULL) {
+        fprintf(stderr, "Syntax error: Missing file after `>`\n");
+        return;
+    }
 
-	}
-
-	first_cmd[i]='\0';
-
-    while (*start == ' ')
-	{
-		start++;
-	}
-	
-	char *file_path = start;  // will extract file path after > operator
-
-	first_cmd=remove_extra_spaces(first_cmd);
-    file_path=remove_extra_spaces(file_path);
+    cmd_part = remove_extra_spaces(cmd_part);
+    file_part = remove_extra_spaces(file_part);
 
 
-	// Parse command and arguments i.e seprate cmd and argument passed with cmd
-	char *args[10]; // array to hold cmd and its arguments
-    int argc=0;        // argument count
-	char *token = strtok(first_cmd," "); // split the input string into space seprated token
+    // Split command and arguments
+    char *args[10];
+    int argc = 0;
+    char *token = strtok(cmd_part, " ");
+    while (token != NULL && argc < 9) {
+        args[argc++] = token;
+        token = strtok(NULL, " ");
+    }
+    args[argc] = NULL;
 
-	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
-	{
-
-		args[argc++] = token; // store each token cmd + arguments in an array
-		token = strtok(NULL," "); // get next token till reaches null
-		
-	}
-    
- 
-	pid_t pid = fork();
-	int fd;
-
-
-	if (pid == 0) {  
-
-        fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
+    // Fork process
+    pid_t pid = fork();
+    if (pid == 0) { // Child process
+        int fd = open(file_part, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd < 0) {
             perror("Error opening file");
-            exit(EXIT_FAILURE);
+            exit(1);
         }
 
-		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
-		close(fd);
-		execvp(args[0], args);
-		perror("exec failed");
-        exit(1);
-
-	} else if (pid > 0) { // Parent process
+        dup2(fd, fd_num); // Redirect stdout to file
         close(fd);
-        wait(NULL); // Wait for child to finish
+
+        execvp(args[0], args);
+        perror("exec failed");
+        exit(1);
+    } else if (pid > 0) {
+        wait(NULL); // Parent waits for child process
     } else {
         perror("fork failed");
     }
