@@ -571,7 +571,7 @@ int main() {
 			handle_cat(files);
 
 
-		} else if (strchr(input, '>') || strchr(input, '<')) {
+		} else if ( ( strchr(input, '>') != NULL || strchr(input, '<') != NULL ) ) {
 
 			    process_redirection(input);
 
