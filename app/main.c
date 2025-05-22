@@ -428,14 +428,12 @@ void process_redirection(char *str){
 		str++;
 		i++;    
 
-	}
-
-	printf("%s cmd is : ",first_cmd);
-      
+	}      
 	first_cmd[i]='\0';
     
-	
+	printf("%s cmd is : ",first_cmd);
 
+	// increment start till it point file path after redirection
 	start+=1;
     while (*start == ' ')
 	{
