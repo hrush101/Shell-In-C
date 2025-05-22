@@ -431,7 +431,8 @@ void process_redirection(char *str){
 	}
 
 	first_cmd[i]='\0';
-
+    
+	start+=1;
     while (*start == ' ')
 	{
 		start++;
