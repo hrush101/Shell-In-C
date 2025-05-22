@@ -422,7 +422,7 @@ void process_redirection(char *str){
 	char fd_num = file_Descriptor(str);
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( (*( str + i ) != '>' || *( str + i ) != '<' ) &&  ( *( str + i ) != fd_num ) ) {
+	while ( *( str + i ) != '>' || *( str + i ) != '<' || *( str + i ) != fd_num ) {
         
 		first_cmd[i]= *( str + i );
 		str++;
