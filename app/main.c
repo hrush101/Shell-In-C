@@ -459,8 +459,8 @@ void process_redirection(char *str){
  
 	pid_t pid = fork();
 	int fd;
-
-
+  
+    printf("%c : file path",*file_path);
 	if (pid == 0) {  
 
         fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
