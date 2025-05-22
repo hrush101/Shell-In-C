@@ -429,10 +429,12 @@ void process_redirection(char *str){
 		i++;    
 
 	}
+
+	printf("%s cmd is : ",first_cmd);
       
 	first_cmd[i]='\0';
     
-	printf("%s cmd is : ",first_cmd);
+	
 
 	start+=1;
     while (*start == ' ')
@@ -486,6 +488,8 @@ void process_redirection(char *str){
     } else {
         perror("fork failed");
     }
+
+	free(first_cmd);
 
 }
 
