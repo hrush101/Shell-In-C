@@ -470,7 +470,7 @@ void process_redirection(char *str){
             exit(EXIT_FAILURE);
         }
 
-		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
+		dup2(fd, STDOUT_FILENO); // Redirect stdout/stdin/stderr to file
 		close(fd);
 		execvp(args[0], args);
 		perror("exec failed");
