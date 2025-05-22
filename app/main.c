@@ -432,7 +432,7 @@ void process_redirection(char *str){
 	}      
 	first_cmd[i]='\0';
     
-
+    printf("%s cmd is : ",first_cmd);
 
 	// increment start till it point file path after redirection
 	start+=1;
