@@ -471,7 +471,7 @@ void process_redirection(char *str){
 		} else if (fd_num == '0') {
 			fp = freopen(file_path, "r", stdin);
 		}
-
+		
 		execvp(args[0], args);
 		perror("exec failed");
         exit(1);
