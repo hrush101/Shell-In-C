@@ -429,9 +429,11 @@ void process_redirection(char *str){
 		i++;    
 
 	}
-
+      
 	first_cmd[i]='\0';
     
+	printf("%s cmd is : ",first_cmd);
+
 	start+=1;
     while (*start == ' ')
 	{
@@ -464,7 +466,7 @@ void process_redirection(char *str){
     
 	if (pid == 0) {  
         
-		printf("%s cmd is : ",first_cmd);
+		
         fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
         if (fd < 0) {
