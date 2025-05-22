@@ -420,6 +420,9 @@ void process_redirection(char *str){
 	char *first_cmd = malloc(first_len * sizeof(char));
 
 	char fd_num = file_Descriptor(str);
+    
+	printf("%c cmd is : ",fd_num);
+
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
 	while ( *( str + i ) != '>' || *( str + i ) != '<' || *( str + i ) != fd_num ) {
@@ -431,7 +434,7 @@ void process_redirection(char *str){
 	}      
 	first_cmd[i]='\0';
     
-	printf("%s cmd is : ",first_cmd);
+
 
 	// increment start till it point file path after redirection
 	start+=1;
