@@ -421,11 +421,9 @@ void process_redirection(char *str){
 
 	char fd_num = file_Descriptor(str);
     
-	printf("%c cmd is : ",fd_num);
-
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *( str + i ) != '>' || *( str + i ) != '<' || *( str + i ) != fd_num ) {
+	while ( *( str + i ) != '>' || *( str + i ) != '<') {
         
 		first_cmd[i]= *( str + i );
 		str++;
