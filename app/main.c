@@ -442,7 +442,7 @@ void process_redirection(char *str){
 
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
-
+    printf("%s file path :", *file_path);
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
 	char *args[10]; // array to hold cmd and its arguments
@@ -461,7 +461,7 @@ void process_redirection(char *str){
 	pid_t pid = fork();
 	int fd;
   
-    printf("%s file path :", *file_path);
+    
 	if (pid == 0) {  
 
         fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
