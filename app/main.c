@@ -463,7 +463,8 @@ void process_redirection(char *str){
   
     
 	if (pid == 0) {  
-
+        
+		printf("%s cmd is : ",args[0]);
         fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
         if (fd < 0) {
