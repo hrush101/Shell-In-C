@@ -192,7 +192,7 @@ void cat_file(char *files){    // print file content
 
 	if (f == NULL){
 		
-		perror("failed to open file"); // if file not found
+		perror("No such file or directory"); // if file not found
 		
 	} else {
             
@@ -385,26 +385,26 @@ char * remove_extra_spaces(char *str) {
 // 0	stdin	Standard input (keyboard input by default)
 // 1	stdout	Standard output (normal program output)
 // 2	stderr	Standard error (error messages)
-int file_Descriptor(char *str){
+char file_Descriptor(char *str){
   
-  int i=0;
+
   char *start = strchr(str,'>'); 
   
 	while (*str) {
+
 		if (*str == '>') {
 			// Check if there is a digit before '>' (e.g., "2>")
-			if ( isdigit(*(str - 1)) || (*(str - 1) == NULL) ) {
-				return (*(str - 1) - '0');  // Convert char to int
+			if ( isdigit( *(str - 1) ) ) {
+				return *(str - 1);  // Convert char to int
 			}
 
 			// If '>' is found but no number before it, default to stdout (1)
-			return 1;
+			return '1';
 		}
 		str++;
 
     }
-    return -1;  // No '>' found, no redirection
-
+    
 }
 
 
@@ -419,14 +419,14 @@ void process_redirection(char *str){
 	int first_len = start - str ;
 	char *first_cmd = malloc(first_len * sizeof(char));
 
-	int fd_num = file_Descriptor(str);
+	char fd_num = file_Descriptor(str);
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *( str + i ) != '>' || *( str + i ) != '<' ) {
+	while ( (*( str + i ) != '>' || *( str + i ) != '<' ) &&  ( *( str + i ) != fd_num ) ) {
         
-        first_cmd[i]= *( str + i );
-	    str++;
-		i++;       
+		first_cmd[i]= *( str + i );
+		str++;
+		i++;    
 
 	}
 
@@ -462,24 +462,27 @@ void process_redirection(char *str){
 
 
 	if (pid == 0) {  
+        
+        FILE *fp = NULL;
+		if (fd_num == '1') {
+			fp = freopen(file_path, "w", stdout);
+		} else if (fd_num == '2') {
+			fp = freopen(file_path, "w", stderr);
+		} else if (fd_num == '0') {
+			fp = freopen(file_path, "r", stdin);
+		}
 
-        fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-        if (fd < 0) {
-            perror("Error opening file");
-            exit(EXIT_FAILURE);
-        }
-
-		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
-		close(fd);
 		execvp(args[0], args);
 		perror("exec failed");
         exit(1);
+		
 
 	} else if (pid > 0) { // Parent process
-        close(fd);
+
         wait(NULL); // Wait for child to finish
+
     } else {
+
         perror("fork failed");
     }
 
