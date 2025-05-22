@@ -461,27 +461,25 @@ void process_redirection(char *str){
 	int fd;
 
 
-    if (pid == 0) {
-        // In child process
-        int fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pid == 0) {  
+
+        fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
         if (fd < 0) {
-            perror("File open failed");
-            exit(1);
+            perror("Error opening file");
+            exit(EXIT_FAILURE);
         }
 
-        dup2(fd, STDOUT_FILENO); // Redirect stdout to file
-        close(fd);
-
-        execvp(args[0], args);
-        perror("exec failed");
+		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
+		close(fd);
+		execvp(args[0], args);
+		perror("exec failed");
         exit(1);
 
-    } else if (pid > 0) {
-
-        wait(NULL); // Wait for child
-
+	} else if (pid > 0) { // Parent process
+        close(fd);
+        wait(NULL); // Wait for child to finish
     } else {
-
         perror("fork failed");
     }
 
