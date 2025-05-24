@@ -401,10 +401,8 @@ char file_Descriptor(char *str){
 			// If '>' is found but no number before it, default to stdout (1)
 			return '1';
 
-		} else if (*str == '<') {
+		} else {  // if no output redirector then it must be input redirector
 			return '0';
-		} else {
-			perror("No File Descriptor Found !");
 		}
 		str++;
 
