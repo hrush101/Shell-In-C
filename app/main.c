@@ -388,18 +388,22 @@ char * remove_extra_spaces(char *str) {
 char file_Descriptor(char *str){
   
 
-  char *start = strchr(str,'>'); 
+    char *start = strchr(str,'>'); 
   
-	while (*str) {
+	while (*str != '\0') {
 
 		if (*str == '>') {
 			// Check if there is a digit before '>' (e.g., "2>")
 			if ( isdigit( *(str - 1) ) ) {
-				return *(str - 1);  // Convert char to int
+				return *(str - 1);
 			}
 
 			// If '>' is found but no number before it, default to stdout (1)
 			return '1';
+		}else if (*str == '<') {
+			return '0';
+		}else {
+			perror("No File Descriptor Found !")
 		}
 		str++;
 
@@ -407,13 +411,32 @@ char file_Descriptor(char *str){
     
 }
 
+// This function will return redirection operator charecter
+char redirection_operator(char *str){
+    
+	while (*str != '\0') {
+           
+		if (*str == '>' || *str == '<') {
+
+            return *str;
+
+		}else {
+			perror("No Redirection Operator Found !")
+		}
+        str++;
+
+	}
+
+}
 
 void process_redirection(char *str){
 
 	
 	int i=0;
+    char operator=redirection_operator(str);
+	printf("%c",operator);
 
-	char *start = strchr(str,'>');
+	char *start = strchr(str,operator);
 	char *terminate= strchr(str,'\0');
 
 	int first_len = start - str ;
@@ -423,18 +446,22 @@ void process_redirection(char *str){
     
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *( str + i ) != '>' || *( str + i ) != '<') {
+	while ( *( str + i ) != operator) {
         
+		if (*( str + i - 1) == fd_num) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
+            break;
+		}
+
 		first_cmd[i]= *( str + i );
 		str++;
 		i++;    
 
 	}      
 	first_cmd[i]='\0';
-    
     printf("%s cmd is : ",first_cmd);
 
-	// increment start till it point file path after redirection
+
+	// increment start till it points file path after redirection
 	start+=1;
     while (*start == ' ')
 	{
