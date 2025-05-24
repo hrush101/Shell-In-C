@@ -400,7 +400,7 @@ char file_Descriptor(char *str){
 
 			// If '>' is found but no number before it, default to stdout (1)
 			return '1';
-			
+
 		} else if (*str == '<') {
 			return '0';
 		} else {
@@ -421,8 +421,6 @@ char redirection_operator(char *str){
 
             return *str;
 
-		} else {
-			perror("No Redirection Operator Found !");
 		}
         str++;
 
