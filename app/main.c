@@ -458,7 +458,7 @@ void process_redirection(char *str){
 	}      
 	first_cmd[i]='\0';
     
-    printf("%d",i);
+
 	// increment start till it points file path after redirection
 	start+=1;
     while (*start == ' ')
@@ -473,11 +473,11 @@ void process_redirection(char *str){
 
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
-	char *args[10]; // array to hold cmd and its arguments
+	char *args[i]; // array to hold cmd and its arguments
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
+	while ( token != NULL && argc < i) // keep parsing until no more tokens left
 	{
 
 		args[argc++] = token; // store each token cmd + arguments in an array
@@ -485,6 +485,14 @@ void process_redirection(char *str){
 		
 	}
     
+	int q=0;
+
+    while (q < i)
+	{
+		printf("%c",args[q]);
+		q++;
+	}
+	
  
 	pid_t pid = fork();
 	int fd;
