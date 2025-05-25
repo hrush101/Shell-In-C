@@ -429,7 +429,7 @@ char redirection_operator(char *str){
 
 void process_redirection(char *str){
 
-	printf("%s",str);
+
 	int i=0;
     char operator=redirection_operator(str);
 	
@@ -445,7 +445,7 @@ void process_redirection(char *str){
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
 	while ( *( str + i ) != operator) {
         
-		if ( *str == operator && *( str - 1) == fd_num ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
+		if ( ( *( str + i ) == operator ) && ( *( str - 1) == fd_num ) ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
             
 			break;
 
@@ -457,7 +457,7 @@ void process_redirection(char *str){
 
 	}      
 	first_cmd[i]='\0';
-    printf("%s cmd is : ",first_cmd);
+    printf("%s cmd is : \n",first_cmd);
 
 
 	// increment start till it points file path after redirection
