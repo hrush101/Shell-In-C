@@ -504,7 +504,7 @@ void process_redirection(char *str){
 
 		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
 		close(fd);
-		execvp(cmd, args);
+		execvp(args[0],args);
 		perror("exec failed");
         exit(1);
 		
