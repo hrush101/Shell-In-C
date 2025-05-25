@@ -487,36 +487,37 @@ void process_redirection(char *str){
     
  
 	pid_t pid = fork();
-	int fd;
-    
+   
 	
 	char *cmd=get_path(args[0]);
     
-	
-	if (pid == 0) {  
-        
-		printf(" fd_num : %s\n",fd_num);
-		printf(" file path is : %s\n",file_path);
-        FILE *fp = NULL;
-		if (fd_num == '1') {
-			fp = freopen(file_path, "w", stdout);
-		} else if (fd_num == '2') {
-			fp = freopen(file_path, "w", stderr);
-		} else if (fd_num == '0') {
-			fp = freopen(file_path, "r", stdin);
-		}
-		
-		execvp(cmd,args);
-		free(cmd);
-		perror("exec failed");
-        exit(1);
-		
-	} else if (pid > 0) { // Parent process
-        wait(NULL); // Wait for child to finish
-    } else {
-        perror("fork failed");
-    }
+	if (cmd != NULL) { 
 
+		pid_t pid = fork(); // Create a child process
+		if (pid == 0) {  
+			
+			printf(" fd_num : %c\n",fd_num);
+			printf(" file path is : %s\n",file_path);
+			FILE *fp = NULL;
+			if (fd_num == '1') {
+				fp = freopen(file_path, "w", stdout);
+			} else if (fd_num == '2') {
+				fp = freopen(file_path, "w", stderr);
+			} else if (fd_num == '0') {
+				fp = freopen(file_path, "r", stdin);
+			}
+			
+			execvp(cmd,args);
+			free(cmd);
+			perror("exec failed");
+			exit(1);
+			
+		} else if (pid > 0) { // Parent process
+			wait(NULL); // Wait for child to finish
+		} else {
+			perror("fork failed");
+		}
+	}
 	free(first_cmd);
 
 }
