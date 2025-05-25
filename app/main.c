@@ -457,8 +457,7 @@ void process_redirection(char *str){
 
 	}      
 	first_cmd[i]='\0';
-    printf("%s cmd is : \n",first_cmd);
-
+    
 
 	// increment start till it points file path after redirection
 	start+=1;
@@ -471,7 +470,9 @@ void process_redirection(char *str){
 
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
-    
+
+	printf("%s cmd is : \n",first_cmd);
+    printf("%s file path is : \n",file_path);
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
 	char *args[10]; // array to hold cmd and its arguments
