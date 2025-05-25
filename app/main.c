@@ -492,27 +492,27 @@ void process_redirection(char *str){
     
 	char *cmd=args[0];
     
-	if (pid == 0) {  
+	// if (pid == 0) {  
         
 		
-        FILE *fp = NULL;
-		if (fd_num == '1') {
-			fp = freopen(file_path, "w", stdout);
-		} else if (fd_num == '2') {
-			fp = freopen(file_path, "w", stderr);
-		} else if (fd_num == '0') {
-			fp = freopen(file_path, "r", stdin);
-		}
+    //     FILE *fp = NULL;
+	// 	if (fd_num == '1') {
+	// 		fp = freopen(file_path, "w", stdout);
+	// 	} else if (fd_num == '2') {
+	// 		fp = freopen(file_path, "w", stderr);
+	// 	} else if (fd_num == '0') {
+	// 		fp = freopen(file_path, "r", stdin);
+	// 	}
 		
-		execvp(cmd,args);
-		perror("exec failed");
-        exit(1);
+	// 	execvp(cmd,args);
+	// 	perror("exec failed");
+    //     exit(1);
 
-	} else if (pid > 0) { // Parent process
-        wait(NULL); // Wait for child to finish
-    } else {
-        perror("fork failed");
-    }
+	// } else if (pid > 0) { // Parent process
+    //     wait(NULL); // Wait for child to finish
+    // } else {
+    //     perror("fork failed");
+    // }
 
 	free(first_cmd);
 
