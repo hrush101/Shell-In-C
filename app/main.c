@@ -470,6 +470,8 @@ void process_redirection(char *str){
 
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
+
+	printf("%s",file_path);
     
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
 	char *args[i]; // array to hold cmd and its arguments
