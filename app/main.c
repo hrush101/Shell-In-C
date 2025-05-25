@@ -504,7 +504,7 @@ void process_redirection(char *str){
 			fp = freopen(file_path, "r", stdin);
 		}
 		
-		execvpe(cmd,args);
+		execvp(cmd,args);
 		free(cmd);
 		perror("exec failed");
         exit(1);
