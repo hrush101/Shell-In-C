@@ -489,6 +489,7 @@ void process_redirection(char *str){
 	pid_t pid = fork();
 	int fd;
     
+	printf("%s",args[0]);
 	char *cmd=get_path(args[0]);
     
 	if (pid == 0) {  
