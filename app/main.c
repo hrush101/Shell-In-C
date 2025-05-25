@@ -489,12 +489,14 @@ void process_redirection(char *str){
 	pid_t pid = fork();
 	int fd;
     
-	printf("%s",args[0]);
+	
 	char *cmd=get_path(args[0]);
     
-	printf("cmd path %s\n",cmd);
+	
 	if (pid == 0) {  
         
+		printf(" fd_num : %s\n",fd_num);
+		printf(" file path is : %s\n",file_path);
         FILE *fp = NULL;
 		if (fd_num == '1') {
 			fp = freopen(file_path, "w", stdout);
