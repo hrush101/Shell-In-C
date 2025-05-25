@@ -494,16 +494,16 @@ void process_redirection(char *str){
 	if (pid == 0) {  
         
 		
-         fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-        if (fd < 0) {
-            perror("Error opening file");
-            exit(EXIT_FAILURE);
-        }
-
-		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
-		close(fd);
-		execvp(cmd,args);
+        FILE *fp = NULL;
+		if (fd_num == '1') {
+			fp = freopen(file_path, "w", stdout);
+		} else if (fd_num == '2') {
+			fp = freopen(file_path, "w", stderr);
+		} else if (fd_num == '0') {
+			fp = freopen(file_path, "r", stdin);
+		}
+		
+		execv(cmd,args);
 		perror("exec failed");
         exit(1);
 		
