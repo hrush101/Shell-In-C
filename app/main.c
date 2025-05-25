@@ -471,8 +471,6 @@ void process_redirection(char *str){
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
     
-	printf("%s is a cmd\n",first_cmd);
-
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
 	char *args[i]; // array to hold cmd and its arguments
     int argc=0;        // argument count
@@ -509,7 +507,6 @@ void process_redirection(char *str){
         exit(1);
 
 	} else if (pid > 0) { // Parent process
-
         wait(NULL); // Wait for child to finish
     } else {
         perror("fork failed");
