@@ -397,10 +397,10 @@ char file_Descriptor(char *str){
 			// Check if there is a digit before '>' (e.g., "2>")
 			if ( isdigit( *(str - 1) ) ) {
 				return *(str - 1);
+			}else{
+                // If '>' is found but no number before it, default to stdout (1)
+			    return '1';
 			}
-
-			// If '>' is found but no number before it, default to stdout (1)
-			return '1';
 
 		} else {  // if no output redirector then it must be input redirector
 			return '0';
