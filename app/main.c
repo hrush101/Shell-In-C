@@ -492,6 +492,7 @@ void process_redirection(char *str){
 	printf("%s",args[0]);
 	char *cmd=get_path(args[0]);
     
+	printf("cmd path %s\n",cmd);
 	if (pid == 0) {  
         
         FILE *fp = NULL;
@@ -503,7 +504,7 @@ void process_redirection(char *str){
 			fp = freopen(file_path, "r", stdin);
 		}
 		
-		execv(cmd,args);
+		execvpe(cmd,args);
 		free(cmd);
 		perror("exec failed");
         exit(1);
