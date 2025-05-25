@@ -432,8 +432,7 @@ void process_redirection(char *str){
 	
 	int i=0;
     char operator=redirection_operator(str);
-	printf("%c",operator);
-
+	
 	char *start = strchr(str,operator);
 	char *terminate= strchr(str,'\0');
 
