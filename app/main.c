@@ -489,7 +489,7 @@ void process_redirection(char *str){
 	pid_t pid = fork();
 	int fd;
     
-	char *cmd=args[0];
+	char *cmd=get_path(args[0]);
     
 	if (pid == 0) {  
         
@@ -503,7 +503,7 @@ void process_redirection(char *str){
 
 		dup2(fd, fd_num); // Redirect stdout/stdin/stderr to file
 		close(fd);
-		execvp(args[0],args);
+		execvp(cmd,args);
 		perror("exec failed");
         exit(1);
 		
