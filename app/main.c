@@ -470,7 +470,8 @@ void process_redirection(char *str){
 
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
-
+    
+	printf("%s is a cmd",first_cmd)
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
 	char *args[i]; // array to hold cmd and its arguments
@@ -485,14 +486,10 @@ void process_redirection(char *str){
 		
 	}
     
-	int q=0;
+    for (int j = 0; j < argc; j++) {
+        printf("args[%d] = %s\n", j, args[j]);
+    }
 
-    while (q < i)
-	{
-		printf("%c",args[q]);
-		q++;
-	}
-	
  
 	pid_t pid = fork();
 	int fd;
