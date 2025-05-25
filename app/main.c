@@ -494,7 +494,6 @@ void process_redirection(char *str){
     
 	if (pid == 0) {  
         
-		printf("file_path");
         FILE *fp = NULL;
 		if (fd_num == '1') {
 			fp = freopen(file_path, "w", stdout);
