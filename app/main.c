@@ -429,7 +429,7 @@ char redirection_operator(char *str){
 
 void process_redirection(char *str){
 
-	
+	printf("%s",*str);
 	int i=0;
     char operator=redirection_operator(str);
 	
