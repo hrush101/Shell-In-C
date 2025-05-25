@@ -24,7 +24,7 @@ char * get_path(char *cmd){
 
 	char *path_copy = strdup(path); // create a copy of ENV var PATH as we should not modify orignal path variable
     
-	// this splits the path_copy string into individual directories using ';' as a delimiter
+	// this splits the path_copy string into individual directories using ':' as a delimiter
 	char *dir_path = strtok(path_copy, ":"); 
 
 	char full_path[2000]; // array to store fully qualified path from root ex - /usr/bin/ls
@@ -486,33 +486,30 @@ void process_redirection(char *str){
 		
 	}
     
-    for (int j = 0; j < argc; j++) {
-        printf("args[%d] = %s\n", j, args[j]);
-    }
-
  
 	pid_t pid = fork();
 	int fd;
-  
+    
+	char *cmd=args[0];
     
 	if (pid == 0) {  
         
 		
-        fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-        if (fd < 0) {
-            perror("Error opening file");
-            exit(EXIT_FAILURE);
-        }
-
-		dup2(fd, STDOUT_FILENO); // Redirect stdout/stdin/stderr to file
-		close(fd);
-		execvp(args[0], args);
+        FILE *fp = NULL;
+		if (fd_num == '1') {
+			fp = freopen(file_path, "w", stdout);
+		} else if (fd_num == '2') {
+			fp = freopen(file_path, "w", stderr);
+		} else if (fd_num == '0') {
+			fp = freopen(file_path, "r", stdin);
+		}
+		
+		execvp(cmd,args);
 		perror("exec failed");
         exit(1);
 
 	} else if (pid > 0) { // Parent process
-        close(fd);
+
         wait(NULL); // Wait for child to finish
     } else {
         perror("fork failed");
