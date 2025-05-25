@@ -388,9 +388,6 @@ char * remove_extra_spaces(char *str) {
 // 2	stderr	Standard error (error messages)
 char file_Descriptor(char *str){
   
-
-    char *start = strchr(str,'>'); 
-  
 	while (*str != '\0') {
 
 		if (*str == '>') {
@@ -483,9 +480,7 @@ void process_redirection(char *str){
 		
 	}
     
- 
-	pid_t pid = fork();
-   
+  
 	
 	char *cmd=get_path(args[0]);
     
@@ -494,8 +489,6 @@ void process_redirection(char *str){
 		pid_t pid = fork(); // Create a child process
 		if (pid == 0) {  
 			
-			printf(" fd_num : %c\n",fd_num);
-			printf(" file path is : %s\n",file_path);
 			FILE *fp = NULL;
 			if (fd_num == '1') {
 				fp = freopen(file_path, "w", stdout);
