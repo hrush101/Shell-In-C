@@ -499,7 +499,7 @@ void process_redirection(char *str){
 			}
 			
 			execvp(cmd,args);
-			free(cmd);
+			
 			perror("exec failed");
 			exit(1);
 			
@@ -510,6 +510,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
+	free(cmd);
 
 }
 
