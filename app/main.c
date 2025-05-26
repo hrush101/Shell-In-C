@@ -482,9 +482,9 @@ void process_redirection(char *str){
     
   
 	
-	char *cmd=get_path(args[0]);
+	// char *cmd=get_path(args[0]);
     
-	if (cmd != NULL) { 
+	if (get_path(args[0]) != NULL) { 
 
 		pid_t pid = fork(); // Create a child process
 		if (pid == 0) {  
@@ -498,7 +498,7 @@ void process_redirection(char *str){
 				fp = freopen(file_path, "r", stdin);
 			}
 			
-			execvp(cmd,args);
+			execvp(get_path(args[0]),args);
 			
 			perror("exec failed");
 			exit(1);
@@ -510,7 +510,6 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
-	free(cmd);
 
 }
 
