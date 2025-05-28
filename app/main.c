@@ -474,7 +474,14 @@ void process_redirection(char *str){
 		
 	}
     
-    args[argc] = NULL; 
+	int j=0;
+	while ( j < argc) // keep parsing until no more tokens left
+	{
+
+		printf("cmd is : %s \n ",args[j++]);
+		
+		
+	}
 	
 	char *cmd=get_path(args[0]);
     
