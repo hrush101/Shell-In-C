@@ -477,13 +477,12 @@ void process_redirection(char *str){
     args[argc] = NULL; 
 	
 	char *cmd=get_path(args[0]);
-    
+    FILE *fp;
 	if (cmd != NULL) { 
 
 		pid_t pid = fork(); // Create a child process
 		if (pid == 0) {  
-			
-			FILE *fp;
+						
 			if (fd_num == '1') {
 				fp = freopen(file_path, "w", stdout);
 			} else if (fd_num == '2') {
@@ -498,9 +497,8 @@ void process_redirection(char *str){
 						
 			execvp(cmd,args);
 			perror("exec failed");
-			fclose(fp);
 			exit(1);
-						
+
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
 		} else {
@@ -508,6 +506,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
+	fclose(fp);
 
 }
 
