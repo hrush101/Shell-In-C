@@ -466,11 +466,11 @@ void process_redirection(char *str){
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-	while ( token != '\0' && argc < i) // keep parsing until no more tokens left
+	while ( token != "\0" && argc < i) // keep parsing until no more tokens left
 	{
 
 		args[argc++] = token; // store each token cmd + arguments in an array
-		token = strtok('\0'," "); // get next token till reaches null
+		token = strtok("\0"," "); // get next token till reaches null
 		
 	}
     
@@ -496,7 +496,7 @@ void process_redirection(char *str){
 			}
 
 			execvp(cmd, args);
-			perror("execv failed");
+			perror("execvp failed : ");
 			exit(1);
 
 		} else if (pid > 0) { // Parent process
@@ -506,6 +506,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
+	free(cmd);
 
 }
 
