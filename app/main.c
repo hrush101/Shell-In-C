@@ -480,24 +480,24 @@ void process_redirection(char *str){
     
 	if (cmd != NULL) { 
 
-		pid_t pid = fork(); // Create a child process
-		if (pid == 0) {  
-			
-			FILE *fp;
-			if (fd_num == '1') {
-				fp = freopen(file_path, "w", stdout);
-			} else if (fd_num == '2') {
-				fp = freopen(file_path, "w", stderr);
-			} else if (fd_num == '0') {
-				fp = freopen(file_path, "r", stdin);
-			} else if (!fp)
-			{
-				perror("fopen failed");
-                exit(1);
+		pid_t pid = fork();
+		if (pid == 0) {
+			int fd;
+			if (operator == '>') {
+				fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (fd < 0) {
+					perror("open");
+					exit(1);
+				}
+
+				int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDOUT_FILENO;
+
+				dup2(fd, target_fd); // Redirect stdout/stderr to the file
+				close(fd);
 			}
-						
-			execvp(cmd,args);
-			perror("exec failed");
+
+			execv(cmd, args);
+			perror("execv failed");
 			exit(1);
 
 		} else if (pid > 0) { // Parent process
