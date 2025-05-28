@@ -473,6 +473,10 @@ void process_redirection(char *str){
 		
 	}
     
+	while ( argc > 0)
+	{
+		printf("cmd arg :  %s \n " , args[argc--]);
+	}
 		
 	char *cmd=get_path(args[0]);
     
