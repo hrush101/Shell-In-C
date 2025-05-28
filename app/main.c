@@ -472,10 +472,10 @@ void process_redirection(char *str){
 		token = strtok("\0"," "); // get next token till reaches null
 		
 	}
-    
-	while ( argc > 0)
+    int j=0;
+	while ( j < argc)
 	{
-		printf("cmd arg :  %s \n " , args[argc--]);
+		printf("cmd arg :  %s \n " , args[j++]);
 	}
 		
 	char *cmd=get_path(args[0]);
