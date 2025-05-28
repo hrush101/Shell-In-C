@@ -367,8 +367,7 @@ char * remove_extra_spaces(char *str) {
 		end--;
 
 	}
-
-	//*(end + 1) ='\0';
+	*(end + 1) ='\0';
 
 	return str;
 
