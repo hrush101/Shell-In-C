@@ -466,23 +466,15 @@ void process_redirection(char *str){
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-	while ( token != NULL && argc < i) // keep parsing until no more tokens left
+	while ( token != '\0' && argc < i) // keep parsing until no more tokens left
 	{
 
 		args[argc++] = token; // store each token cmd + arguments in an array
-		token = strtok(NULL," "); // get next token till reaches null
+		token = strtok('\0'," "); // get next token till reaches null
 		
 	}
     
-	int j=0;
-	while ( j < argc) // keep parsing until no more tokens left
-	{
-
-		printf("cmd is : %s \n ",args[j++]);
 		
-		
-	}
-	
 	char *cmd=get_path(args[0]);
     
 	if (cmd != NULL) { 
