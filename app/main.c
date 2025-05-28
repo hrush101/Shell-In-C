@@ -351,29 +351,26 @@ int check_charecter(char *str,char charecter){ // this function checks if a part
 }
 
 char * remove_extra_spaces(char *str) {
-    
-	char *start=str;
-	
 
 	// trim head spaces
-    while (*start == ' '){  
+    while (*str == ' '){  
  
-        start++;
+        str++;
 		
 	}
 	
-    char *end=start + (strlen(start) - 1);
-	
+    char *end=str + (strlen(str) - 1);
+
     // trim tail spaces
-    while (end > start && *end == ' '){
+    while (end > str && *end == ' '){
 
 		end--;
 
 	}
 
-	*(end + 1) ='\0';
+	//*(end + 1) ='\0';
 
-	return start;
+	return str;
 
 }
 
@@ -461,11 +458,10 @@ void process_redirection(char *str){
 	
 	char *file_path = start;  // will extract file path after > operator
 
-	
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
 
-	printf("%s file path is : ",file_path);
+	printf("file path is : %s \n ",file_path)
 
     
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
@@ -481,7 +477,7 @@ void process_redirection(char *str){
 		
 	}
     
-  
+    args[argc] = NULL; 
 	
 	char *cmd=get_path(args[0]);
     
@@ -497,11 +493,15 @@ void process_redirection(char *str){
 				fp = freopen(file_path, "w", stderr);
 			} else if (fd_num == '0') {
 				fp = freopen(file_path, "r", stdin);
+			} else if (!fp)
+			{
+				perror("fopen failed");
+                exit(1);
 			}
-			
+						
 			execv(cmd,args);
-			
 			perror("exec failed");
+			fclose(fp);
 			exit(1);
 			
 		} else if (pid > 0) { // Parent process
