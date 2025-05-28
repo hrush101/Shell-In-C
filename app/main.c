@@ -363,7 +363,6 @@ char * remove_extra_spaces(char *str) {
 	}
 	
     char *end=start + (strlen(start) - 1);
-
 	
     // trim tail spaces
     while (end > start && *end == ' '){
