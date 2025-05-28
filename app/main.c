@@ -465,11 +465,11 @@ void process_redirection(char *str){
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-	while ( token != "\0" && argc < i) // keep parsing until no more tokens left
+	while ( token != NULL && argc < i) // keep parsing until no more tokens left
 	{
 
 		args[argc++] = token; // store each token cmd + arguments in an array
-		token = strtok("\0"," "); // get next token till reaches null
+		token = strtok(NULL," "); // get next token till reaches null
 		
 	}
     int j=0;
