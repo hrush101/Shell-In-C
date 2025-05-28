@@ -496,11 +496,11 @@ void process_redirection(char *str){
                 exit(1);
 			}
 						
-			execv(cmd,args);
+			execvp(cmd,args);
 			perror("exec failed");
 			fclose(fp);
 			exit(1);
-			
+						
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
 		} else {
