@@ -496,7 +496,7 @@ void process_redirection(char *str){
 				close(fd);
 			}
 
-			execv(cmd, args);
+			execvp(cmd, args);
 			perror("execv failed");
 			exit(1);
 
