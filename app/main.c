@@ -356,26 +356,25 @@ char * remove_extra_spaces(char *str) {
 	
 
 	// trim head spaces
-    while (*str == ' '){  
+    while (*start == ' '){  
  
-        str++;
+        start++;
 		
 	}
 	
-    char *end=str + (strlen(str) - 1);
-
+    char *end=start + (strlen(start) - 1);
 
 	
     // trim tail spaces
-    while (end > str && *end == ' '){
+    while (end > start && *end == ' '){
 
 		end--;
 
 	}
 
-	//*(end + 1) ='\0';
+	*(end + 1) ='\0';
 
-	return str;
+	return start;
 
 }
 
@@ -463,8 +462,11 @@ void process_redirection(char *str){
 	
 	char *file_path = start;  // will extract file path after > operator
 
+	
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
+
+	printf("%s file path is : ",file_path);
 
     
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
