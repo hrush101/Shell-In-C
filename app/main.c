@@ -498,7 +498,7 @@ void process_redirection(char *str){
 				fp = freopen(file_path, "r", stdin);
 			}
 			
-			execvp(cmd,args);
+			execv(cmd,args);
 			
 			perror("exec failed");
 			exit(1);
