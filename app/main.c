@@ -494,7 +494,8 @@ void process_redirection(char *str){
 				close(fd);
 			}
 
-			execvp(cmd,args);
+			execv(cmd,args);
+			free(cmd);
 			perror("execvp failed : ");
 			exit(1);
 
@@ -505,7 +506,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
-	free(cmd);
+	
 
 }
 
