@@ -474,7 +474,7 @@ void process_redirection(char *str){
 	}
 
 
-	if (cmd != NULL) { 
+	if (args[0] != NULL) { 
 
 		pid_t pid = fork();
 		if (pid == 0) {
