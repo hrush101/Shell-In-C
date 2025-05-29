@@ -373,17 +373,6 @@ char * remove_extra_spaces(char *str) {
 
 }
 
-// Strip leading and trailing quotes from the command name
-void strip_quotes(char *str) {
-    int len = strlen(str);
-    if ((str[0] == '"' && str[len - 1] == '"') ||
-        (str[0] == '\'' && str[len - 1] == '\'')) {
-        // Shift everything left by one, then null terminate one character early
-        memmove(str, str + 1, len - 2);
-        str[len - 2] = '\0';
-    }
-}
-
 
 // detects File Descriptor
 // File Descriptor	Name	Purpose
@@ -484,26 +473,26 @@ void process_redirection(char *str){
 	}
 
     char *cmd = get_path(args[0]);
-    strip_quotes(cmd);
+
 	printf("cmd_path %s\n",cmd);
 
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
+
 		if (pid == 0) {
 			int fd;
-			if (operator == '>') {
-				fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (fd < 0) {
-					perror("open");
-					exit(1);
-				}
-
-				int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDIN_FILENO;
-
-				dup2(fd, target_fd); // Redirect stdout/stderr to the file
-				close(fd);
+			
+			fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0744);
+			if (fd < 0) {
+				perror("open");
+				exit(1);
 			}
+
+			int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDIN_FILENO;
+
+			dup2(fd, target_fd); // Redirect stdout/stderr to the file
+			close(fd);
             
 			execv(cmd,args);
 			free(cmd);
