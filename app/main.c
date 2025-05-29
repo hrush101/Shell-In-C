@@ -475,7 +475,8 @@ void process_redirection(char *str){
 
 		
 	char *cmd=args[0];
-    
+    printf("is cmd : %s\n",cmd);
+	
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
@@ -494,7 +495,7 @@ void process_redirection(char *str){
 				close(fd);
 			}
             
-			printf("is cmd : %s\n",cmd);
+			
 			execvp(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
