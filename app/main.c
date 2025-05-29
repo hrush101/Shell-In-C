@@ -473,8 +473,11 @@ void process_redirection(char *str){
 		
 	}
 
+    char *cmd = get_path(args[0]);
 
-	if (args[0] != NULL) { 
+	printf("cmd_path %s\n",cmd);
+
+	if (cmd != NULL) { 
 
 		pid_t pid = fork();
 		if (pid == 0) {
@@ -492,8 +495,8 @@ void process_redirection(char *str){
 				close(fd);
 			}
             
-			
-			execvp(args[0],args);
+			execv(cmd,args);
+			free(cmd);
 			perror("execvp failed : ");
 			exit(1);
 
@@ -504,6 +507,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
+	free(cmd);
 
 
 }
