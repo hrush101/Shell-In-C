@@ -373,6 +373,16 @@ char * remove_extra_spaces(char *str) {
 
 }
 
+// Strip leading and trailing quotes from the command name
+void strip_quotes(char *str) {
+    int len = strlen(str);
+    if ((str[0] == '"' && str[len - 1] == '"') ||
+        (str[0] == '\'' && str[len - 1] == '\'')) {
+        // Shift everything left by one, then null terminate one character early
+        memmove(str, str + 1, len - 2);
+        str[len - 2] = '\0';
+    }
+}
 
 
 // detects File Descriptor
@@ -474,7 +484,7 @@ void process_redirection(char *str){
 	}
 
     char *cmd = get_path(args[0]);
-
+    strip_quotes(cmd);
 	printf("cmd_path %s\n",cmd);
 
 	if (cmd != NULL) { 
