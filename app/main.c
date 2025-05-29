@@ -461,17 +461,18 @@ void process_redirection(char *str){
     file_path=remove_extra_spaces(file_path);
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
-	char *args[i]; // array to hold cmd and its arguments
+	char *args[10]; // array to hold cmd and its arguments
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-	while ( token != NULL && argc < i) // keep parsing until no more tokens left
+	while ( token != NULL && argc < 10) // keep parsing until no more tokens left
 	{
-
+        printf("these are cmd args  %s ",token);
 		args[argc++] = token; // store each token cmd + arguments in an array
 		token = strtok(NULL," "); // get next token till reaches null
 		
 	}
+
     int j=0;
 	while ( j < argc)
 	{
@@ -492,7 +493,7 @@ void process_redirection(char *str){
 					exit(1);
 				}
 
-				int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDOUT_FILENO;
+				int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDIN_FILENO;
 
 				dup2(fd, target_fd); // Redirect stdout/stderr to the file
 				close(fd);
