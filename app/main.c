@@ -493,7 +493,8 @@ void process_redirection(char *str){
 				dup2(fd, target_fd); // Redirect stdout/stderr to the file
 				close(fd);
 			}
-
+            
+			printf("is cmd : %s\n",cmd);
 			execvp(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
