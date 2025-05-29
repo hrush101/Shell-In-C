@@ -474,7 +474,7 @@ void process_redirection(char *str){
 	}
 
 		
-	char *cmd=get_path(args[0]);
+	char *cmd=args[0];
     
 	if (cmd != NULL) { 
 
@@ -494,8 +494,7 @@ void process_redirection(char *str){
 				close(fd);
 			}
 
-			execv(cmd,args);
-			free(cmd);
+			execvp(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
 
@@ -506,7 +505,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
-	
+
 
 }
 
