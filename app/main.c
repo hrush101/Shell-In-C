@@ -467,17 +467,12 @@ void process_redirection(char *str){
 
 	while ( token != NULL && argc < 10) // keep parsing until no more tokens left
 	{
-        printf("these are cmd args  %s ",token);
+
 		args[argc++] = token; // store each token cmd + arguments in an array
 		token = strtok(NULL," "); // get next token till reaches null
 		
 	}
 
-    int j=0;
-	while ( j < argc)
-	{
-		printf("cmd arg :  %s \n " , args[j++]);
-	}
 		
 	char *cmd=get_path(args[0]);
     
@@ -499,7 +494,7 @@ void process_redirection(char *str){
 				close(fd);
 			}
 
-			execvp(cmd, args);
+			execvp(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
 
