@@ -479,19 +479,18 @@ void process_redirection(char *str){
 		pid_t pid = fork();
 
 		if (pid == 0) {
-            int fd;
-			
-			fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0744);
-			if (fd < 0) {
-				perror("open");
-				exit(1);
+            FILE *fp;
+			if (fd_num == '1') {
+				fp = freopen(file_path, "w", stdout);
+			} else if (fd_num == '2') {
+				fp = freopen(file_path, "w", stderr);
+			} else if (fd_num == '0') {
+				fp = freopen(file_path, "r", stdin);
+			} else if (!fp)
+			{
+				perror("fopen failed");
+                exit(1);
 			}
-
-			int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDIN_FILENO;
-
-			dup2(fd, target_fd); // Redirect stdout/stderr to the file
-
-			close(fd);
             
 			execvp(cmd,args);
 			free(cmd);
@@ -504,16 +503,16 @@ void process_redirection(char *str){
 			perror("fork failed");
 		}
 
-		// FILE *fp = fopen(file_path, "r");
-		// if (!fp) {
-		// 	perror("fopen");
-		// 	exit(1);
-		// }
-		// char buffer[1024];
-		// while (fgets(buffer, sizeof(buffer), fp)) {
-		// 	printf("%s", buffer);  // print to stdout
-		// }
-		// fclose(fp);
+		FILE *fp = fopen(file_path, "r");
+		if (!fp) {
+			perror("fopen");
+			exit(1);
+		}
+		char buffer[1024];
+		while (fgets(buffer, sizeof(buffer), fp)) {
+			printf("%s", buffer);  // print to stdout
+		}
+		fclose(fp);
 
 	}
 	free(first_cmd);
