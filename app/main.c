@@ -490,6 +490,7 @@ void process_redirection(char *str){
 			int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDIN_FILENO;
 
 			dup2(fd, target_fd); // Redirect stdout/stderr to the file
+
 			close(fd);
             
 			execvp(cmd,args);
@@ -502,6 +503,18 @@ void process_redirection(char *str){
 		} else {
 			perror("fork failed");
 		}
+
+		FILE *fp = fopen(file_path, "r");
+		if (!fp) {
+			perror("fopen");
+			exit(1);
+		}
+		char buffer[1024];
+		while (fgets(buffer, sizeof(buffer), fp)) {
+			printf("%s", buffer);  // print to stdout
+		}
+		fclose(fp);
+
 	}
 	free(first_cmd);
     free(cmd);
