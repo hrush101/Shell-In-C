@@ -544,7 +544,7 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if (!strncmp(input,"echo",strlen("echo"))) {
+        } else if ( !strncmp(input,"echo",strlen("echo") ) && ( strchr(input, '>') == NULL || strchr(input, '<') == NULL ) ) {
 
             char *str = &input[(strlen("echo")+1)];
 	       				
@@ -621,7 +621,7 @@ int main() {
                    
 				   status = chdir(home_dir);
 
-				}else {
+				} else {
 					perror("enable to get HOME \n");
 				}
 				
