@@ -473,8 +473,8 @@ void process_redirection(char *str){
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
-
-	if (args[0] != NULL) { 
+    char *cmd = get_path(args[0]);
+	if (cmd != NULL) { 
 
 		pid_t pid = fork();
 
@@ -492,7 +492,8 @@ void process_redirection(char *str){
 			dup2(fd, target_fd); // Redirect stdout/stderr to the file
 			close(fd);
             
-			execvp(args[0],args);
+			execv(cmd,args);
+			free(cmd);
 			perror("execvp failed : ");
 			exit(1);
 
@@ -503,7 +504,7 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
-
+    free(cmd);
 
 }
 
