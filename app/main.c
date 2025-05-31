@@ -504,16 +504,16 @@ void process_redirection(char *str){
 			perror("fork failed");
 		}
 
-		FILE *fp = fopen(file_path, "r");
-		if (!fp) {
-			perror("fopen");
-			exit(1);
-		}
-		char buffer[1024];
-		while (fgets(buffer, sizeof(buffer), fp)) {
-			printf("%s", buffer);  // print to stdout
-		}
-		fclose(fp);
+		// FILE *fp = fopen(file_path, "r");
+		// if (!fp) {
+		// 	perror("fopen");
+		// 	exit(1);
+		// }
+		// char buffer[1024];
+		// while (fgets(buffer, sizeof(buffer), fp)) {
+		// 	printf("%s", buffer);  // print to stdout
+		// }
+		// fclose(fp);
 
 	}
 	free(first_cmd);
