@@ -472,7 +472,7 @@ void process_redirection(char *str){
 		
 	}
 
-    char *cmd = get_path(args[0]);
+    //char *cmd = get_path(args[0]);
 	char *cmd = args[0];
 
 	printf("cmd_path %s\n",cmd);
@@ -495,7 +495,7 @@ void process_redirection(char *str){
 			dup2(fd, target_fd); // Redirect stdout/stderr to the file
 			close(fd);
             
-			execvp(*cmd,args);
+			execvp(cmd,args);
 			free(cmd);
 			perror("execvp failed : ");
 			exit(1);
