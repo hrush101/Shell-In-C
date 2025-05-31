@@ -471,13 +471,14 @@ void process_redirection(char *str){
 		token = strtok(NULL," "); // get next token till reaches null
 		
 	}
+    
+	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
     //char *cmd = get_path(args[0]);
-	char *cmd = args[0];
+	//char *cmd = args[0];
 
-	printf("cmd_path %s\n",cmd);
-
-	if (cmd != NULL) { 
+    printf("cmd is : %s\n",args[0]);
+	if (args[0] != NULL) { 
 
 		pid_t pid = fork();
 
@@ -495,8 +496,8 @@ void process_redirection(char *str){
 			dup2(fd, target_fd); // Redirect stdout/stderr to the file
 			close(fd);
             
-			execvp(cmd,args);
-			free(cmd);
+			execvp(args[0],args);
+			//free(cmd);
 			perror("execvp failed : ");
 			exit(1);
 
