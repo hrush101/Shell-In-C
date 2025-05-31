@@ -492,7 +492,7 @@ void process_redirection(char *str){
 			dup2(fd, target_fd); // Redirect stdout/stderr to the file
 			close(fd);
             
-			execv(cmd,args);
+			execvp(cmd,args);
 			free(cmd);
 			perror("execvp failed : ");
 			exit(1);
