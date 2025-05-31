@@ -503,17 +503,6 @@ void process_redirection(char *str){
 			perror("fork failed");
 		}
 
-		FILE *fp = fopen(file_path, "r");
-		if (!fp) {
-			perror("fopen");
-			exit(1);
-		}
-		char buffer[1024];
-		while (fgets(buffer, sizeof(buffer), fp)) {
-			printf("%s", buffer);  // print to stdout
-		}
-		fclose(fp);
-
 	}
 	free(first_cmd);
     free(cmd);
@@ -602,10 +591,18 @@ int main() {
 
 		} else if (!strncmp(input,"cat", strlen("cat"))) {
 
-			char *files = &input[(strlen("cat")+1)];
-			handle_cat(files);
+			char *line = &input[(strlen("cat")+1)];
 
+            if ( strchr(line, '\'') != NULL || strchr(line, '"') != NULL ) {
 
+                handle_cat(line);
+
+			} else if ( strchr(line, '/') != NULL ) {
+
+                cat_file(line);
+
+			}
+			
 		} else if ( ( strchr(input, '>') != NULL || strchr(input, '<') != NULL ) ) {
 
 			    process_redirection(input);
