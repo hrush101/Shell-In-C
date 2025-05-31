@@ -470,12 +470,10 @@ void process_redirection(char *str){
 		args[argc++] = token; // store each token cmd + arguments in an array
 		token = strtok(NULL," "); // get next token till reaches null
 		
-	}
-    
+	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
-    //char *cmd = get_path(args[0]);
-	//char *cmd = args[0];
+
 
     printf("cmd is : %s\n",args[0]);
 	if (args[0] != NULL) { 
@@ -483,21 +481,21 @@ void process_redirection(char *str){
 		pid_t pid = fork();
 
 		if (pid == 0) {
-			int fd;
-			
-			fd = open(file_path, O_WRONLY | O_CREAT | O_TRUNC, 0744);
-			if (fd < 0) {
-				perror("open");
-				exit(1);
+
+			FILE *fp;
+			if (fd_num == '1') {
+				fp = freopen(file_path, "w", stdout);
+			} else if (fd_num == '2') {
+				fp = freopen(file_path, "w", stderr);
+			} else if (fd_num == '0') {
+				fp = freopen(file_path, "r", stdin);
+			} else if (!fp)
+			{
+				perror("fopen failed");
+                exit(1);
 			}
-
-			int target_fd = (fd_num == '1') ? STDOUT_FILENO : (fd_num == '2') ? STDERR_FILENO : STDIN_FILENO;
-
-			dup2(fd, target_fd); // Redirect stdout/stderr to the file
-			close(fd);
             
 			execvp(args[0],args);
-			//free(cmd);
 			perror("execvp failed : ");
 			exit(1);
 
@@ -508,7 +506,6 @@ void process_redirection(char *str){
 		}
 	}
 	free(first_cmd);
-	//free(cmd);
 
 
 }
