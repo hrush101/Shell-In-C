@@ -474,8 +474,6 @@ void process_redirection(char *str){
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
 
-
-    printf("cmd is : %s\n",args[0]);
 	if (args[0] != NULL) { 
 
 		pid_t pid = fork();
@@ -491,7 +489,7 @@ void process_redirection(char *str){
 				fp = freopen(file_path, "r", stdin);
 			} else if (!fp)
 			{
-				perror("fopen failed");
+				perror("fopen failed to open file : ");
                 exit(1);
 			}
             
