@@ -544,7 +544,7 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if ( ( strchr(input, '>') == NULL || strchr(input, '<') == NULL ) && !strncmp( input,"echo",strlen("echo") )  ) {
+        } else if ( !strncmp( input,"echo",strlen("echo") ) && ( strstr(input, "1>") == NULL || strstr(input, "2>") == NULL ) ) {
 
             char *str = &input[(strlen("echo")+1)];
 	       				
