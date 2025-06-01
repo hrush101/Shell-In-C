@@ -544,7 +544,7 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if ( !strncmp( input,"echo",strlen("echo") ) && ( strstr(input, "1>") == NULL || strstr(input, "2>") == NULL ) ) {
+        } else if ( !strncmp( input,"echo",strlen("echo") ) ) {
 
             char *str = &input[(strlen("echo")+1)];
 	       				
@@ -603,13 +603,13 @@ int main() {
 
 			}
 			
-		} else if ( ( strchr(input, '>') != NULL || strchr(input, '<') != NULL ) ) {
+		} else if ( ( strchr(input, '>') != NULL || strchr(input, '<') != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
 
 			    process_redirection(input);
 
 		} else if ( input[0] == '\'' || input[0] == '\"') {
 
-            execute_quoted_exe(input);
+                execute_quoted_exe(input);
 
 		} else if (!strncmp(input,"cd", strlen("cd")) ) { // change dir both for absolute and relative path
             char *path = &input[(strlen("cd")+1)];
