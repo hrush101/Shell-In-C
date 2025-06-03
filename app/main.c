@@ -376,7 +376,7 @@ char * remove_extra_spaces(char *str) {
 char * remove_quotes(char *str) {
 
     int len = strlen(str);
-	if ( (str[0] == '\'' || str[len - 1] == '\'') || (str[0] == '"' || str[len - 1] == '"') || (str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"' && str[len - 1] == '"') ) {
+	if ( (str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"' && str[len - 1] == '"') ) {
 
        str[len - 1] = '\0';
 	   str++;
