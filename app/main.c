@@ -479,7 +479,6 @@ void process_redirection(char *str){
 	{
 
 		args[argc++] = remove_quotes(token); // store each token cmd + arguments in an array
-		printf("%s\n",remove_quotes(token));
 		token = strtok(NULL," "); // get next token till reaches null
 		
 	}    
