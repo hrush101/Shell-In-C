@@ -431,7 +431,7 @@ void process_redirection(char *str){
     
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *str != operator && *( str - 1) != fd_num ) {
+	while ( *str != operator ) {
         
 		if ( ( *str == operator ) && ( *( str - 1) == fd_num ) ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
             
