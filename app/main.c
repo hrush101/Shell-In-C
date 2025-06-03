@@ -438,7 +438,7 @@ void process_redirection(char *str){
 		// 	break;
 
 		// }
-
+		
 		first_cmd[i]= *str;
 		str++;
 		i++;    
