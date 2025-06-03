@@ -473,7 +473,7 @@ void process_redirection(char *str){
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
-    char *cmd = get_path(args[0]);
+    char *cmd = args[0];
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
@@ -493,7 +493,7 @@ void process_redirection(char *str){
 			}
             
 			execvp(cmd,args);
-			free(cmd);
+			
 			perror("execvp failed : ");
 			exit(1);
 
@@ -505,8 +505,6 @@ void process_redirection(char *str){
 
 	}
 	free(first_cmd);
-    free(cmd);
-	
 
 }
 
@@ -545,7 +543,11 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if ( !strncmp( input,"echo",strlen("echo") ) ) {
+        } else if ( ( strstr(input, '>') != NULL || strstr(input, '<') != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
+
+			    process_redirection(input);
+
+		} else if ( !strncmp( input,"echo",strlen("echo") ) ) {
 
             char *str = &input[(strlen("echo")+1)];
 	       				
@@ -604,10 +606,6 @@ int main() {
 
 			}
 			
-		} else if ( ( strchr(input, '>') != NULL || strchr(input, '<') != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
-
-			    process_redirection(input);
-
 		} else if ( input[0] == '\'' || input[0] == '\"') {
 
                 execute_quoted_exe(input);
