@@ -506,6 +506,7 @@ void process_redirection(char *str){
 	}
 	free(first_cmd);
     free(cmd);
+	
 
 }
 
