@@ -543,7 +543,7 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if ( ( strstr(input, '>') != NULL || strstr(input, '<') != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
+        } else if ( ( strstr(input, ">") != NULL || strstr(input, "<") != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
 
 			    process_redirection(input);
 
