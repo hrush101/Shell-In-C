@@ -431,13 +431,13 @@ void process_redirection(char *str){
     
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *str != operator) {
+	while ( *str != operator && *( str - 1) != fd_num ) {
         
-		if ( ( *str == operator ) && ( *( str - 1) == fd_num ) ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
+		// if ( ( *str == operator ) && ( *( str - 1) == fd_num ) ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
             
-			break;
+		// 	break;
 
-		}
+		// }
 
 		first_cmd[i]= *str;
 		str++;
@@ -464,7 +464,7 @@ void process_redirection(char *str){
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
 
-	while ( token != NULL && argc < 10) // keep parsing until no more tokens left
+	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
 	{
 
 		args[argc++] = token; // store each token cmd + arguments in an array
