@@ -373,6 +373,17 @@ char * remove_extra_spaces(char *str) {
 
 }
 
+char * remove_quotes(char *str) {
+
+    int str_len = strlen(str);
+	if ( (str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"' && str[len - 1] == '"') ) {
+
+       str[len - 1] = '\0';
+	   str++;
+
+	}
+    return str;
+}
 
 // detects File Descriptor
 // File Descriptor	Name	Purpose
@@ -463,11 +474,11 @@ void process_redirection(char *str){
 	char *args[10]; // array to hold cmd and its arguments
     int argc=0;        // argument count
 	char *token = strtok(first_cmd," "); // split the input string into space seprated token
-
+    
 	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
 	{
 
-		args[argc++] = token; // store each token cmd + arguments in an array
+		args[argc++] = remove_quotes(token); // store each token cmd + arguments in an array
 		token = strtok(NULL," "); // get next token till reaches null
 		
 	}    
