@@ -481,6 +481,7 @@ void process_redirection(char *str){
 		args[argc++] = remove_quotes(token); // store each token cmd + arguments in an array
 		token = strtok(NULL," "); // get next token till reaches null
 		
+		
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
