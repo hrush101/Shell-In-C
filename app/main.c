@@ -376,12 +376,15 @@ char * remove_extra_spaces(char *str) {
 char * remove_quotes(char *str) {
 
     int len = strlen(str);
-	if ( (str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '"' && str[len - 1] == '"') ) {
+	if ( ( str[0] == '\'' || str[0] == '"' ) ) {
 
-       str[len - 1] = '\0';
-	   str++;
+	    str++;
 
+	} else if (str[len - 1] == '\'' || str[len - 1]  == '"' )
+	{
+		str[len - 1] = '\0';
 	}
+	
     return str;
 }
 
@@ -480,8 +483,7 @@ void process_redirection(char *str){
 
 		args[argc++] = remove_quotes(token); // store each token cmd + arguments in an array
 		token = strtok(NULL," "); // get next token till reaches null
-		
-		
+				
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
 
