@@ -420,7 +420,7 @@ char redirection_operator(char *str){
            
 		if (*str == '>' || *str == '<') {
 
-            return *str;
+			return *str;
 
 		}
         str++;
@@ -523,6 +523,96 @@ void process_redirection(char *str){
 }
 
 
+void append_redirection(char *str){
+
+
+	int i=0;
+	
+	char *start = strstr(str,">>");
+	char *terminate= strchr(str,'\0');
+
+	int first_len = start - str ;
+	char *first_cmd = malloc(first_len * sizeof(char));
+
+	char fd_num = file_Descriptor(str);
+    
+
+	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
+	while ( *str != '>' ) {
+        
+		if ( ( *(str + 1) == '>' ) && ( *str == fd_num ) ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
+            
+			break;
+
+		}
+
+		first_cmd[i]= *str;
+		str++;
+		i++;    
+
+	}      
+	first_cmd[i]='\0';
+    
+
+	// increment start till it points file path after redirection
+	start+=1;
+    while (*start == ' ')
+	{
+		start++;
+	}
+	
+	char *file_path = start;  // will extract file path after > operator
+
+	first_cmd=remove_extra_spaces(first_cmd);
+    file_path=remove_extra_spaces(file_path);
+
+	// Parse command and arguments i.e seprate cmd and argument passed with cmd
+	char *args[10]; // array to hold cmd and its arguments
+    int argc=0;        // argument count
+	char *token = strtok(first_cmd," "); // split the input string into space seprated token
+    
+	while ( token != NULL && argc < 10 ) // keep parsing until no more tokens left
+	{
+
+		args[argc++] = remove_quotes(token); // store each token cmd + arguments in an array
+		token = strtok(NULL," "); // get next token till reaches null
+				
+	}    
+	args[argc] = NULL; // Null-terminate the array to mark the end of array
+
+    char *cmd = args[0];
+	if (cmd != NULL) { 
+
+		pid_t pid = fork();
+
+		if (pid == 0) {
+            FILE *fp;
+			if (fd_num == '1') {
+				fp = freopen(file_path, "a", stdout);
+			} else if (fd_num == '2') {
+				fp = freopen(file_path, "a", stderr);
+			} else if (!fp)
+			{
+				perror("fopen failed to open file path : ");
+                exit(1);
+			}
+            
+			execvp(cmd,args);
+			
+			perror("execvp failed : ");
+			exit(1);
+
+		} else if (pid > 0) { // Parent process
+			wait(NULL); // Wait for child to finish
+		} else {
+			perror("fork failed");
+		}
+
+	}
+	free(first_cmd);
+
+}
+
 void pwd(){
 
 	char path[1000];
@@ -560,6 +650,10 @@ int main() {
         } else if ( ( strstr(input, ">") != NULL || strstr(input, "<") != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
 
 			    process_redirection(input);
+
+		} else if ( ( strstr(input, ">>") != NULL || ( strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL ) ) ) {
+
+			    append_redirection(input);
 
 		} else if ( !strncmp( input,"echo",strlen("echo") ) ) {
 
