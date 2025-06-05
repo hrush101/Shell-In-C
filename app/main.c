@@ -588,9 +588,9 @@ void append_redirection(char *str){
 		if (pid == 0) {
             FILE *fp;
 			if (fd_num == '1') {
-				fp = freopen(file_path, "a", stdout);
+				fp = freopen(file_path, "a+", stdout);  // a will only append but after this when u cat it wont able to read file so use a+
 			} else if (fd_num == '2') {
-				fp = freopen(file_path, "a", stderr);
+				fp = freopen(file_path, "a+", stderr);
 			} else if (!fp)
 			{
 				perror("fopen failed to open file path : ");
