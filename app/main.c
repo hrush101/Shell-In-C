@@ -579,7 +579,8 @@ void append_redirection(char *str){
 				
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
-
+    
+	printf("%s file path : \n",file_path);
     char *cmd = args[0];
 	if (cmd != NULL) { 
 
