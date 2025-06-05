@@ -601,7 +601,8 @@ void append_redirection(char *str){
 			
 			perror("execvp failed : ");
 			exit(1);
-
+            rewind(fp);
+			
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
 		} else {
