@@ -596,12 +596,12 @@ void append_redirection(char *str){
 				perror("fopen failed to open file path : ");
                 exit(1);
 			}
-            
+            rewind(fp);
 			execvp(cmd,args);
 			
 			perror("execvp failed : ");
 			exit(1);
-            rewind(fp);
+            
 
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
