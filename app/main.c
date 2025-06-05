@@ -602,7 +602,7 @@ void append_redirection(char *str){
 			perror("execvp failed : ");
 			exit(1);
             rewind(fp);
-			
+
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
 		} else {
@@ -652,7 +652,7 @@ int main() {
 
 			    process_redirection(input);
 
-		} else if ( ( strstr(input, ">>") != NULL || ( strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL ) ) ) {
+		} else if ( strstr(input, ">>") != NULL || strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL )  {
 
 			    append_redirection(input);
 
