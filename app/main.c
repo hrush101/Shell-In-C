@@ -191,8 +191,8 @@ void cat_file(char *files){    // print file content
 	FILE *f = fopen(files,"r"); // open file of given path
 
 	if (f == NULL){
-		
-		perror("No such file or directory : %s",files); // if file not found
+		printf("file path : %s \n",files);
+		perror("No such file or directory : "); // if file not found
 		
 	} else {
             
