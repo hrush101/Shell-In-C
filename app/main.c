@@ -188,25 +188,23 @@ char * process_echo(char *str) {
 
 void cat_file(char *files){    // print file content
 
-	int fd = open(files, O_RDONLY);  // open file in read-only mode
+    FILE *f = fopen(files,"r"); // open file of given path
 
-    if (fd < 0) {
-        perror("Error opening file");
-        return;
-    }
+	if (f == NULL){
+		
+		perror("Error "); // if file not found
+		
+	} else {
+            
+		int c;
 
-    char buffer[1024];  // buffer to hold read data
-    ssize_t bytesRead;
+		while ((c=fgetc(f)) != EOF) { // get character pointed by file pointer f and store it in c until f reaches end of file
+			putchar(c);
+		}
 
-    while ((bytesRead = read(fd, buffer, sizeof(buffer))) > 0) {
-        write(STDOUT_FILENO, buffer, bytesRead);  // write to stdout
-    }
+		fclose(f);
 
-    if (bytesRead < 0) {
-        perror("Error reading file");
-    }
-
-    close(fd);  // close file descriptor
+	}
 
 }
 
