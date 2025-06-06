@@ -188,23 +188,25 @@ char * process_echo(char *str) {
 
 void cat_file(char *files){    // print file content
 
-	FILE *f = fopen(files,"r"); // open file of given path
+	int fd = open(files, O_RDONLY);  // open file in read-only mode
 
-	if (f == NULL){
-		
-		perror("Error "); // if file not found
-		
-	} else {
-            
-		char c;
+    if (fd < 0) {
+        perror("Error opening file");
+        return;
+    }
 
-		while ((c=fgetc(f)) != EOF) { // get character pointed by file pointer f and store it in c until f reaches end of file
-			putchar(c);
-		}
+    char buffer[1024];  // buffer to hold read data
+    ssize_t bytesRead;
 
-		fclose(f);
+    while ((bytesRead = read(fd, buffer, sizeof(buffer))) > 0) {
+        write(STDOUT_FILENO, buffer, bytesRead);  // write to stdout
+    }
 
-	}
+    if (bytesRead < 0) {
+        perror("Error reading file");
+    }
+
+    close(fd);  // close file descriptor
 
 }
 
@@ -587,6 +589,7 @@ void append_redirection(char *str){
 		pid_t pid = fork();
 
 		if (pid == 0) {
+
 			FILE *fp;
 			if (fd_num == '1') {
 				fp = freopen(file_path, "a+", stdout);
@@ -597,6 +600,7 @@ void append_redirection(char *str){
 				perror("fopen failed");
                 exit(1);
 			}
+
 			execv(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
