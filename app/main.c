@@ -191,8 +191,8 @@ void cat_file(char *files){    // print file content
 	FILE *f = fopen(files,"r"); // open file of given path
 
 	if (f == NULL){
-		printf("file path : %s \n",files);
-		perror("No such file or directory : "); // if file not found
+		
+		perror("Error : "); // if file not found
 		
 	} else {
             
@@ -580,24 +580,34 @@ void append_redirection(char *str){
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
     
-	printf("%s file path : \n",file_path);
+
     char *cmd = args[0];
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
 
 		if (pid == 0) {
-            FILE *fp;
-			if (fd_num == '1') {
-				fp = freopen(file_path, "a+", stdout);  // a will only append but after this when u cat it wont able to read file so use a+
-			} else if (fd_num == '2') {
-				fp = freopen(file_path, "a+", stderr);
-			} else if (!fp)
-			{
-				perror("fopen failed to open file path : ");
-                exit(1);
-			}
+			int fd;
 
+            if (fd_num == '1') {
+				fd = open(file_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				if (fd < 0) {
+					perror("open failed for stdout");
+					exit(1);
+				}
+				dup2(fd, STDOUT_FILENO);  // Redirect stdout (1) to file
+				close(fd);
+
+			} else if (fd_num == '2') {
+
+				fd = open(file_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				if (fd < 0) {
+					perror("open failed for stderr");
+					exit(1);
+				}
+				dup2(fd, STDERR_FILENO);  // Redirect stderr (2) to file
+				close(fd);
+			}
 			execvp(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
