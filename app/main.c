@@ -552,7 +552,7 @@ void append_redirection(char *str){
 
 	}      
 	first_cmd[i]='\0';
-    printf("cmd is : %s",first_cmd);
+    
 
 	// increment start till it points file path after redirection
 	start+=1;
@@ -584,6 +584,8 @@ void append_redirection(char *str){
     
 
     char *cmd = args[0];
+
+	printf("cmd is : %s",cmd);
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
