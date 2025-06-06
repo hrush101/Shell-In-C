@@ -192,7 +192,7 @@ void cat_file(char *files){    // print file content
 
 	if (f == NULL){
 		
-		perror("No such file or directory"); // if file not found
+		perror("No such file or directory : %s",files); // if file not found
 		
 	} else {
             
@@ -538,7 +538,7 @@ void append_redirection(char *str){
     
 
 	// here we are extracting 1st string / cmd with arguments and stop till we reach > operator
-	while ( *str != '>' ) {
+	while ( *str != '>' && *(str + 1) != '>' ) {
         
 		if ( ( *(str + 1) == '>' ) && ( *str == fd_num ) ) {  // if redirection operator's 1st charecter is file descripter break copy until fd_num
             
