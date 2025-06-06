@@ -192,7 +192,7 @@ void cat_file(char *files){    // print file content
 
 	if (f == NULL){
 		
-		perror("Error : "); // if file not found
+		perror("Error "); // if file not found
 		
 	} else {
             
@@ -587,28 +587,17 @@ void append_redirection(char *str){
 		pid_t pid = fork();
 
 		if (pid == 0) {
-			int fd;
-
-            if (fd_num == '1') {
-				fd = open(file_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (fd < 0) {
-					perror("open failed for stdout");
-					exit(1);
-				}
-				dup2(fd, STDOUT_FILENO);  // Redirect stdout (1) to file
-				close(fd);
-
+			FILE *fp;
+			if (fd_num == '1') {
+				fp = freopen(file_path, "a+", stdout);
 			} else if (fd_num == '2') {
-
-				fd = open(file_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (fd < 0) {
-					perror("open failed for stderr");
-					exit(1);
-				}
-				dup2(fd, STDERR_FILENO);  // Redirect stderr (2) to file
-				close(fd);
+				fp = freopen(file_path, "a+", stderr);
+			} else if (!fp)
+			{
+				perror("fopen failed");
+                exit(1);
 			}
-			execvp(cmd,args);
+			execv(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
             
