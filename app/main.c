@@ -711,8 +711,9 @@ int main() {
                 handle_cat(line);
 
 			} else if ( strchr(line, '/') != NULL ) {
-
-                cat_file(line);
+                
+				char *res=remove_extra_spaces(line);
+                cat_file(res);
 
 			}
 			
