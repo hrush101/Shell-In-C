@@ -392,7 +392,6 @@ char * remove_quotes(char *str) {
 // function to check if parent directory exists else create directory
 void directory_exists(char *file){
     
-	printf("file - %s\n",file);
 	char * last_forward_slash = strrchr(file,'/');  // find the last occurance of '/' charecter
     char dir_path[PATH_MAX];  // here PATH_MAX is used as size  with a limit of 259 characters for the path name
     char *ptr=dir_path;
@@ -407,7 +406,6 @@ void directory_exists(char *file){
 	
     dir_path[i] = '\0';  // Null-terminate at the end of charecter array :)
 
-    printf("the dir path : %s\n",ptr);
 	if (access(dir_path, F_OK) != 0) // access method use to check file/dir accessibility here if access return -1 it means file/dir does not exists
 	{   
 
