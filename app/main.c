@@ -408,8 +408,13 @@ void directory_exists(char *file){
 
 
 	if (access(dir_path, F_OK) != 0) // access method use to check file/dir accessibility here if access return -1 it means file/dir does not exists
-	{
-        mkdir(dir_path, 0644);
+	{   
+		printf("%s", *dir_path);
+        int err=mkdir(dir_path, 0644);
+
+		if(err != 0){
+			perror("mkdir failed");
+		}
 	}
 
 }
