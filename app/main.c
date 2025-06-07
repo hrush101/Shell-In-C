@@ -592,18 +592,17 @@ void append_redirection(char *str){
 
 		if (pid == 0) {
 
-			FILE *fp;
+			FILE *fp = NULL;
 			if (fd_num == '1') {
 				fp = freopen(file_path, "a+", stdout);
 			} else if (fd_num == '2') {
 				fp = freopen(file_path, "a+", stderr);
-			} else if (!fp)
-			{
+			} else if (fp == NULL) {
 				perror("fopen failed");
                 exit(1);
 			}
 
-			execv(cmd,args);
+			execvp(cmd,args);
 			perror("execvp failed : ");
 			exit(1);
             
