@@ -501,6 +501,8 @@ void process_redirection(char *str){
 
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
+    
+	directory_exists(file_path); // check if parent directory exists else freopen will fail to create file at specified path
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
 	char *args[10]; // array to hold cmd and its arguments
@@ -515,6 +517,8 @@ void process_redirection(char *str){
 				
 	}    
 	args[argc] = NULL; // Null-terminate the array to mark the end of array
+    
+
 
     char *cmd = args[0];
 	if (cmd != NULL) { 
@@ -595,6 +599,7 @@ void append_redirection(char *str){
 	first_cmd=remove_extra_spaces(first_cmd);
     file_path=remove_extra_spaces(file_path);
     
+	directory_exists(file_path); // check if parent directory exists else freopen will fail to create file at specified path
 	
 
 	// Parse command and arguments i.e seprate cmd and argument passed with cmd
@@ -614,8 +619,6 @@ void append_redirection(char *str){
 
     char *cmd = args[0];
     
-	directory_exists(file_path); // check if parent directory exists else freopen will fail to create file at specified path
-
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
@@ -682,13 +685,13 @@ int main() {
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
-        } else if ( ( strstr(input, ">") != NULL || strstr(input, "<") != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
-
-			    process_redirection(input);
-
-		} else if ( strstr(input, ">>") != NULL || strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL )  {
+        } else if ( strstr(input, ">>") != NULL || strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL )  {
 
 			    append_redirection(input);
+
+		} else if ( ( strstr(input, ">") != NULL || strstr(input, "<") != NULL || ( strstr(input, "1>") != NULL || strstr(input, "2>") != NULL ) ) ) {
+
+			    process_redirection(input);
 
 		} else if ( !strncmp( input,"echo",strlen("echo") ) ) {
 
