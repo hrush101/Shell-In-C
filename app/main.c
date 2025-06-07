@@ -7,6 +7,7 @@
 #include <limits.h> // For PATH_MAX is a system-defined constant that specifies the maximum length, in bytes, of a fully qualified path name, including the null terminator (\0)
 #include <ctype.h> // For manipulation of charecter
 #include <fcntl.h> // For open()
+#include <sys/stat.h> // mkdir
 
 // function to return fully qualified path
 char * get_path(char *cmd){
@@ -388,6 +389,34 @@ char * remove_quotes(char *str) {
     return str;
 }
 
+// function to check if parent directory exists else create directory
+void directory_exists(char *file){
+
+	char * last_forward_slash = strrchr(file,'/');  // find the last occurance of '/' charecter
+    char dir_path[PATH_MAX];  // here PATH_MAX is used as size  with a limit of 259 characters for the path name
+    
+	int i=0;
+
+	while (file != last_forward_slash)
+	{
+		dir_path[i]=*file;
+		file++;
+		i++;
+	}
+	
+    dir_path[i] = '\0';  // Null-terminate at the end of charecter array :)
+
+
+	if (access(dir_path, F_OK) != 0) // access method use to check file/dir accessibility here if access return -1 it means file/dir does not exists
+	{
+        if (mkdir(dir_path, 0644) != 0) { // create a directory
+			perror("mkdir failed : ");
+		} 
+	}
+
+}
+
+
 // detects File Descriptor
 // File Descriptor	Name	Purpose
 // 0	stdin	Standard input (keyboard input by default)
@@ -499,7 +528,7 @@ void process_redirection(char *str){
 			} else if (fd_num == '2') {
 				fp = freopen(file_path, "w", stderr);
 			} else if (fd_num == '0') {
-				fp = freopen(file_path, "r", stdin);
+				fp = freopen(file_path, "w", stdin);
 			} else if (!fp)
 			{
 				perror("fopen failed");
@@ -584,8 +613,9 @@ void append_redirection(char *str){
     
 
     char *cmd = args[0];
+    
+	directory_exists(file_path); // check if parent directory exists else freopen will fail to create file at specified path
 
-	printf("cmd is : %s",cmd);
 	if (cmd != NULL) { 
 
 		pid_t pid = fork();
@@ -594,7 +624,7 @@ void append_redirection(char *str){
 
 			FILE *fp = NULL;
 			if (fd_num == '1') {
-				fp = freopen(file_path, "a+", stdout);
+				fp = freopen(file_path, "a+", stdout);   // this will append the specified file
 			} else if (fd_num == '2') {
 				fp = freopen(file_path, "a+", stderr);
 			} else if (fp == NULL) {
@@ -609,7 +639,6 @@ void append_redirection(char *str){
 
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
-			cat_file(file_path);
 		} else {
 			perror("fork failed");
 		}
@@ -716,8 +745,7 @@ int main() {
 
 			} else if ( strchr(line, '/') != NULL ) {
                 
-				char *res=remove_extra_spaces(line);
-                cat_file(res);
+                cat_file(line);
 
 			}
 			
