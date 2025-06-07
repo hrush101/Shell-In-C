@@ -609,6 +609,7 @@ void append_redirection(char *str){
 
 		} else if (pid > 0) { // Parent process
 			wait(NULL); // Wait for child to finish
+			cat_file(file_path);
 		} else {
 			perror("fork failed");
 		}
