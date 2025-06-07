@@ -409,9 +409,7 @@ void directory_exists(char *file){
 
 	if (access(dir_path, F_OK) != 0) // access method use to check file/dir accessibility here if access return -1 it means file/dir does not exists
 	{
-        if (mkdir(dir_path, 0644) != 0) { // create a directory
-			perror("mkdir failed : ");
-		} 
+        mkdir(dir_path, 0644);
 	}
 
 }
