@@ -14,6 +14,10 @@ set -e # Exit early if any commands fail
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
 (
   cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+  if [[ "$(uname -m)" == "arm64" ]]; then
+    export CPPFLAGS="-I/opt/homebrew/Cellar/readline/8.2.13/include"
+    export LDFLAGS="-L/opt/homebrew/Cellar/readline/8.2.13/lib"
+  fi
   gcc app/*.c -o /tmp/shell-target
 )
 

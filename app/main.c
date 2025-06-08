@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-// #include <readline/readline.h>
-// #include <readline/history.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <unistd.h> // for Linux system calls like access(), fork(), getcwd() , dup2()
 #include <sys/types.h> // includes the definition of various data types used in system calls, such as pid_t
 #include <sys/wait.h> // for wait() system call
@@ -649,7 +649,7 @@ int main() {
  	input[strlen(input)-1]='\0';
 
 	// use readline to read input string and store it in history array
-    //char *history_string= readline(input);
+    char *history_string= readline(input);
 
 
  	    if (!strcmp(input,"exit 0")) {
