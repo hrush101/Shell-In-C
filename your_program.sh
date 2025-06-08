@@ -4,6 +4,7 @@ set -e # Exit early if any commands fail
 echo "Remote architecture: $(ssh $remote_host uname -m)"
 
 cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+
 if [ "$(uname -m)" = "x86_64" ];then
   export CPPFLAGS="-I/usr/local/opt/readline/include"
   export LDFLAGS="-L/usr/local/opt/readline/lib"
