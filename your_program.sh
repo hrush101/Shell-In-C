@@ -20,5 +20,4 @@ fi
 
 gcc $CPPFLAGS $LDFLAGS app/*.c -o /tmp/shell-target
 
-
 exec /tmp/shell-target "$@"
