@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
-set -e # Exit early if any commands fail
+cd "$(dirname "$0")"
 
-cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
-if [ "$(uname -m)" = "x86_64" ];then
-  export CPPFLAGS="-I/usr/local/opt/readline/include"
-  export LDFLAGS="-L/usr/local/opt/readline/lib"
+if [[ "$(uname -m)" == "arm64" ]]; then
+  export CPPFLAGS="-I/opt/homebrew/Cellar/readline/8.2.13/include"
+  export LDFLAGS="-L/opt/homebrew/Cellar/readline/8.2.13/lib"
 fi
 
-gcc $CPPFLAGS $LDFLAGS app/*.c -o /tmp/shell-target
+cmake -B build -S .
+cmake --build build
 
-
-exec /tmp/shell-target "$@"
+exec ./build/shell "$@"
