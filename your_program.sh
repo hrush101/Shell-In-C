@@ -1,14 +1,15 @@
-#!/bin/bash
-set -e
+#!/bin/sh
 
-cd "$(dirname "$0")"
+set -e # Exit early if any commands fail
+echo "Remote architecture: $(ssh $remote_host uname -m)"
 
-if [[ "$(uname -m)" == "x86_64" ]]; then
-  export CPPFLAGS="-I/opt/homebrew/Cellar/readline/8.2.13/include"
-  export LDFLAGS="-L/opt/homebrew/Cellar/readline/8.2.13/lib"
+cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+if [ "$(uname -m)" = "x86_64" ];then
+  export CPPFLAGS="-I/usr/local/opt/readline/include"
+  export LDFLAGS="-L/usr/local/opt/readline/lib"
 fi
 
-cmake -B build -S .
-cmake --build build
+gcc $CPPFLAGS $LDFLAGS app/*.c -o /tmp/shell-target
 
-exec ./build/shell "$@"
+
+exec /tmp/shell-target "$@"
