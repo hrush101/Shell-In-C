@@ -649,7 +649,7 @@ int main() {
  	input[strlen(input)-1]='\0';
 
 	// use readline to read input string and store it in history array
-    char *history_string= readline(input);
+    //char *history_string= readline(input);
 
 
  	    if (!strcmp(input,"exit 0")) {
