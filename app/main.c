@@ -8,6 +8,9 @@
 #include <ctype.h> // For manipulation of charecter
 #include <fcntl.h> // For open()
 #include <sys/stat.h> // mkdir
+#include <readline/readline.h> // reads user input 
+#include <readline/history.h>
+
 
 // function to return fully qualified path
 char * get_path(char *cmd){
@@ -59,49 +62,6 @@ char * get_path(char *cmd){
 	// so this will get return eventually to caller
 	
 }
-
-
-// char* remove_extra_spaces(char *str){
-
-//     char *start = strchr(str, '\''); // Find the first single quote
-//     char *end = strrchr(str, '\'');  // Find the last single quote
-//     char *source = NULL;             // Source to extract text
-//     size_t len = 0;
-
-//     // Determine the source of the text
-//     if (start != NULL && end != NULL && end > start) {
-//         source = start + 1;          // Text inside single quotes
-//         len = end - start - 1;
-//     } else {
-//         source = str;                // Copy string to source
-//         len = strlen(str);
-//     }
-
-//     char *text = (char *) malloc((len + 1) * sizeof(char)); // Allocate memory
-    
-//     int j = 0;          // Index for the text array
-//     int space_seen = 0; // Flag to handle 1st consecutive space
-
-//     for (size_t i = 0; i < len; i++) {
-//         char current = *(source + i);
-
-//         if (current == ' ') {
-//             if (!space_seen) {
-//                 text[j++] = current;
-//                 space_seen = 1;
-//             }
-//         } else {
-
-//             text[j++] = current;
-// 			space_seen=0;
-
-//         }
-//     }
-	
-//     text[j] = '\0'; // Null-terminate the string
-//     return text;    
-
-// }
 
 
 // Function to process echo with escape sequences inside double quotes
@@ -414,6 +374,8 @@ void directory_exists(char *file){
 		if(err != 0){
 			perror("mkdir failed");
 		}
+	} else {
+		return;
 	}
 
 }
@@ -665,6 +627,7 @@ void pwd(){
 
 }
 
+
 int main() {
 
   // Flush after every printf
@@ -684,6 +647,10 @@ int main() {
  	// remove trailling newline ('\n') as user enter cmds the array of character
  	// by adding null terminator to last index that point last index to '\0'
  	input[strlen(input)-1]='\0';
+
+	// use readline to read input string and store it in history array
+    char *history_string= readline(input);
+
 
  	    if (!strcmp(input,"exit 0")) {
         	exit(0);
@@ -710,7 +677,7 @@ int main() {
 			free(final_text);
 
 	    } else if (!strncmp(input,"type",strlen("type"))) {
-               	char *ptr[] = {"pwd","echo","type","exit"};
+               	char *ptr[] = {"pwd","echo","type", "history","exit"};
 
         	        char *cmd = &input[(strlen("type")+1)];
               	    int found = 0;       
