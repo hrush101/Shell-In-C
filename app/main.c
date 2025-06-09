@@ -627,6 +627,23 @@ void pwd(){
 
 }
 
+void print_history() {  // this function will print history using realine/history.h 
+
+    HIST_ENTRY **his_list = history_list(); // here HIST_ENTRY is struct which contains two member cmd line and application specific data(unused)
+
+	if (his_list != NULL) {
+
+		for (int i=0;**his_list != NULL;i++)
+		{
+			printf("%d %s\n",history_base,his_list[i]->line); // his_list[i]->line is to access line/cmd and history_base index for history item
+		}
+
+	} else {
+    	printf("No history found.\n");
+	}
+
+
+} 
 
 int main() {
 
@@ -650,11 +667,24 @@ int main() {
 
 	// use readline to read input string and store it in history array
     char *history_string= readline(input);
+		if (history_string == NULL) {  // if user presses ctrl+D / terminate
+			printf("\n");  
+			break;
+		}
 
+		if (*history_string != '/0') { // if readline has not returned empty string
+			add_history(history_string);
+		}
 
- 	    if (!strcmp(input,"exit 0")) {
+ 	    if (!strcmp(input,"exit 0")) { // strcmp returns 0 if both strings are same so if only execute while non zero value in c is considered as true
+
         	exit(0);
-        } else if ( strstr(input, ">>") != NULL || strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL )  {
+
+        } else if (!strcmp(input,"history")) {
+            
+			    print_history();
+			
+		} else if ( strstr(input, ">>") != NULL || strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL )  {
 
 			    append_redirection(input);
 
@@ -812,7 +842,7 @@ int main() {
 				
 			}  
 		
-	
+	free(history_string); // free dynamic pointer returned by readline function
     }
 
   return 0;
