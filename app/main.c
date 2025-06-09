@@ -668,10 +668,10 @@ int main() {
 
 	// use readline to read input string and store it in history array
     char *history_string= readline(input);
-		if (history_string == NULL) {  // if user presses ctrl+D / terminate
-			printf("\n");  
-			break;
-		}
+		// if (history_string == NULL) {  // if user presses ctrl+D / terminate
+		// 	printf("\n");  
+		// 	break;
+		// }
 
 		if (*history_string != '\0') { // if readline has not returned empty string
 			add_history(history_string);
