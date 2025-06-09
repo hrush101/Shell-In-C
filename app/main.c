@@ -702,7 +702,7 @@ int main() {
 
 			if(final_text != NULL ) {
 
-				printf("%s \n",final_text);
+				//printf("%s \n",final_text);
 
 			}
 
