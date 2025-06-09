@@ -677,6 +677,7 @@ int main() {
 
 	if (*hist_string != '\0') { // if readline has not returned empty string
 		add_history(hist_string);
+		free(hist_string);
 	}
 
 
