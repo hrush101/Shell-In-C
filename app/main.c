@@ -630,12 +630,13 @@ void pwd(){
 void print_history() {  // this function will print history using realine/history.h 
 
     HIST_ENTRY **his_list = history_list(); // here HIST_ENTRY is struct which contains two member cmd line and application specific data(unused)
+	// history_list returns double pointer as it points to array of pointers which are pointing to string/line
 
 	if (his_list != NULL) {
 
-		for (int i=0;**his_list != NULL;i++)
+		for (int i=0;his_list[i] != NULL;i++)
 		{
-			printf("%d %s\n",history_base,his_list[i]->line); // his_list[i]->line is to access line/cmd and history_base index for history item
+			printf("%d %s\n",i+1,his_list[i]->line); // his_list[i]->line is to access line/cmd
 		}
 
 	} else {
