@@ -693,7 +693,7 @@ int main() {
 
 			    process_redirection(input);
 
-		} else if ( !strncmp( input,"echo",strlen("echo") ) ) {
+		} else if ( !strcmp(input,"echo") ) {
 
             char *str = &input[(strlen("echo")+1)];
 			printf("inside condition\n");
