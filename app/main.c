@@ -673,7 +673,7 @@ int main() {
 			break;
 		}
 
-		if (*history_string != '/0') { // if readline has not returned empty string
+		if (*history_string != '\0') { // if readline has not returned empty string
 			add_history(history_string);
 		}
 
