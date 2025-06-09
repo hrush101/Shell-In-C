@@ -667,15 +667,15 @@ int main() {
  	input[strlen(input)-1]='\0';
 
 	// use readline to read input string and store it in history array
-    char *history_string= readline(input);
-		// if (history_string == NULL) {  // if user presses ctrl+D / terminate
-		// 	printf("\n");  
-		// 	break;
-		// }
+    // char *history_string= readline(input);
+	// 	if (history_string == NULL) {  // if user presses ctrl+D / terminate
+	// 		printf("\n");  
+	// 		break;
+	// 	// }
 
-		if (*history_string != '\0') { // if readline has not returned empty string
-			add_history(history_string);
-		}
+	// 	if (*history_string != '\0') { // if readline has not returned empty string
+	// 		add_history(history_string);
+	// 	}
 
  	    if (!strcmp(input,"exit 0")) { // strcmp returns 0 if both strings are same so if only execute while non zero value in c is considered as true
 
@@ -702,7 +702,7 @@ int main() {
 
 			if(final_text != NULL ) {
 
-				//printf("%s \n",final_text);
+				printf("%s \n",final_text);
 
 			}
 
@@ -844,7 +844,6 @@ int main() {
 				
 			}  
 		
-	free(history_string); // free dynamic pointer returned by readline function
     }
 
   return 0;
