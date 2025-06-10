@@ -627,14 +627,22 @@ void pwd(){
 
 }
 
-void print_history() {  // this function will print history using realine/history.h 
+void print_history(char *input) {  // this function will print history using realine/history.h 
+    
+	int start_index=0;
+
+	char *index_limit = &input[(strlen("history")+1)];
+
+	if (index_limit != NULL || index_limit != '\0') {
+		start_index = atoi(index_limit); // here atoi is used to typecast string to integer 
+	}
 
     HIST_ENTRY **his_list = history_list(); // here HIST_ENTRY is struct which contains two member cmd line and application specific data(unused)
 	// history_list returns double pointer as it points to array of pointers which are pointing to string/line
 
 	if (his_list != NULL) {
 
-		for (int i=0;his_list[i] != NULL;i++)
+		for (int i=start_index;his_list[i] != NULL;i++)
 		{
 			printf("%d %s\n",i+1,his_list[i]->line); // his_list[i]->line is to access line/cmd
 		}
@@ -666,7 +674,7 @@ int main() {
  	fflush(stdout);
 
  	// cmd input
- 	//char input[1024];
+ 	//char input[100];
 	//fgets(input, 100, stdin);
     
 	// use readline to read input string and store it in history array
@@ -692,8 +700,8 @@ int main() {
         	exit(0);
 
         } else if (!strcmp(input,"history")) {
-            
-			    print_history();
+
+			    print_history(input);
 			
 		} else if ( strstr(input, ">>") != NULL || strstr(input, "1>>") != NULL || strstr(input, "2>>") != NULL )  {
 
