@@ -653,30 +653,38 @@ int main() {
 
   while(1) {
 
+	// readline() is a function provided by the GNU Readline Library that:
+
+	// Displays a prompt
+	// Waits for the user to type input
+	// Lets the user edit the input line interactively
+	// Supports features like history, arrow keys, backspace, etc.
+	// Returns the entire input line as a string
+
  	// print promt and flush stdout to print it on screen
  	//printf("$ ");
  	fflush(stdout);
 
  	// cmd input
- 	char input[100];
-	fgets(input, 100, stdin);
+ 	//char input[1024];
+	//fgets(input, 100, stdin);
     
 	// use readline to read input string and store it in history array
-    char *hist_string=readline("$ ");
+    char *input=readline("$ ");
 
  	// remove trailling newline ('\n') as user enter cmds the array of character
- 	// by adding null terminator to last index that point last index to '\0'
- 	input[strlen(input)-1]='\0';
+ 	// by adding null terminator to last index that will make last index to point - '\0' rather than '\n'
+ 	//input[strlen(input)-1]='\0';
     
 
-	if (hist_string == NULL) {  // if user presses ctrl+D / terminate
+	if (input == NULL) {  // if user presses ctrl+D / terminate
 		printf("\n");  
 		break;
 	}
 
-	if (*hist_string != '\0') {  // if readline has not returned empty string
-		add_history(hist_string);
-		free(hist_string);
+	if (*input != '\0') {  // if readline has not returned empty string
+		add_history(input);
+		free(input);
 	}
 
 
