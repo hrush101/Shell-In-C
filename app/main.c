@@ -633,7 +633,7 @@ void print_history(char *input) {  // this function will print history using rea
 
 	char *index_limit = &input[(strlen("history")+1)];
 
-	if (index_limit != NULL || index_limit != '\0') {
+	if (*index_limit != '\0' || *index_limit != NULL) {
 		start_index = atoi(index_limit); // here atoi is used to typecast string to integer 
 	}
 
