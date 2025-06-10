@@ -654,7 +654,7 @@ int main() {
   while(1) {
 
  	// print promt and flush stdout to print it on screen
- 	printf("$ ");
+ 	//printf("$ ");
  	fflush(stdout);
 
  	// cmd input
@@ -662,7 +662,7 @@ int main() {
 	fgets(input, 100, stdin);
     
 	// use readline to read input string and store it in history array
-    char *hist_string=readline();
+    char *hist_string=readline("$ ");
 
  	// remove trailling newline ('\n') as user enter cmds the array of character
  	// by adding null terminator to last index that point last index to '\0'
