@@ -662,9 +662,8 @@ int main() {
 	fgets(input, 100, stdin);
     
 	// use readline to read input string and store it in history array
-    char *hist_string=readline(input);
+    char *hist_string=readline("$ ");
 
-	
  	// remove trailling newline ('\n') as user enter cmds the array of character
  	// by adding null terminator to last index that point last index to '\0'
  	input[strlen(input)-1]='\0';
@@ -675,7 +674,7 @@ int main() {
 		break;
 	}
 
-	if (*hist_string != '\0') { // if readline has not returned empty string
+	if (*hist_string != '\0') {  // if readline has not returned empty string
 		add_history(hist_string);
 		free(hist_string);
 	}
