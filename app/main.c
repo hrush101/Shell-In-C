@@ -706,7 +706,6 @@ int main() {
 		} else if ( !strncmp(input,"echo",strlen("echo")) ) {
 
             char *str = &input[(strlen("echo")+1)];
-			printf("inside condition\n");
 	       				
 			char *final_text = process_echo(str);// remove extra spaces and print the string
 
