@@ -660,15 +660,14 @@ int main() {
  	// cmd input
  	char input[100];
 	fgets(input, 100, stdin);
-  
+    
+	// use readline to read input string and store it in history array
+    char *hist_string=readline(input);
 
  	// remove trailling newline ('\n') as user enter cmds the array of character
  	// by adding null terminator to last index that point last index to '\0'
  	input[strlen(input)-1]='\0';
-
-
-	// use readline to read input string and store it in history array
-    char *hist_string=readline(input);
+    
 
 	if (hist_string == NULL) {  // if user presses ctrl+D / terminate
 		printf("\n");  
@@ -697,7 +696,7 @@ int main() {
 
 			    process_redirection(input);
 
-		} else if ( !strcmp(input,"echo") ) {
+		} else if ( !strncmp(input,"echo",strlen("echo")) ) {
 
             char *str = &input[(strlen("echo")+1)];
 			printf("inside condition\n");
