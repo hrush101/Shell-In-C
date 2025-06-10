@@ -664,6 +664,7 @@ int main() {
 	// use readline to read input string and store it in history array
     char *hist_string=readline(input);
 
+	
  	// remove trailling newline ('\n') as user enter cmds the array of character
  	// by adding null terminator to last index that point last index to '\0'
  	input[strlen(input)-1]='\0';
