@@ -630,15 +630,22 @@ void pwd(){
 void print_history(char *input) {  // this function will print history using realine/history.h 
     
 	int start_index=0;
+	// int total_cmds=0;
 
 	char *index_limit = &input[(strlen("history")+1)];
 
-	if (*index_limit != '\0' || *index_limit != NULL) {
-		start_index = atoi(index_limit); // here atoi is used to typecast string to integer 
-	}
-
-    HIST_ENTRY **his_list = history_list(); // here HIST_ENTRY is struct which contains two member cmd line and application specific data(unused)
+	HIST_ENTRY **his_list = history_list(); // here HIST_ENTRY is struct which contains two member cmd line and application specific data(unused)
 	// history_list returns double pointer as it points to array of pointers which are pointing to string/line
+    
+	// if (his_list != NULL) {
+	// 	while (his_list[total_cmds] != NULL) {
+	// 		total_cmds++; // to get history stack size
+	// 	}
+	// }
+
+	if ( isdigit(*index_limit) && *index_limit != '\0' ) {
+		start_index = history_length - atoi(index_limit); // here atoi is used to typecast string to integer 
+	}
 
 	if (his_list != NULL) {
 
