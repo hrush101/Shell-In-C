@@ -684,7 +684,6 @@ int main() {
 
 	if (*input != '\0') {  // if readline has not returned empty string
 		add_history(input);
-		free(input);
 	}
 
 
@@ -854,7 +853,7 @@ int main() {
         		}
 				
 			}  
-		
+	free(input);	
     }
 
   return 0;
