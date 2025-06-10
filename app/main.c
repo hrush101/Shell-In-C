@@ -699,7 +699,7 @@ int main() {
 
         	exit(0);
 
-        } else if (!strcmp(input,"history")) {
+        } else if (!strncmp(input,"history",strlen("history"))) {
 
 			    print_history(input);
 			
