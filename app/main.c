@@ -11,6 +11,9 @@
 #include <fcntl.h> // For open()
 #include <sys/stat.h> // mkdir
 
+char *builtin_cmds[] = {"pwd","cd"."echo","type", "history","exit".NULL}; // built-in cmds global scoped array
+
+
 
 // function to return fully qualified path
 char * get_path(char *cmd){
@@ -630,21 +633,17 @@ void pwd(){
 void print_history(char *input) {  // this function will print history using realine/history.h 
     
 	int start_index=0;
-	// int total_cmds=0;
+
 
 	char *index_limit = &input[(strlen("history")+1)];
 
 	HIST_ENTRY **his_list = history_list(); // here HIST_ENTRY is struct which contains two member cmd line and application specific data(unused)
 	// history_list returns double pointer as it points to array of pointers which are pointing to string/line
     
-	// if (his_list != NULL) {
-	// 	while (his_list[total_cmds] != NULL) {
-	// 		total_cmds++; // to get history stack size
-	// 	}
-	// }
 
 	if ( isdigit(*index_limit) && *index_limit != '\0' ) {
 		start_index = history_length - atoi(index_limit); // here atoi is used to typecast string to integer 
+		// history_length is provided by readline which store total number of commands in stored in history
 	}
 
 	if (his_list != NULL) {
@@ -661,10 +660,48 @@ void print_history(char *input) {  // this function will print history using rea
 
 } 
 
+char *cmd_genrator(const char * text,int state) {
+  	static int built_index; // kept static because to maintain state / index of builtin_cmds
+
+	if (state == 0) {
+		built_index=0;
+	}
+    
+	while (builtin_cmds[built_index] != NULL)
+	{
+		const char *cmd = builtin_cmds[built_index];
+		if ( strncmp( cmd , text , strlen(text) ) == 0 ) {  // here we will compare the string text with builtin cmd sting if it matches return string to rl_completion_matches
+			return strdup(cmd); // return dynamically allocate pointer beacause rl_completion_matches only accepts dynamically allocated pointer
+		}
+
+		built_index++;
+	}
+
+	return NULL;
+}
+
+char **cmd_completion (const char *text,int start , int end)  {
+
+	if (start == 0) {  // if start index = 0  then only call readline match
+
+		return rl_completion_matches(text,cmd_genrator); // rl_completion_matches will take inputed text and cmd_genrator is pointer to function cmd_genrator , it will continuously call cmd_genrator
+		// till built in becomes NULL and then it returns matching list to the inputed text
+
+	}
+
+}
+
+
 int main() {
 
   // Flush after every printf
   setbuf(stdout, NULL);
+
+
+  rl_attempted_completion_function = cmd_completion; // cmd_completion is called whenever user presses <TAB> 
+  // cmd_completion must return double pointer to array of pointers returned by rl_completion_matches()
+  // readline will pass signature to cmd_completion ( Text inputed by user, starting index of that text , end index of that text )
+
 
   while(1) {
 
@@ -686,7 +723,7 @@ int main() {
     
 	// use readline to read input string and store it in history array
     char *input=readline("$ ");
-
+    
  	// remove trailling newline ('\n') as user enter cmds the array of character
  	// by adding null terminator to last index that will make last index to point - '\0' rather than '\n'
  	//input[strlen(input)-1]='\0';
@@ -733,13 +770,12 @@ int main() {
 			free(final_text);
 
 	    } else if (!strncmp(input,"type",strlen("type"))) {
-               	char *ptr[] = {"pwd","echo","type", "history","exit"};
-
+               	
         	        char *cmd = &input[(strlen("type")+1)];
               	    int found = 0;       
-	      	        for( int i=0 ; i < sizeof(ptr) / sizeof(ptr[0]) ; i++ ){
+	      	        for( int i=0 ; i < sizeof(builtin_cmds) / sizeof(builtin_cmds[0]) ; i++ ){
          
-        	           	if(!strcmp(ptr[i],cmd)){
+        	           	if(!strcmp(builtin_cmds[i],cmd)){
                 	      printf("%s is a shell builtin\n",cmd);
 		   	        	  found = 1;
 		                  break;
