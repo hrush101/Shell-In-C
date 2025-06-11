@@ -693,14 +693,13 @@ char **cmd_completion (const char *text,int start , int end)  {
 
 
 int main() {
-
-  // Flush after every printf
-  setbuf(stdout, NULL);
-
-
+  
   rl_attempted_completion_function = cmd_completion; // cmd_completion is called whenever user presses <TAB> 
   // cmd_completion must return double pointer to array of pointers returned by rl_completion_matches()
   // readline will pass signature to cmd_completion ( Text inputed by user, starting index of that text , end index of that text )
+
+  // Flush after every printf
+  setbuf(stdout, NULL);
 
 
   while(1) {
