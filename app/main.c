@@ -11,7 +11,7 @@
 #include <fcntl.h> // For open()
 #include <sys/stat.h> // mkdir
 
-char *builtin_cmds[] = {"pwd","cd","echo","type", "history","exit",NULL}; // built-in cmds global scoped array
+const char *builtin_cmds[] = {"pwd","cd","echo","type", "history","exit",NULL}; // built-in cmds global scoped array
 
 
 
