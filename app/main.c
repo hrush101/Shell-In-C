@@ -671,7 +671,7 @@ char *cmd_genrator(const char * text,int state) {
 	{
 		if ( strncmp( builtin_cmds[built_index++] , text , strlen(text) ) == 0 ) {  // here we will compare the string text with builtin cmd sting if it matches return string to rl_completion_matches
 
-			return strdup(builtin_cmds[built_index++]); // return dynamically allocate pointer beacause rl_completion_matches only accepts dynamically allocated pointer
+			return strdup(builtin_cmds[built_index]); // return dynamically allocate pointer beacause rl_completion_matches only accepts dynamically allocated pointer
 		}
 
 	}
