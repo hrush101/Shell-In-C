@@ -768,7 +768,7 @@ int main() {
 			free(final_text);
 
 	    } else if (!strncmp(input,"type",strlen("type"))) {
-               	
+               	char *builtin_cmds[] = {"pwd","cd","echo","type","history","exit"};
         	        char *cmd = &input[(strlen("type")+1)];
               	    int found = 0;       
 	      	        for( int i=0 ; i < sizeof(builtin_cmds) / sizeof(builtin_cmds[0]) ; i++ ){
