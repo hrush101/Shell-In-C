@@ -661,7 +661,7 @@ void print_history(char *input) {  // this function will print history using rea
 } 
 
 char *cmd_genrator(const char * text,int state) {
-  	static int built_index; // kept static because to maintain state / index of builtin_cmds
+  	int built_index; // kept static because to maintain state / index of builtin_cmds
     const char *cmd;
 	if (state == 0) {
 		built_index=0;
@@ -669,13 +669,12 @@ char *cmd_genrator(const char * text,int state) {
     
 	while (builtin_cmds[built_index] != NULL)
 	{
-		cmd = builtin_cmds[built_index];
+		cmd = builtin_cmds[built_index++];
 		if ( strncmp( cmd , text , strlen(text) ) == 0 ) {  // here we will compare the string text with builtin cmd sting if it matches return string to rl_completion_matches
-				printf("is a string : %s \n",cmd);
+			printf("is a string : %s \n",cmd);
 			return strdup(cmd); // return dynamically allocate pointer beacause rl_completion_matches only accepts dynamically allocated pointer
 		}
 
-		built_index++;
 	}
 
 	return NULL;
