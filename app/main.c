@@ -667,7 +667,7 @@ char *cmd_genrator(const char * text,int state) {
 		built_index=0;
 	}
     
-	while (*cmd != NULL)
+	while (cmd != NULL)
 	{
 		cmd=builtin_cmds[built_index++];
 		if ( strncmp( cmd , text , strlen(text) ) == 0 ) {  // here we will compare the string text with builtin cmd sting if it matches return string to rl_completion_matches
