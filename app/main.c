@@ -684,7 +684,7 @@ char *cmd_genrator(const char * text,int state) {
 char **cmd_completion (const char *text,int start , int end)  {
 
 	if (start == 0) {  // if start index = 0  then only call readline match
-
+        printf("cmd is : %s",cmd_genrator);
 		return rl_completion_matches(text,cmd_genrator); // rl_completion_matches will take inputed text and cmd_genrator is pointer to function cmd_genrator , it will continuously call cmd_genrator
 		// till built in becomes NULL and then it returns matching list to the inputed text
 
