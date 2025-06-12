@@ -671,6 +671,7 @@ char *cmd_genrator(const char * text,int state) {
 	{
 		cmd = builtin_cmds[built_index];
 		if ( strncmp( cmd , text , strlen(text) ) == 0 ) {  // here we will compare the string text with builtin cmd sting if it matches return string to rl_completion_matches
+				printf("inside cmd_completion function \n");
 			return strdup(cmd); // return dynamically allocate pointer beacause rl_completion_matches only accepts dynamically allocated pointer
 		}
 
@@ -683,8 +684,6 @@ char *cmd_genrator(const char * text,int state) {
 char **cmd_completion (const char *text,int start , int end)  {
 
 	if (start == 0) {  // if start index = 0  then only call readline match
-
-		printf("inside cmd_completion function \n");
 
 		return rl_completion_matches(text,cmd_genrator); // rl_completion_matches will take inputed text and cmd_genrator is pointer to function cmd_genrator , it will continuously call cmd_genrator
 		// till built in becomes NULL and then it returns matching list to the inputed text
