@@ -680,8 +680,11 @@ char *cmd_genrator(const char * text,int state) {
 }
 
 char *path_generator(const char *text, int state) {
-    
-    return rl_filename_completion_function(text, state);
+
+	if (state == 0){
+		return rl_filename_completion_function(text, state);
+	}
+   
 }
 
 char **cmd_completion (const char *text,int start , int end)  {
