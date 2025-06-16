@@ -688,14 +688,14 @@ char *path_generator(const char *text, int state) {
 	
 	if(path != NULL){
 		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
-		char *custom_dir = strtok(path,":");
+		char *custom_dir = strtok(custom_paths,":");
 
-		while (custom_paths != NULL)
+		while (custom_dir != NULL)
 		{
-			if( strncmp(custom_paths , text ,strlen(text)) == 0 ){
+			if( strncmp(custom_dir , text ,strlen(text)) == 0 ) {
 				printf("inside if block \n");
 				
-				char *forward_slash = strrchr(custom_paths,'/');
+				char *forward_slash = strrchr(custom_dir,'/');
 				custom_exe = forward_slash + 1;
 				return strdup(custom_exe);
 
