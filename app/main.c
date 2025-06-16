@@ -681,9 +681,29 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
-	if (state == 0){
-		return rl_filename_completion_function(text, state);
+    const char *custom_exe;
+
+	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
+	const char *path = getenv("PATH");
+	
+	if(path != NULL){
+		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
+		char *custom_dir = strtok(path,":");
+
+		while (custom_paths != NULL)
+		{
+			if( strncmp(custom_paths , text ,strlen(text)) == 0 ){
+				
+				char *forward_slash = strrchr(custom_paths,'/');
+				custom_exe = forward_slash + 1;
+				return strdup(custom_exe);
+
+			}
+		}
+
 	}
+
+	return NULL;
    
 }
 
