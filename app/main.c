@@ -693,6 +693,7 @@ char *path_generator(const char *text, int state) {
 		while (custom_paths != NULL)
 		{
 			if( strncmp(custom_paths , text ,strlen(text)) == 0 ){
+				printf("inside if block \n")
 				
 				char *forward_slash = strrchr(custom_paths,'/');
 				custom_exe = forward_slash + 1;
