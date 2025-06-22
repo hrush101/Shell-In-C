@@ -697,7 +697,7 @@ char *path_generator(const char *text, int state) {
 			
 	        DIR *directory = opendir(custom_dir);	// opens directory of a path provided in function call just to open directory
 
-			if(*directory != NULL) {
+			if(directory != NULL) {
 
 				while ( dp = readdir(directory) != NULL)  // reads contains of directory 
 				{
