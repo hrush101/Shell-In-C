@@ -10,7 +10,8 @@
 #include <ctype.h> // For manipulation of charecter
 #include <fcntl.h> // For open()
 #include <sys/stat.h> // mkdir
-
+#include <dirent.h>   // contains function like opendir(),readir()
+ 
 const char *builtin_cmds[] = {"pwd","cd","echo","type","history","exit",NULL}; // built-in cmds global scoped array
 
 
@@ -686,20 +687,27 @@ char *path_generator(const char *text, int state) {
 	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
 	const char *path = getenv("PATH");
 	
-	if(path != NULL){
+	if(path != NULL) {
 		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
 		char *custom_dir = strtok(custom_paths,":");
 
 		while (custom_dir != NULL)
-		{
-			if( strncmp(custom_dir , text ,strlen(text)) == 0 ) {
-				printf("inside if block \n");
-				
-				char *forward_slash = strrchr(custom_dir,'/');
-				custom_exe = forward_slash + 1;
-				return strdup(custom_exe);
+		{   
+			struct dirent *dp; // dirent is structure having members as inode number , directory name d_name
+			
+	        DIR *directory = opendir(custom_dir);	// opens directory of a path provided in function call just to open directory
 
+			if(*directory != NULL) {
+
+				while ( dp = readdir(directory) != NULL)  // reads contains of directory 
+				{
+					if( strncmp(dp->d_name,text ,strlen(text)) == 0 ) {
+                        return strdup(dp->d_name);
+					}
+				}
+                close(dp);
 			}
+			
 		}
 
 	}
