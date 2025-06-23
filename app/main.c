@@ -707,7 +707,7 @@ char *path_generator(const char *text, int state) {
 				}
                 closedir(directory);
 			}
-			custom_dir = strtok(NULL.":");
+			custom_dir = strtok(NULL,":");
 		}
 		free(custom_paths);
 
