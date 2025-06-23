@@ -705,7 +705,7 @@ char *path_generator(const char *text, int state) {
                         return strdup(dp->d_name);
 					}
 				}
-                close(dp);
+                closedir(directory);
 			}
 			
 		}
