@@ -699,7 +699,7 @@ char *path_generator(const char *text, int state) {
 
 			if(directory != NULL) {
 
-				while ( dp = readdir(directory) != NULL)  // reads contains of directory 
+				while ( (dp = readdir(directory)) != NULL)  // reads contains of directory 
 				{
 					if( strncmp(dp->d_name,text ,strlen(text)) == 0 ) {
                         return strdup(dp->d_name);
