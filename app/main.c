@@ -722,13 +722,20 @@ char *path_generator(const char *text, int state) {
 char **cmd_completion (const char *text,int start , int end)  {
 
 	if (start == 0) {  // if start index = 0  then only call readline match
-
-		return rl_completion_matches(text,cmd_genrator); // rl_completion_matches will take inputed text and cmd_genrator is pointer to function cmd_genrator , it will continuously call cmd_genrator
+        
+		if (rl_completion_matches(text,cmd_genrator)!=NULL) {
+            
+		}
+		// rl_completion_matches will take inputed text and cmd_genrator is pointer to function cmd_genrator , it will continuously call cmd_genrator
 		// till built in becomes NULL and then it returns matching list to the inputed text
+        else {
+            return rl_completion_matches(text,path_generator);
+		}
+		
 
 	}
 
-	return rl_completion_matches(text,path_generator);
+	return NULL;
 
 }
 
