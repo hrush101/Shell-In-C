@@ -720,9 +720,9 @@ char *path_generator(const char *text, int state) {
 char **cmd_completion (const char *text,int start , int end)  {
 
 	if (start == 0) {  // if start index = 0  then only call readline match
-        
-		if (rl_completion_matches(text,cmd_genrator)!=NULL) {
-            
+        char **res = rl_completion_matches(text,cmd_genrator);
+		if (res !=NULL) {
+            return res;
 		}
 		// rl_completion_matches will take inputed text and cmd_genrator is pointer to function cmd_genrator , it will continuously call cmd_genrator
 		// till built in becomes NULL and then it returns matching list to the inputed text
