@@ -682,6 +682,8 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
+	printf("in path genrator \n");
+
     const char *custom_exe;
 
 	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
