@@ -682,7 +682,9 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
-    const char *custom_exe;
+    static char **custom_exe = malloc (1024 * sizeof(char));
+	int custom_index = 0;
+
 
 	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
 	const char *path = getenv("PATH");
@@ -702,7 +704,7 @@ char *path_generator(const char *text, int state) {
 				while ( (dp = readdir(directory)) != NULL)  // reads contains of directory 
 				{
 					if( strncmp(dp->d_name,text ,strlen(text)) == 0 ) {
-                        return strdup(dp->d_name);
+                        custom_exe = dp->d_name;
 					}
 				}
                 closedir(directory);
@@ -710,6 +712,8 @@ char *path_generator(const char *text, int state) {
 			custom_dir = strtok(NULL,":");
 		}
 		free(custom_paths);
+
+		return custom_exe;
 
 	}
 
