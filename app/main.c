@@ -682,7 +682,7 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
-    static char **custom_exe = malloc (1024 * sizeof(char));
+    static char *custom_exe = malloc (1024 * sizeof(char));
 	static int custom_index = 0;
 	int duplicate = 0;
 
@@ -718,7 +718,7 @@ char *path_generator(const char *text, int state) {
                         
 						// if no duplicate files/ directory copy and return
 						if (duplicate==0){
-							custom_exe[custom_index++] = strdup(dp->d_name);
+							custom_exe[custom_index++] = dp->d_name;
 						}
                         
 					}
