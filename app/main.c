@@ -682,7 +682,7 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
-    static char *custom_exe = malloc(1024 * sizeof(char)); // allocate dynamic memory for array of pointers storing multiple possible cmds
+    static char *custom_exe = NULL; // allocate dynamic memory for array of pointers storing multiple possible cmds
 	static int custom_index = 0;
 	int duplicate = 0;
 
@@ -693,6 +693,8 @@ char *path_generator(const char *text, int state) {
 	if(path != NULL) {
 		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
 		char *custom_dir = strtok(custom_paths,":");
+
+		custom_exe = malloc(1024 * sizeof(char));
 
 		while (custom_dir != NULL)
 		{   
