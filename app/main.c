@@ -683,7 +683,8 @@ char *cmd_genrator(const char * text,int state) {
 char *path_generator(const char *text, int state) {
 
     static char **custom_exe = malloc (1024 * sizeof(char));
-	int custom_index = 0;
+	static int custom_index = 0;
+	int duplicate = 0;
 
 
 	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
@@ -704,7 +705,22 @@ char *path_generator(const char *text, int state) {
 				while ( (dp = readdir(directory)) != NULL)  // reads contains of directory 
 				{
 					if( strncmp(dp->d_name,text ,strlen(text)) == 0 ) {
-                        custom_exe = dp->d_name;
+                        
+						int i=0;
+						while ( i < custom_index )
+						{
+							if ( ( strcmp(custom_exe[i],dp->d_name) == 0 ) ) {
+								duplicate = 1;
+								break;
+						    }
+							i++;
+						}
+                        
+						// if no duplicate files/ directory copy and return
+						if (duplicate==0){
+							custom_exe[custom_index++] = strdup(dp->d_name);
+						}
+                        
 					}
 				}
                 closedir(directory);
