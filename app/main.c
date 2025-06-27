@@ -682,7 +682,7 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
-    static char *custom_exe = malloc (1024 * sizeof(char));
+    static char **custom_exe = malloc (1024 * sizeof(char));
 	static int custom_index = 0;
 	int duplicate = 0;
 
@@ -709,7 +709,7 @@ char *path_generator(const char *text, int state) {
 						int i=0;
 						while ( i < custom_index )
 						{
-							if ( ( strcmp(custom_exe[i],dp->d_name) == 0 ) ) {
+							if ( ( strcmp(*(custom_exe[i]),dp->d_name) == 0 ) ) {
 								duplicate = 1;
 								break;
 						    }
