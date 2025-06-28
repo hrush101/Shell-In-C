@@ -682,7 +682,7 @@ char *cmd_genrator(const char * text,int state) {
 
 char *path_generator(const char *text, int state) {
 
-    static char *custom_exe = NULL; // allocate dynamic memory for array of pointers storing multiple possible cmds
+    static char **custom_exe = NULL; // allocate dynamic memory for array of pointers storing multiple possible cmds
 	static int custom_index = 0;
 	int duplicate = 0;
 
@@ -694,7 +694,7 @@ char *path_generator(const char *text, int state) {
 		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
 		char *custom_dir = strtok(custom_paths,":");
 
-		custom_exe = malloc(1024 * sizeof(char));
+		custom_exe = malloc(1024 * sizeof(char *));
 
 		while (custom_dir != NULL)
 		{   
@@ -711,7 +711,7 @@ char *path_generator(const char *text, int state) {
 						int i=0;
 						while ( i < custom_index )
 						{
-							if ( ( strcmp(custom_exe[i],dp->d_name) == 0 ) ) {
+							if ( ( strcmp(*(custom_exe + i ),dp->d_name) == 0 ) ) {
 								duplicate = 1;
 								break;
 						    }
@@ -720,7 +720,7 @@ char *path_generator(const char *text, int state) {
                         
 						// if no duplicate files/ directory copy and return
 						if (duplicate==0){
-							custom_exe[custom_index++] = dp->d_name;
+							custom_exe[custom_index++] = strdup(dp->d_name); // returns a pointer to a string so we used double pointer
 						}
                         
 					}
@@ -731,7 +731,7 @@ char *path_generator(const char *text, int state) {
 		}
 		free(custom_paths);
 
-		return custom_exe;
+		return strdup(custom_exe);
 
 	}
 
