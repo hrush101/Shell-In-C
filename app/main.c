@@ -685,12 +685,23 @@ char *path_generator(const char *text, int state) {
     static char **custom_exe = NULL; // allocate dynamic memory for array of pointers storing multiple possible cmds
 	static int custom_index = 0;
 	int duplicate = 0;
+    static int match_index = 0;
 
+    // free array if it filled with previous posiblities
+	if ( match_index != 0) {
+		int i=0;
+		while (i < custom_index)
+		{
+			free(custom_exe[i++]);
+		}
+	    free(custom_exe);
+		custom_exe=NULL;
+	}
 
 	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
 	const char *path = getenv("PATH");
 	
-	if(path != NULL) {
+	if(path != NULL && state == 0) {
 		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
 		char *custom_dir = strtok(custom_paths,":");
 
@@ -731,7 +742,7 @@ char *path_generator(const char *text, int state) {
 		}
 		free(custom_paths);
 
-		return strdup(custom_exe);
+		return strdup(custom_exe[match_index++]);
 
 	}
 
