@@ -686,66 +686,68 @@ char *path_generator(const char *text, int state) {
 	static int custom_index = 0;
 	int duplicate = 0;
     static int match_index = 0;
-
-    // free array if it filled with previous posiblities
-	if ( match_index != 0) {
-		int i=0;
-		while (i < custom_index)
-		{
-			free(custom_exe[i++]);
-		}
-	    free(custom_exe);
-		custom_exe=NULL;
-	}
-
-	// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
-	const char *path = getenv("PATH");
-	
-	if(path != NULL && state == 0) {
-		char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
-		char *custom_dir = strtok(custom_paths,":");
-
-		custom_exe = malloc(1024 * sizeof(char *));
-
-		while (custom_dir != NULL)
-		{   
-			struct dirent *dp; // dirent is structure having members as inode number , directory name d_name
-			
-	        DIR *directory = opendir(custom_dir);	// opens directory of a path provided in function call just to open directory
-
-			if(directory != NULL) {
-
-				while ( (dp = readdir(directory)) != NULL)  // reads contains of directory 
-				{
-					if( strncmp(dp->d_name,text ,strlen(text)) == 0 ) {
-                        
-						int i=0;
-						while ( i < custom_index )
-						{
-							if ( ( strcmp(custom_exe[i],dp->d_name) == 0 ) ) {
-								duplicate = 1;
-								break;
-						    }
-							i++;
-						}
-                        
-						// if no duplicate files/ directory copy and return
-						if (duplicate==0){
-							custom_exe[custom_index++] = strdup(dp->d_name); // returns a pointer to a string so we used double pointer
-						}
-                        
-					}
-				}
-                closedir(directory);
+    
+	if( state == 0 ) {
+		// free array if it filled with previous posiblities
+		if ( match_index != 0) {
+			int i=0;
+			while (i < custom_index)
+			{
+				free(custom_exe[i++]);
 			}
-			custom_dir = strtok(NULL,":");
+			free(custom_exe);
+			custom_exe=NULL;
 		}
-		free(custom_paths);
 
+		// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
+		const char *path = getenv("PATH");
+		
+		if(path != NULL) {
+			char *custom_paths = strdup(path); // create copy of path env var so it will not modify orignal
+			char *custom_dir = strtok(custom_paths,":");
+
+			custom_exe = malloc(1024 * sizeof(char *));
+
+			while (custom_dir != NULL)
+			{   
+				struct dirent *dp; // dirent is structure having members as inode number , directory name d_name
+				
+				DIR *directory = opendir(custom_dir);	// opens directory of a path provided in function call just to open directory
+
+				if(directory != NULL) {
+
+					while ( (dp = readdir(directory)) != NULL)  // reads contains of directory 
+					{
+						if( strncmp(dp->d_name,text ,strlen(text)) == 0 ) {
+							
+							int i=0;
+							while ( i < custom_index )
+							{
+								if ( ( strcmp(custom_exe[i],dp->d_name) == 0 ) ) {
+									duplicate = 1;
+									break;
+								}
+								i++;
+							}
+							
+							// if no duplicate files/ directory copy and return
+							if (duplicate==0){
+								custom_exe[custom_index++] = strdup(dp->d_name); // returns a pointer to a string so we used double pointer
+							}
+							
+						}
+					}
+					closedir(directory);
+				}
+				custom_dir = strtok(NULL,":");
+			}
+			free(custom_paths);
+	    }
+
+
+	} 
 		if (match_index < custom_index) {
-			return strdup(custom_exe[match_index++]);
-		}
-
+		return strdup(custom_exe[match_index++]);
 	}
 
 	return NULL;
