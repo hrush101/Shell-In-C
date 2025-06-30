@@ -722,7 +722,7 @@ char *path_generator(const char *text, int state) {
 						int i=0;
 						while ( i < custom_index )
 						{
-							if ( ( strcmp(*(custom_exe + i ),dp->d_name) == 0 ) ) {
+							if ( ( strcmp(custom_exe[i],dp->d_name) == 0 ) ) {
 								duplicate = 1;
 								break;
 						    }
