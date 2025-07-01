@@ -688,15 +688,18 @@ char *path_generator(const char *text, int state) {
     static int match_index = 0;
     
 	if( state == 0 ) {
-		// free array if it filled with previous posiblities
-		if ( match_index != 0) {
+		
+		// free array if it is filled with previous posiblities
+		if ( custom_exe != NULL ) {
 			int i=0;
 			while (i < custom_index)
 			{
-				free(custom_exe[i++]);
+				free(custom_exe[i]);
+				i++;
 			}
 			free(custom_exe);
 			custom_exe=NULL;
+			custom_index = 0;
 		}
 
 		// this will return ';' seprated executable dir paths in envirnoment variable 'PATH'
@@ -743,7 +746,6 @@ char *path_generator(const char *text, int state) {
 			}
 			free(custom_paths);
 	    }
-
 
 	} 
 		if (match_index < custom_index) {
