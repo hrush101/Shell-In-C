@@ -748,7 +748,7 @@ char *path_generator(const char *text, int state) {
 	    }
 
 	} 
-		if (match_index < custom_index) {
+		if ( match_index < custom_index ) {
 		return strdup(custom_exe[match_index++]);
 	}
 
