@@ -689,6 +689,7 @@ char *path_generator(const char *text, int state) {
     
 	if( state == 0 ) {
 		
+		match_index = 0;  
 		// free array if it is filled with previous posiblities
 		if ( custom_exe != NULL ) {
 			int i=0;
