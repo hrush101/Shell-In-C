@@ -778,6 +778,7 @@ char **cmd_completion (const char *text,int start , int end)  {
 }
 
 
+
 int main() {
   
   rl_attempted_completion_function = cmd_completion; // cmd_completion is called whenever user presses <TAB> 
