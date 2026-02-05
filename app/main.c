@@ -740,6 +740,7 @@ char *path_generator(const char *text, int state) {
 							}
 							
 						}
+						
 						duplicate = 0;
 					}
 					closedir(directory);
